@@ -101,17 +101,6 @@
   const topicChecks = (t) => t.checks.filter((_, i) => S.checks[`${t.id}:${i}`]).length;
 
   // ------------------------------------------------------------------ theme + countdown
-  function applyTheme() {
-    const r = document.documentElement;
-    if (S.theme) r.setAttribute("data-theme", S.theme); else r.removeAttribute("data-theme");
-    $("#theme-btn").textContent = S.theme === "dark" ? "Dark" : S.theme === "light" ? "Light" : "Auto";
-  }
-  $("#theme-btn").addEventListener("click", () => {
-    S.theme = S.theme === "" ? "light" : S.theme === "light" ? "dark" : "";
-    applyTheme(); save();
-  });
-  applyTheme();
-
   function daysLeft() {
     const now = new Date();
     const a = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -180,7 +169,7 @@
         <div class="hero-text panel">
           <span class="eyebrow">6.1200J / 18.062J · Fall 2026</span>
           <h1>Quiz 1, Wednesday Oct 14</h1>
-          <p class="lede">Ten topics from Lectures 1–9: notes, a step-by-step method for each problem type, and ${PROBS.length} practice problems with a chalkboard. Solutions stay locked until you've genuinely tried.</p>
+          <p class="lede">Ten topics from Lectures 1–9: notes, a step-by-step method for each problem type, and ${PROBS.length} practice problems with a whiteboard. Solutions stay locked until you've genuinely tried.</p>
           <div class="stats">
             <div class="stat"><b>${attempted}/${PROBS.length}</b><span>problems attempted</span></div>
             <div class="stat"><b>${solved}</b><span>solved cleanly</span></div>
@@ -280,7 +269,7 @@
           <section class="tsec traps-box" id="s-traps"><h2><span class="tag">05</span>Common traps</h2>${t.traps}</section>
           <section class="tsec" id="s-practice"><h2><span class="tag">06</span>Practice problems for this topic</h2>
             ${t.pset ? `<div class="pset-note" style="margin-bottom:12px">${t.pset}</div>` : ""}
-            <p class="muted" style="font-size:.92rem">Each opens on its own page with a chalkboard. Hints unlock over time; the solution unlocks after a real attempt.</p>
+            <p class="muted" style="font-size:.92rem">Each opens on its own page with a whiteboard. Hints unlock over time; the solution unlocks after a real attempt.</p>
             <div class="plist">${plist.map(probRowHTML).join("")}</div>
           </section>
           <section class="tsec" id="s-check"><h2><span class="tag">07</span>Checklist: I can…</h2>
@@ -422,7 +411,7 @@
           </div>
         </aside>
 
-        <section class="board-wrap" aria-label="Chalkboard">
+        <section class="board-wrap" aria-label="Whiteboard">
           <div id="board-host"></div>
         </section>
       </div>
@@ -528,7 +517,7 @@
     const L = lockState(p);
     req.innerHTML = `
       <li class="${L.timeOk ? "ok" : ""}"><span class="dot">${L.timeOk ? "✓" : ""}</span><span>Spend ${fmt(L.need)} on this problem${L.timeOk ? "" : `: <b class="mono">${fmt(L.need - st.t)}</b> to go (only counts while this page is open)`}</span></li>
-      <li class="${L.tryOk ? "ok" : ""}"><span class="dot">${L.tryOk ? "✓" : ""}</span><span>Show an attempt: write on the chalkboard (3+ strokes) or describe your approach below</span></li>`;
+      <li class="${L.tryOk ? "ok" : ""}"><span class="dot">${L.tryOk ? "✓" : ""}</span><span>Show an attempt: write on the whiteboard (3+ strokes) or describe your approach below</span></li>`;
     hold.disabled = !L.ok;
   }
 
@@ -568,8 +557,10 @@
     refreshLock(p);
   }, 1000);
 
-  // ------------------------------------------------------------------ chalkboard
-  const COLORS = [["Chalk", "#f3f0e6"], ["Yellow", "#f2d36b"], ["Pink", "#f2a3b8"], ["Blue", "#93d2f2"]];
+  // ------------------------------------------------------------------ whiteboard
+  const COLORS = [["Black", "#1f2328"], ["Blue", "#1f5fbf"], ["Red", "#c62828"], ["Green", "#2e7d32"]];
+  // strokes saved before the whiteboard switch used light chalk colors; draw them in dark ink
+  const OLD_INK = { "#f3f0e6": "#1f2328", "#f2d36b": "#b7791f", "#f2a3b8": "#c62828", "#93d2f2": "#1f5fbf" };
   const SIZES = [["S", 2.2], ["M", 3.6], ["L", 6]];
 
   function Board(host, id, onChange) {
@@ -578,8 +569,8 @@
     try { const raw = localStorage.getItem(KEYB); if (raw) data = Object.assign(data, JSON.parse(raw)); } catch (e) {}
     let tool = "pen", color = COLORS[0][1], size = SIZES[1][1], cur = null, redo = [];
     host.innerHTML = `
-      <div class="tray" role="toolbar" aria-label="Chalkboard tools">
-        ${COLORS.map(([n, c], i) => `<button class="swatch" data-color="${c}" aria-label="${n} chalk" aria-pressed="${i === 0}"><i style="background:${c}"></i></button>`).join("")}
+      <div class="tray" role="toolbar" aria-label="Whiteboard tools">
+        ${COLORS.map(([n, c], i) => `<button class="swatch" data-color="${c}" aria-label="${n} marker" aria-pressed="${i === 0}"><i style="background:${c}"></i></button>`).join("")}
         <span class="sep"></span>
         ${SIZES.map(([n, w], i) => `<button data-size="${w}" aria-pressed="${i === 1}" aria-label="Line size ${n}">${n}</button>`).join("")}
         <span class="sep"></span>
@@ -594,7 +585,7 @@
       </div>
       <div class="board-frame">
         <div class="board-surface">
-          <canvas aria-label="Chalkboard drawing area"></canvas>
+          <canvas aria-label="Whiteboard drawing area"></canvas>
           <span class="board-hint"${data.s.length ? " hidden" : ""}>Work it out here…</span>
         </div>
       </div>`;
@@ -612,7 +603,7 @@
     function strokePath(s) {
       const p = s.p;
       ctx.globalCompositeOperation = s.e ? "destination-out" : "source-over";
-      ctx.strokeStyle = s.e ? "rgba(0,0,0,1)" : s.c;
+      ctx.strokeStyle = s.e ? "rgba(0,0,0,1)" : (OLD_INK[s.c] || s.c);
       ctx.fillStyle = ctx.strokeStyle;
       ctx.lineWidth = s.w; ctx.lineCap = "round"; ctx.lineJoin = "round";
       ctx.globalAlpha = s.e ? 1 : 0.92;
@@ -714,7 +705,7 @@
         <div style="min-width:220px"><div class="row" style="justify-content:space-between;font-size:.85rem"><span class="muted">Plan progress</span><span class="mono">${done}/${allTasks.length}</span></div>
           <div class="bar" style="margin-top:6px"><span style="width:${(100 * done) / allTasks.length}%"></span></div></div>
       </div>
-      <p class="muted" style="max-width:70ch;margin:0">About 2–3 focused hours a day. Each day: read the notes, solve problems on the chalkboard <i>before</i> unlocking anything, rate yourself honestly, and tick the topic checklist. Missed a day? Fold its tasks into the next one. Everything here is a suggestion.</p>
+      <p class="muted" style="max-width:70ch;margin:0">About 2–3 focused hours a day. Each day: read the notes, solve problems on the whiteboard <i>before</i> unlocking anything, rate yourself honestly, and tick the topic checklist. Missed a day? Fold its tasks into the next one. Everything here is a suggestion.</p>
       <div class="days">
         ${PLAN.map((d) => `
           <div class="panel day ${d.d.getTime() === a.getTime() ? "is-today" : ""}">
@@ -776,7 +767,7 @@
         ${S.mock ? `<div class="countdown" style="font-size:1rem;padding:6px 12px" id="mock-clock">${fmtLong(mockRemaining())}</div>` : ""}
       </div>
       <div class="panel">
-        <p style="max-width:70ch">Six problems from six different topics (always including induction), weighted toward quiz-level difficulty and toward problems you haven't seen yet. The real quiz is 2 hours, so the timer is too. Work on paper or the chalkboard, skip the hints, and rate each problem honestly when you unlock its solution.</p>
+        <p style="max-width:70ch">Six problems from six different topics (always including induction), weighted toward quiz-level difficulty and toward problems you haven't seen yet. The real quiz is 2 hours, so the timer is too. Work on paper or the whiteboard, skip the hints, and rate each problem honestly when you unlock its solution.</p>
         <div class="row">
           <button class="btn" id="mock-new">${S.mock ? "Start a new mock quiz" : "Start mock quiz (2:00:00)"}</button>
           ${S.mock ? `<button class="btn ghost" id="mock-end">${running ? "End early" : "Clear"}</button>` : ""}
