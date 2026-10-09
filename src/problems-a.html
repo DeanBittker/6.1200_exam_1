@@ -1,0 +1,431 @@
+<template id="data-problems-a">
+
+<!-- ======================= LOGIC ======================= -->
+<article class="prob" data-id="log01" data-topic="logic" data-src="Rec 1 #1" data-diff="1" data-title="Which cards do you flip?">
+<div class="q">
+<p>(a) Four cards each have a number on one side and a color on the other. The visible faces are <b>3, 8, red, brown</b>. Andy claims: "if a card has an even number on one face, then its other face is red." Which cards must you turn over to verify the claim?</p>
+<p>(b) MIT policy: "if someone has an alcoholic drink, then they are at least 21." Your four guests: one is 16, one is 25, one drinks soda, one drinks beer. Whom must you check?</p>
+</div>
+<div class="h">An implication $P\to Q$ is false in exactly one situation. Which one?</div>
+<div class="h">Only check the cards that could possibly be "$P$ and not $Q$": those showing $P$, and those showing $\neg Q$.</div>
+<div class="s">
+<p><b>(a)</b> "Even → red" fails only for a card that is even and not red. So check the <b>8</b> (could be non-red on the back) and the <b>brown</b> card (could be even on the back). The 3 and the red card can't violate the rule.</p>
+<p><b>(b)</b> Same structure: check the <b>16-year-old</b> and the <b>beer drinker</b>.</p>
+<p>This is the Wason selection task: people find (b) much easier than (a), even though it is the same logic.</p>
+</div>
+</article>
+
+<article class="prob" data-id="log02" data-topic="logic" data-src="Rec 1 Thm 1" data-diff="1" data-title="Contrapositive by truth table">
+<div class="q"><p>Prove that for any Boolean variables $x,y$: $\;(x\to y)\leftrightarrow(\neg y\to\neg x)$. Then give an example showing the converse $y\to x$ is <i>not</i> equivalent to $x\to y$.</p></div>
+<div class="h">Two variables means 4 rows. Compute the columns $x\to y$ and $\neg y\to\neg x$.</div>
+<div class="s">
+<div class="table-wrap"><table><thead><tr><th>$x$</th><th>$y$</th><th>$x\to y$</th><th>$\neg y\to\neg x$</th></tr></thead>
+<tbody><tr><td>T</td><td>T</td><td>T</td><td>F→F = T</td></tr><tr><td>T</td><td>F</td><td>F</td><td>T→F = F</td></tr><tr><td>F</td><td>T</td><td>T</td><td>F→T = T</td></tr><tr><td>F</td><td>F</td><td>T</td><td>T→T = T</td></tr></tbody></table></div>
+<p>The two columns agree in every row, so the biconditional is always true. ∎</p>
+<p><b>Converse counterexample:</b> "Today is Friday → today is a weekday" is true, but "today is a weekday → today is Friday" is false on Monday. Formally: $x=\mathrm F, y=\mathrm T$ makes $x\to y$ true and $y\to x$ false.</p>
+</div>
+</article>
+
+<article class="prob" data-id="log03" data-topic="logic" data-src="Rec 1 Thm 2" data-diff="2" data-title="∃∀ implies ∀∃">
+<div class="q"><p>Let $P(a,b)$ be any predicate on $a\in A$, $b\in B$. Prove</p>
+<p>$$\big(\exists a\in A\;\forall b\in B\;P(a,b)\big)\;\to\;\big(\forall b\in B\;\exists a\in A\;P(a,b)\big).$$</p>
+<p>Is the converse always true?</p></div>
+<div class="h">Make it concrete: $A$ = students, $B$ = lectures, $P(a,b)$ = "$a$ sleeps in lecture $b$".</div>
+<div class="h">To prove an implication, assume the left side. Then you get a specific student $a_0$ to use as the witness for every $b$.</div>
+<div class="s">
+<p><i>Proof.</i> Assume the left side: there is some $a_0\in A$ with $P(a_0,b)$ for every $b\in B$. Now let $b\in B$ be arbitrary. Choose $a=a_0$; then $P(a,b)$ holds. Since $b$ was arbitrary, $\forall b\,\exists a\,P(a,b)$. ∎</p>
+<p>(If the left side is false, the implication is vacuously true, so only this case needs work.)</p>
+<p><b>Converse fails:</b> take $A=B=\mathbb Z$ and $P(a,b)$: $a\gt b$. Every $b$ has some larger $a$ (true), but no single $a$ is larger than every $b$ (false).</p>
+</div>
+</article>
+
+<article class="prob" data-id="log04" data-topic="logic" data-src="Rec 1 #2" data-diff="2" data-title="Students in a line">
+<div class="q">
+<p>Students stand in a line (at least two). Use only equality and $F(x,y)$, meaning "$x$ is somewhere to the left of $y$" ($F(x,x)$ is always false). Example: $\mathrm{first}(x) := \neg\exists y.\,F(y,x)$.</p>
+<p>(a) Is $\forall y.\,F(x,y)$ equivalent to first$(x)$? Is $\forall y.\,\neg F(y,x)$?</p>
+<p>(b) isnext$(x,y)$: "$x$ is immediately to the right of $y$".</p>
+<p>(c) "There are at least two students after $x$."</p>
+<p>(d) "$x$ is second in line."</p>
+<p>(e) "$y$ is somewhere between $x$ and $z$" (either order, not necessarily adjacent).</p>
+</div>
+<div class="h">For (a), try the case $y=x$. For (b), "immediately" means no $z$ sits strictly between them.</div>
+<div class="h">For (c), $\exists y\,\exists z$ does not force $y\ne z$. For (d), reuse first and isnext.</div>
+<div class="s">
+<p><b>(a)</b> $\forall y.\,F(x,y)$ is <b>not</b> equivalent: with $y=x$, $F(x,x)$ is false, so it's false even for the first student. $\forall y.\,\neg F(y,x)$ <b>is</b> equivalent, since $\neg\exists y.P(y)\equiv\forall y.\neg P(y)$.</p>
+<p><b>(b)</b> $\mathrm{isnext}(x,y) := F(y,x)\land\neg\exists z.\,\big(F(y,z)\land F(z,x)\big)$.</p>
+<p><b>(c)</b> $\exists y\,\exists z.\;y\ne z\land F(x,y)\land F(x,z)$.</p>
+<p><b>(d)</b> $\exists y.\;\mathrm{first}(y)\land\mathrm{isnext}(x,y)$.</p>
+<p><b>(e)</b> $\big(F(x,y)\land F(y,z)\big)\lor\big(F(z,y)\land F(y,x)\big)$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="log05" data-topic="logic" data-src="PS 1 #2" data-diff="1" data-title="A→(B→C) vs (A→B)→(A→C)">
+<div class="q"><p>Prove $P := A\to(B\to C)$ is equivalent to $Q := (A\to B)\to(A\to C)$ in two ways: (a) with a truth table, (b) by cases on the value of $A$.</p></div>
+<div class="h">Eight rows for (a). For (b) use $\mathrm T\to X\equiv X$ and $\mathrm F\to X\equiv\mathrm T$.</div>
+<div class="s">
+<p><b>(a)</b> The rows $(A,B,C)$ = TTT, TTF, TFT, TFF, FTT, FTF, FFT, FFF give $P$ = T,F,T,T,T,T,T,T and $Q$ = T,F,T,T,T,T,T,T. The columns are identical, so the formulas are equivalent.</p>
+<p><b>(b)</b> <i>Case $A$ true:</i> $P\equiv B\to C$ and $Q\equiv (\mathrm T\to B)\to(\mathrm T\to C)\equiv B\to C$. Equal.</p>
+<p><i>Case $A$ false:</i> $P\equiv\mathrm F\to(\dots)\equiv\mathrm T$ and $Q\equiv \mathrm T\to\mathrm T\equiv\mathrm T$. Equal.</p>
+<p>The cases are exhaustive, so $P\equiv Q$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="log06" data-topic="logic" data-src="PS 1 #3" data-diff="2" data-title="Translate famous theorems">
+<div class="q"><p>Domain $\mathbb N$. You may use arithmetic, inequalities, isOdd$(n)$ and isPrime$(p)$. Translate:</p>
+<p>(a) Every nonnegative integer is a sum of four squares. (b) Every even integer greater than 2 is the sum of two primes. (c) $x^n+y^n=z^n$ has no solutions in positive integers when $n\gt2$. (d) There is no largest prime. (e) If $n\gt1$ there is a prime $p$ with $n\lt p\lt 2n$.</p></div>
+<div class="h">Restrictions like "even and greater than 2" go in front of an $\to$, not an $\land$.</div>
+<div class="h">"No largest prime" is the negation of "there exists a prime $p$ such that every prime $q$ is $\le p$".</div>
+<div class="s">
+<p><b>(a)</b> $\forall n\,\exists w\,\exists x\,\exists y\,\exists z.\;n=w^2+x^2+y^2+z^2$</p>
+<p><b>(b)</b> $\forall n.\;(n\gt2\land\neg\mathrm{isOdd}(n))\to\exists p\,\exists q.\;\mathrm{isPrime}(p)\land\mathrm{isPrime}(q)\land n=p+q$</p>
+<p><b>(c)</b> $\forall x\,\forall y\,\forall z\,\forall n.\;(x\gt0\land y\gt0\land z\gt0\land n\gt2)\to\neg(x^n+y^n=z^n)$</p>
+<p><b>(d)</b> $\neg\exists p.\;\big(\mathrm{isPrime}(p)\land\forall q.\,(\mathrm{isPrime}(q)\to p\ge q)\big)$</p>
+<p><b>(e)</b> $\forall n.\;n\gt1\to\exists p.\;\mathrm{isPrime}(p)\land n\lt p\land p\lt2n$</p>
+<p>Common mistake in (b): using $\land$ instead of $\to$ claims every natural number is bigger than 2.</p>
+</div>
+</article>
+
+<article class="prob" data-id="log07" data-topic="logic" data-src="PS 1 #4" data-diff="2" data-title="Existence proofs and cases">
+<div class="q"><p>Translate each into English, then prove it.</p>
+<p>(a) $\exists p\in\mathbb N.\;\mathrm{isPrime}(p)\land p\lt100\land s(p)=10$, where $s$ is the digit sum.</p>
+<p>(b) $\forall n\in\mathbb Z\;\exists a,b\in\mathbb Z.\;\mathrm{isPrime}(a)\land\neg\mathrm{isEven}(b)\land n=a+b$.</p>
+<p>(c) $\exists a,b,c,d,e,f\in\mathbb N^+.\;a^2=b^2+c^2=d^2+e^2+f^2$.</p></div>
+<div class="h">Existence: just exhibit one. For (b), try $n=8$ and $n=9$, then split on parity.</div>
+<div class="h">(c): think of the 5-12-13 triangle, and write $5^2$ as a sum of squares too.</div>
+<div class="s">
+<p><b>(a)</b> "Some prime below 100 has digit sum 10." Take $p=19$: it's prime, less than 100, and $1+9=10$.</p>
+<p><b>(b)</b> "Every integer is a prime plus an odd number." Let $n$ be any integer.</p>
+<ul><li>If $n$ is even, take $a=3$, $b=n-3$ (even minus odd is odd).</li><li>If $n$ is odd, take $a=2$, $b=n-2$ (odd).</li></ul>
+<p>The cases are exhaustive. ∎</p>
+<p><b>(c)</b> "Some square is a sum of two positive squares and also of three." $13^2=12^2+5^2=12^2+4^2+3^2$, using $5^2=4^2+3^2$. So $(a,\dots,f)=(13,12,5,12,4,3)$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="log08" data-topic="logic" data-src="Original" data-diff="1" data-title="Negate it cleanly">
+<div class="q"><p>Write the negation of each statement with the $\neg$ pushed all the way inside (no $\neg$ directly in front of a quantifier or a parenthesis):</p>
+<p>(a) $\forall x\,\exists y.\;x\lt y$ &nbsp; (b) $\exists x\,\forall y.\;(P(y)\to x\le y)$ &nbsp; (c) $\forall \epsilon\gt0\;\exists N\;\forall n\ge N.\;|a_n|\lt\epsilon$</p></div>
+<div class="h">Flip each quantifier as the $\neg$ passes it. At the end use $\neg(A\to B)\equiv A\land\neg B$.</div>
+<div class="s">
+<p><b>(a)</b> $\exists x\,\forall y.\;x\ge y$</p>
+<p><b>(b)</b> $\forall x\,\exists y.\;P(y)\land x\gt y$</p>
+<p><b>(c)</b> $\exists\epsilon\gt0\;\forall N\;\exists n\ge N.\;|a_n|\ge\epsilon$</p>
+<p>The bounded quantifiers keep their bounds; only $\forall$ and $\exists$ swap.</p>
+</div>
+</article>
+
+<!-- ======================= PROOF TECHNIQUES ======================= -->
+<article class="prob" data-id="prf01" data-topic="proofs" data-src="Lecture 2" data-diff="1" data-title="√2 is irrational">
+<div class="q"><p>Prove by contradiction that $\sqrt2$ is irrational.</p></div>
+<div class="h">Assume $\sqrt2=a/b$ with $a,b$ positive integers having no common divisor. Square both sides.</div>
+<div class="h">From $2b^2=a^2$: what do you learn about $a$, then about $a^2$, then about $b$?</div>
+<div class="s">
+<p><i>Proof by contradiction.</i> Assume $\sqrt2$ is rational, so $\sqrt2=a/b$ with $a,b\in\mathbb N^+$ in lowest terms.</p>
+<p>Squaring gives $2b^2=a^2$, so $a^2$ is even, and hence $a$ is even (an odd square is odd). Then $4\mid a^2=2b^2$, so $2\mid b^2$, so $b$ is even. Now $a,b$ share the factor 2, contradicting lowest terms. Hence $\sqrt2$ is irrational. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="prf02" data-topic="proofs" data-src="PS 2 #1" data-diff="2" data-title="log₂ 9 is irrational">
+<div class="q"><p>(a) Prove by contradiction that $\log_2 9$ is irrational. (b) Prove there exist irrational numbers $a,b$ such that $a^b$ is rational.</p></div>
+<div class="h">If $\log_2 9=m/n$, then $2^{m/n}=9$. Raise both sides to the $n$-th power. Why can you take $m,n\gt0$?</div>
+<div class="h">For (b), choose $b=\log_2 9$ and pick $a$ so the powers collapse.</div>
+<div class="s">
+<p><b>(a)</b> Assume $\log_29=m/n$ for integers $m,n$. Since $\log_29\gt0$, we may take $m,n\gt0$. Then $2^{m/n}=9$, so $2^m=9^n$. The left side is even (as $m\ge1$) and the right side is odd, a contradiction. ∎</p>
+<p><b>(b)</b> Let $a=\sqrt2$ and $b=\log_29$, both irrational. Then $a^b=2^{\frac12\log_29}=2^{\log_23}=3$, which is rational. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="prf03" data-topic="proofs" data-src="Rec 2 #3" data-diff="1" data-title="One factor is at most √n">
+<div class="q"><p>Prove by contradiction: if $a\cdot b=n$ where $a,b,n$ are nonnegative reals, then $a\le\sqrt n$ or $b\le\sqrt n$.</p></div>
+<div class="h">The negation of "$a\le\sqrt n$ or $b\le\sqrt n$" is "$a\gt\sqrt n$ and $b\gt\sqrt n$".</div>
+<div class="s"><p>Suppose to the contrary $a\gt\sqrt n$ and $b\gt\sqrt n$. For nonnegative reals, $u\gt v$ and $w\gt x$ imply $uw\gt vx$, so $ab\gt\sqrt n\sqrt n=n$. This contradicts $ab=n$. ∎</p>
+<p>The proof needs $\sqrt n$ to be the nonnegative root, so that the multiplication rule applies.</p></div>
+</article>
+
+<article class="prob" data-id="prf04" data-topic="proofs" data-src="PS 2 #2" data-diff="3" data-title="Distances to rationals">
+<div class="q"><p>One conjecture is true and one is false. Prove or disprove each.</p>
+<p><b>C1.</b> A number is rational iff it has a different distance from every irrational number.</p>
+<p><b>C2.</b> A number is irrational iff it has a different distance from every rational number.</p></div>
+<div class="h">For C1, look for a rational number equidistant from two irrationals, like $\pm\sqrt2$.</div>
+<div class="h">For C2, prove both directions by contrapositive. If $|x-a|=|x-b|$ with $a\neq b$, what must $x$ equal?</div>
+<div class="s">
+<p><b>C1 is false.</b> $0$ is rational, but it is the same distance from the irrationals $\sqrt2$ and $-\sqrt2$.</p>
+<p><b>C2 is true.</b> Prove both directions.</p>
+<p>(⇒) Contrapositive: if $x$ has the same distance to rationals $a\ne b$, then $x$ is rational. From $|x-a|=|x-b|$, either $x-a=x-b$ (impossible since $a\ne b$) or $x-a=-(x-b)$, so $x=\frac{a+b}2$, which is rational.</p>
+<p>(⇐) Contrapositive: if $x$ is rational, then $x-1$ and $x+1$ are distinct rationals at the same distance from $x$. ∎</p>
+<p>Common mistakes: proving only one direction; a wrong contrapositive.</p>
+</div>
+</article>
+
+<article class="prob" data-id="prf05" data-topic="proofs" data-src="Lecture 3" data-diff="1" data-title="A two-case tautology">
+<div class="q"><p>Prove that $S := (A\to B)\lor(B\to C)$ is true for every assignment of $A,B,C$, using a proof by cases with only two cases.</p></div>
+<div class="h">Which single variable appears in both disjuncts?</div>
+<div class="s"><p>Cases on $B$.</p>
+<ul><li>If $B$ is true, then $A\to B$ is true, so $S$ is true.</li><li>If $B$ is false, then $B\to C$ is true, so $S$ is true.</li></ul>
+<p>$B$ is either true or false, so the cases are exhaustive. ∎</p></div>
+</article>
+
+<article class="prob" data-id="prf06" data-topic="proofs" data-src="Lecture 3" data-diff="2" data-title="3 friends or 3 strangers">
+<div class="q"><p>In any group of 6 people (each pair either friends or strangers), prove there are 3 mutual friends or 3 mutual strangers.</p></div>
+<div class="h">Fix one person $p$. Among the other 5, $p$ has at least 3 friends or at least 3 strangers. Why?</div>
+<div class="h">If $p$ has friends $q,r,s$, look at the relationships among $q,r,s$.</div>
+<div class="s">
+<p>Fix a person $p$. Of the other 5, either at least 3 are $p$'s friends or at least 3 are strangers to $p$ (otherwise there would be at most $2+2=4$ people).</p>
+<p><b>Case 1:</b> $p$ has friends $q,r,s$.</p>
+<ul><li>If some pair of $q,r,s$ are friends, that pair together with $p$ gives 3 mutual friends.</li><li>Otherwise $q,r,s$ are 3 mutual strangers.</li></ul>
+<p><b>Case 2:</b> $p$ has 3 strangers. This is the same argument with "friend" and "stranger" swapped.</p>
+<p>So $R(3,3)\le 6$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="prf07" data-topic="proofs" data-src="Rec 3 #4" data-diff="2" data-title="Bounding absolute values by cases">
+<div class="q"><p>Let $f(x) = 2|x+2|-|x-3|-|x+4|$. Prove $-7\le f(x)\le3$ for all real $x$, using a proof by cases.</p></div>
+<div class="h">The breakpoints are $-4, -2, 3$. That makes 4 intervals.</div>
+<div class="h">On each interval, every absolute value becomes $\pm$(its inside). Simplify to a linear function and bound it on the interval.</div>
+<div class="s">
+<p>Cases on $(-\infty,-4]$, $(-4,-2]$, $(-2,3]$, $(3,\infty)$. These cover $\mathbb R$.</p>
+<ol>
+<li>$x\le-4$: $f=-2(x+2)+(x-3)+(x+4)=-3$. This is in range.</li>
+<li>$-4\lt x\le-2$: $f=-2(x+2)+(x-3)-(x+4)=-2x-11$, and $-7\le f\lt -3$.</li>
+<li>$-2\lt x\le3$: $f=2(x+2)+(x-3)-(x+4)=2x-3$, and $-7\lt f\le3$.</li>
+<li>$x\gt3$: $f=2(x+2)-(x-3)-(x+4)=3$.</li>
+</ol>
+<p>In every case $f(x)\in[-7,3]$. ∎</p>
+</div>
+</article>
+
+<!-- ======================= INDUCTION ======================= -->
+<article class="prob" data-id="ind01" data-topic="induction" data-src="Lecture 2" data-diff="1" data-title="Sum of the first n integers">
+<div class="q"><p>Prove by induction: for all $n\ge0$, $\;1+2+\cdots+n=\dfrac{n(n+1)}2$.</p></div>
+<div class="h">Base case $n=0$: the sum has no terms, so it's 0.</div>
+<div class="h">In the step, write $1+\dots+(n+1)=(1+\dots+n)+(n+1)$ and use $P(n)$.</div>
+<div class="s">
+<p><i>Proof by induction.</i> $P(n)$: $\sum_{k=1}^n k=\frac{n(n+1)}2$.</p>
+<p><b>Base:</b> $P(0)$: the empty sum is $0=\frac{0\cdot1}2$.</p>
+<p><b>Step:</b> let $n\ge0$ and assume $P(n)$. Then
+$$\sum_{k=1}^{n+1}k=\frac{n(n+1)}2+(n+1)=\frac{(n+1)(n+2)}2,$$ which is $P(n+1)$.</p>
+<p>By induction, $P(n)$ holds for all $n\ge0$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind02" data-topic="induction" data-src="Rec 2" data-diff="1" data-title="3 divides n³ − n">
+<div class="q"><p>Prove by induction that $3\mid n^3-n$ for all $n\in\mathbb N$.</p></div>
+<div class="h">Expand $(n+1)^3-(n+1)$.</div>
+<div class="h">Find $n^3-n$ inside it. What's left over?</div>
+<div class="s">
+<p>$P(n)$: $3\mid n^3-n$. <b>Base:</b> $0^3-0=0$, and $3\mid0$.</p>
+<p><b>Step:</b> assume $P(n)$. Then $(n+1)^3-(n+1)=n^3+3n^2+2n=(n^3-n)+3(n^2+n)$. Both pieces are multiples of 3 (the first by $P(n)$), and a sum of multiples of 3 is a multiple of 3. So $P(n+1)$ holds.</p>
+<p>By induction, $P(n)$ holds for all $n$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind03" data-topic="induction" data-src="Rec 2 #1" data-diff="1" data-title="Geometric sum by induction">
+<div class="q"><p>Prove for all real $r\ne1$ and all $n\in\mathbb N$: $\;1+r+r^2+\cdots+r^n=\dfrac{1-r^{n+1}}{1-r}$. Clearly label your hypothesis, base case and step.</p></div>
+<div class="h">Add $r^{n+1}$ to both sides of $P(n)$ and put everything over a common denominator.</div>
+<div class="s">
+<p>$P(n)$: for all $r\ne1$, $\sum_{k=0}^n r^k=\frac{1-r^{n+1}}{1-r}$.</p>
+<p><b>Base:</b> both sides equal 1 when $n=0$.</p>
+<p><b>Step:</b> assume $P(n)$. Then
+$$\sum_{k=0}^{n+1}r^k=\frac{1-r^{n+1}}{1-r}+r^{n+1}=\frac{1-r^{n+1}+r^{n+1}-r^{n+2}}{1-r}=\frac{1-r^{n+2}}{1-r},$$ which is $P(n+1)$.</p>
+<p>By induction, $P(n)$ holds for all $n$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind04" data-topic="induction" data-src="Rec 5 #1" data-diff="1" data-title="Sum of squares">
+<div class="q"><p>Prove by induction that $\displaystyle\sum_{k=1}^n k^2=\frac{n(n+1)(2n+1)}6$ for all $n\ge1$.</p></div>
+<div class="h">The step reduces to checking $\frac{n(n+1)(2n+1)}6+(n+1)^2=\frac{(n+1)(n+2)(2n+3)}6$.</div>
+<div class="h">Factor out $\frac{n+1}6$ first: what remains is $n(2n+1)+6(n+1)=2n^2+7n+6$.</div>
+<div class="s">
+<p><b>Base</b> $n=1$: both sides equal 1.</p>
+<p><b>Step:</b> assume $P(n)$. Then $$\sum_{k=1}^{n+1}k^2=\frac{n(n+1)(2n+1)}6+(n+1)^2=\frac{(n+1)\,(2n^2+7n+6)}6=\frac{(n+1)(n+2)(2n+3)}6.$$ This is $P(n+1)$.</p>
+<p>By induction, $P(n)$ holds for all $n\ge1$. ∎</p>
+<p>Don't write "$P(n+1)=P(n)+(n+1)^2$": $P$ is a statement, not a number.</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind05" data-topic="induction" data-src="PS 2 #4" data-diff="2" data-title="Sum of Fibonacci squares">
+<div class="q"><p>With $F_0=0$, $F_1=1$, $F_n=F_{n-1}+F_{n-2}$, prove that for all $n\ge0$: $$F_0^2+F_1^2+\cdots+F_n^2=F_nF_{n+1}.$$</p></div>
+<div class="h">Peel off the last term, use $P(n)$, then factor out $F_{n+1}$.</div>
+<div class="s">
+<p><b>Base</b> $n=0$: $F_0^2=0=F_0F_1$.</p>
+<p><b>Step:</b> assume $P(n)$. Then
+$$\sum_{i=0}^{n+1}F_i^2=F_nF_{n+1}+F_{n+1}^2=F_{n+1}(F_n+F_{n+1})=F_{n+1}F_{n+2},$$ which is $P(n+1)$.</p>
+<p>By induction, $P(n)$ holds for all $n\ge0$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind06" data-topic="induction" data-src="Lecture 2" data-diff="2" data-title="Tiling the courtyard around Bill">
+<div class="q"><p>Prove that for every $n\ge0$, a $2^n\times2^n$ courtyard with one square removed (for Bill's statue) can be tiled with L-shaped tiles (3 squares each). Start with Bill in the center, and notice what goes wrong.</p></div>
+<div class="h">Splitting into four $2^n\times2^n$ quadrants leaves three quadrants with no missing square. Place one L-tile at the center to cover one square from each of those three.</div>
+<div class="h">Now the "missing" squares are not in the centers of their quadrants. Strengthen the hypothesis so Bill can be anywhere.</div>
+<div class="s">
+<p><b>Strengthened hypothesis</b> $P(n)$: for <i>every</i> location of Bill, a $2^n\times2^n$ region minus Bill's square can be tiled.</p>
+<p><b>Base:</b> $n=0$: the single square is Bill, and no tiles are needed.</p>
+<p><b>Step:</b> assume $P(n)$ and take a $2^{n+1}\times2^{n+1}$ region with Bill anywhere. Cut it into four $2^n\times2^n$ quadrants. Bill is in one of them. Place one L-tile at the center covering the corner square of each of the other three quadrants. Now each quadrant has exactly one square that is unavailable, so by $P(n)$ (applied with that square playing the role of Bill) each quadrant can be tiled.</p>
+<p>By induction, $P(n)$ holds for all $n$. The original claim is the special case with Bill in the center. ∎</p>
+<p>The lesson: a stronger $P(n)$ gives you more to assume in the step.</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind07" data-topic="induction" data-src="Lecture 2" data-diff="2" data-title="Find the bug: all horses are the same color">
+<div class="q"><p>"<i>Proof.</i> $P(n)$: any set of $n$ horses is one color. Base $P(1)$: trivial. Step: given horses $H_1,\dots,H_{n+1}$, the first $n$ are one color by $P(n)$ and the last $n$ are one color by $P(n)$, so color$(H_1)$ = color$(H_2,\dots,H_n)$ = color$(H_{n+1})$, and all $n+1$ match."</p><p>Exactly where does this break?</p></div>
+<div class="h">Test the inductive step at the smallest $n$ it must cover, $n=1$.</div>
+<div class="s">
+<p>The step must work for all $n\ge1$, but at $n=1$ the "middle" group $H_2,\dots,H_n$ is <b>empty</b>. Nothing links $H_1$'s color to $H_2$'s.</p>
+<p>So the step only works for $n\ge2$. We proved $P(1)$ and $P(2)\to P(3)\to\cdots$, but never $P(1)\to P(2)$ (and $P(2)$ is false).</p>
+<p>Lesson: check the step at the base value, and watch for "…" ranges that become empty.</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind08" data-topic="induction" data-src="Rec 2 #2" data-diff="1" data-title="Find the bug: lifting all the sand">
+<div class="q"><p>"$P(n)$: I can lift $n$ grains of sand. Base: lifting 0 grains is easy. Step: if I can lift $n$ grains, surely I can lift $n+1$. So I can lift all the sand on the beach." What's wrong?</p></div>
+<div class="h">The structure is fine. Is every inductive step actually true?</div>
+<div class="s"><p>The inductive step $P(n)\to P(n+1)$ is simply false for some $n$: there is a "last straw" grain. Induction only works if the step is proved for <i>every</i> $n$, and "surely" is not a proof.</p></div>
+</article>
+
+<article class="prob" data-id="ind09" data-topic="induction" data-src="PS 2 #3" data-diff="2" data-title="Spot the induction-writing errors">
+<div class="q"><p>Each line comes from a flawed induction proof. Explain what is wrong with each and how to fix it.</p>
+<ol type="a">
+<li>"$P(n) := \forall n,\; \frac{\sin(2^n x)}{2^n\sin x}=\cos(2^0x)\cdots\cos(2^{n-1}x)$"</li>
+<li>"Assume $P(n)$ is true for $n=1\ldots n$. We want to show $P(n)$ is true for $n+1$."</li>
+<li>"$P(n)\cdot\cos(2^nx)=\dots$"</li>
+<li>Dividing both sides by $\cos(2^nx)$.</li>
+<li>Starting from $P(n+1)$, simplifying until you reach $P(n)$, then concluding "since the chain ends in a true statement, $P(n+1)$ is true."</li>
+</ol></div>
+<div class="h">Ask of each: is $n$ used with two meanings? Is $P(n)$ a number or a statement? Could something be zero? Which direction does the logic flow?</div>
+<div class="s">
+<ol type="a">
+<li>"$\forall n$" must not be inside $P(n)$: $n$ is the free variable. Delete it.</li>
+<li>$n$ means two things. Write "assume $P(k)$ for all $1\le k\le n$; show $P(n+1)$."</li>
+<li>$P(n)$ is true/false, not a number. Name the product, e.g. $w(n)$, and use that.</li>
+<li>$\cos(2^nx)$ may be 0. Restructure so you multiply instead of dividing.</li>
+<li>That is a backwards proof: deriving a true statement from $P(n+1)$ shows nothing, because false statements can imply true ones. Start from $P(n)$ and derive $P(n+1)$.</li>
+</ol>
+</div>
+</article>
+
+<article class="prob" data-id="ind10" data-topic="induction" data-src="Lecture 6" data-diff="2" data-title="Find the bug: 2ⁿ = O(1)">
+<div class="q"><p>"$P(n)$: $2^n=O(1)$. Base: $2^0=1=O(1)$. Step: $2^{n+1}=2^n+2^n=O(1)+O(1)=O(1)$." Where is the error?</p></div>
+<div class="h">What does each individual statement $P(5)$, $P(100)$ actually assert? Is "$2^{100}\in O(1)$" a claim about the function $2^n$?</div>
+<div class="s">
+<p>Each $P(n)$ says "the constant $2^n$ is $O(1)$". That is true but irrelevant, since every number is a constant function. Together these statements prove $\forall n\,\exists c.\;2^n\le c$, while $2^n\in O(1)$ needs $\exists c\,\forall n\ge n_0.\;2^n\le c$ (the quantifiers are swapped).</p>
+<p>The fix: never put asymptotic notation inside an induction hypothesis. Choose explicit constants first, e.g. prove $a_n\le 8\cdot2^n-2$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind11" data-topic="induction" data-src="Original" data-diff="2" data-title="An inequality by induction">
+<div class="q"><p>Prove that $2^n\gt n^2$ for every integer $n\ge5$.</p></div>
+<div class="h">Base $n=5$: $32\gt25$. In the step, $2^{n+1}=2\cdot2^n\gt2n^2$. Then show $2n^2\ge(n+1)^2$ for $n\ge5$.</div>
+<div class="h">$2n^2-(n+1)^2=n^2-2n-1=(n-1)^2-2$, which is positive once $n\ge3$.</div>
+<div class="s">
+<p>$P(n)$: $2^n\gt n^2$. <b>Base</b> $n=5$: $32\gt25$.</p>
+<p><b>Step:</b> let $n\ge5$ and assume $2^n\gt n^2$. Then $2^{n+1}\gt2n^2$. Also $2n^2-(n+1)^2=(n-1)^2-2\ge14\gt0$ for $n\ge5$, so $2n^2\gt(n+1)^2$. Hence $2^{n+1}\gt(n+1)^2$.</p>
+<p>By induction, $P(n)$ holds for all $n\ge5$. ∎</p>
+<p>Note how the step uses $n\ge5$, which is why the base must be at 5 (the claim fails at $n=2,3,4$).</p>
+</div>
+</article>
+
+<article class="prob" data-id="ind12" data-topic="induction" data-src="Rec 2 #4 (optional)" data-diff="3" data-title="Surveyivor (challenge)">
+<div class="q"><p>Islanders each have a purple or red third eye. Everyone sees the others' colors but not their own. There are $p\ge1$ purple eyes, and anyone who deduces they are purple leaves at the end of that day's show. The producer announces "at least one person here has a purple eye." Assuming perfect logicians, what happens? Prove it by induction on the day $n$.</p></div>
+<div class="h">Answer: all purple-eyed people leave at the end of day $p$. Use a three-part hypothesis about day $n$: if $p\gt n$ …, if $p=n$ …, if $p\lt n$ ….</div>
+<div class="h">A purple-eyed person sees $p-1$ purple eyes. If nobody left on day $p-1$, what can they conclude on day $p$?</div>
+<div class="s">
+<p>$P(n)$: for all $p\ge1$ and all colorings with $p$ purple eyes, on day $n$:</p>
+<ol><li>if $p\gt n$, all purple-eyed people survive the day;</li><li>if $p=n$, all of them leave;</li><li>if $p\lt n$, they're already gone.</li></ol>
+<p><b>Base</b> $n=1$:</p>
+<ul><li>If $p=1$, the lone purple sees no purple eyes, so they deduce their own color and leave.</li><li>If $p\gt1$, each purple person sees another purple eye, so the announcement tells them nothing and they stay.</li><li>$p\lt1$ is vacuous.</li></ul>
+<p><b>Step:</b> assume $P(n)$ and consider day $n+1$.</p>
+<ul>
+<li>If $p\gt n+1$: everyone survived day $n$. Each purple person sees at least $n+1$ purple eyes, which is consistent with either own color, so they stay.</li>
+<li>If $p=n+1$: everyone survived day $n$ by part 1, so each purple person knows $p\gt n$. They see only $n$ purple eyes, so they deduce their own is purple and leave.</li>
+<li>If $p\lt n+1$: by parts 2 and 3 of $P(n)$, they are already gone.</li>
+</ul>
+<p>Red-eyed people never wrongly leave. ∎</p>
+</div>
+</article>
+
+<!-- ======================= STRONG INDUCTION ======================= -->
+<article class="prob" data-id="str01" data-topic="strong" data-src="Rec 3 #2" data-diff="1" data-title="Postage with 3¢ and 5¢">
+<div class="q"><p>Find all positive postage amounts that can be paid exactly with 3¢ and 5¢ stamps, and prove your answer using (strong) induction. Hint: let $S(n)$ mean $n$¢ can be paid, and prove $\forall n\ge8.\;S(n)$.</p></div>
+<div class="h">Check small values by hand. Which of 1–7 work?</div>
+<div class="h">The step adds one 3¢ stamp to $n-3$. How many consecutive base cases does that require?</div>
+<div class="s">
+<p>Small cases: 3, 5, 6 work. 1, 2, 4, 7 don't. Also $8=3+5$, $9=3+3+3$, $10=5+5$.</p>
+<p><b>Claim:</b> $S(n)$ for all $n\ge8$, by strong induction.</p>
+<p><b>Base:</b> $S(8),S(9),S(10)$ shown above.</p>
+<p><b>Step:</b> let $n\ge11$ and assume $S(8),\dots,S(n-1)$. Since $8\le n-3\le n-1$, $S(n-3)$ holds. Add one 3¢ stamp to get $n$, so $S(n)$ holds.</p>
+<p><b>Answer:</b> exactly the amounts 3, 5, 6, and every $n\ge8$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="str02" data-topic="strong" data-src="Rec 3 #1" data-diff="2" data-title="Find the bug: all naturals are even">
+<div class="q"><p>"Strong induction, $P(n)$: $n$ is even. Base: 0 is even. Step: for $n\ge1$ assume $P(0),\dots,P(n-1)$. Then $n-1$ and $1$ are even, so $n=(n-1)+1$ is even." (a) Where's the issue? (b) What if we start the base at $n=1$ instead?</p></div>
+<div class="h">For $n=1$, which earlier cases are actually available to assume? Is $P(1)$ among them?</div>
+<div class="s">
+<p><b>(a)</b> The step uses $P(1)$. For $n=1$, the only assumption available is $P(0)$, so using $P(1)$ is circular. What was really shown: $P(0)$, and $P(1)\land\dots\land P(n-1)\to P(n)$ for $n\ge2$. The link $P(0)\to P(1)$ is missing.</p>
+<p><b>(b)</b> Then the "…" is fine, but the base case $P(1)$ ("1 is even") is false.</p>
+</div>
+</article>
+
+<article class="prob" data-id="str03" data-topic="strong" data-src="Rec 3 #3" data-diff="2" data-title="Breaking a chocolate bar">
+<div class="q"><p>An $m\times n$ chocolate bar is split along seams, one piece at a time, until all pieces are $1\times1$. Prove every way of doing this takes exactly $mn-1$ splits. (a) Rewrite the claim as $\forall k\ge1.\;P(k)$. (b) Prove it by strong induction.</p></div>
+<div class="h">Let $k$ be the area. $P(k)$ should cover all bars of area $k$ and every sequence of splits.</div>
+<div class="h">The first split makes pieces of areas $p+q=k$ with $p,q\ge1$.</div>
+<div class="s">
+<p><b>(a)</b> $P(k)$: for all $m,n$ with $mn=k$, every complete sequence of splits of an $m\times n$ bar uses exactly $k-1$ splits.</p>
+<p><b>(b)</b> <i>Base</i> $k=1$: no split is possible or needed, and $1-1=0$.</p>
+<p><i>Step:</i> let $k\ge2$ and assume $P(1),\dots,P(k-1)$. Any sequence of splits starts by splitting into areas $p,q\ge1$ with $p+q=k$, so $p,q\lt k$. By $P(p)$ and $P(q)$, finishing takes $(p-1)+(q-1)$ splits. The total is $1+(p-1)+(q-1)=k-1$.</p>
+<p>By strong induction, $P(k)$ holds for all $k\ge1$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="str04" data-topic="strong" data-src="Lecture 3" data-diff="2" data-title="The block-splitting game">
+<div class="q"><p>Start with a stack of $n$ blocks. Repeatedly split any stack into two nonempty stacks of sizes $a,b$ and score $a\cdot b$ points, until all stacks have size 1. Prove that <i>every</i> strategy scores exactly $\frac{n(n-1)}2$.</p></div>
+<div class="h">$P(n)$: every strategy starting from $n$ blocks scores $n(n-1)/2$. The first split is into $m_1+m_2=n$.</div>
+<div class="h">Total score = $m_1m_2$ + (score from pile $m_1$) + (score from pile $m_2$). Then do the algebra using $(m_1+m_2)^2$.</div>
+<div class="s">
+<p><b>Base</b> $n=1$: score 0, and $\frac{1\cdot0}2=0$.</p>
+<p><b>Step:</b> $n\ge2$; assume $P(k)$ for $1\le k\lt n$. The first split makes $m_1,m_2\ge1$ with $m_1+m_2=n$. The two piles then evolve independently, so the score is
+$$m_1m_2+\tfrac{m_1(m_1-1)}2+\tfrac{m_2(m_2-1)}2=\tfrac{(m_1+m_2)^2-(m_1+m_2)}2=\tfrac{n(n-1)}2.$$</p>
+<p>By strong induction, $P(n)$ holds for all $n\ge1$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="str05" data-topic="strong" data-src="Lecture 3" data-diff="2" data-title="Every tournament has a beats ordering">
+<div class="q"><p>In a round-robin tournament with no ties, a <i>beats ordering</i> lists the players $p_1,\dots,p_n$ so that each $p_i$ beat $p_{i+1}$. Prove one always exists.</p></div>
+<div class="h">Pick any player $p'$. Split the rest into $W$ (beat $p'$) and $L$ (lost to $p'$).</div>
+<div class="h">Order $W$ and $L$ by strong induction, then glue them: $W$-order, $p'$, $L$-order.</div>
+<div class="s">
+<p>$P(n)$: every tournament on $n$ players has a beats ordering. <b>Base</b> $n=0$: the empty list works.</p>
+<p><b>Step:</b> given $n+1$ players, pick $p'$, and let $W$ = players who beat $p'$ and $L$ = players who lost to $p'$. Both have size at most $n$ (either may be empty). By strong induction, order $W$ as $w_1..w_a$ and $L$ as $\ell_1..\ell_b$ using only games among themselves.</p>
+<p>Then $w_1,\dots,w_a,\,p',\,\ell_1,\dots,\ell_b$ is a beats ordering: inside each block it holds by induction, $w_a\in W$ beat $p'$, and $p'$ beat $\ell_1\in L$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="str06" data-topic="strong" data-src="PS 2 #5" data-diff="3" data-title="Sums of distinct prime-or-ones">
+<div class="q"><p>Call a number prime-or-one if it is prime or equals 1. Using Bertrand's Postulate (for every $n\ge2$ there's a prime $p$ with $n/2\lt p\le n$) and strong induction, prove every positive integer is a sum of one or more <b>distinct</b> prime-or-ones.</p></div>
+<div class="h">Base cases $n=1,2$. For $n\ge3$, take Bertrand's prime $p$ for $n$ and look at $m=n-p$.</div>
+<div class="h">Distinctness: every term in $m$'s representation is at most $m=n-p\lt n/2\lt p$.</div>
+<div class="s">
+<p>$P(n)$: $n$ is a sum of distinct prime-or-ones. <b>Base:</b> $1$ and $2$ are themselves prime-or-ones.</p>
+<p><b>Step:</b> let $n\ge3$ and assume $P(1),\dots,P(n-1)$. Bertrand gives a prime $p$ with $n/2\lt p\le n$.</p>
+<ul>
+<li>If $p=n$, we are done.</li>
+<li>Otherwise $m=n-p$ satisfies $1\le m\lt n/2$. By $P(m)$, write $m=q_1+\dots+q_k$ with distinct prime-or-ones. Each $q_i\le m\lt p$, so $p,q_1,\dots,q_k$ are distinct and sum to $n$.</li>
+</ul>
+<p>By strong induction, $P(n)$ holds for all $n\ge1$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="str07" data-topic="strong" data-src="Original" data-diff="2" data-title="Every n ≥ 2 is a product of primes">
+<div class="q"><p>Prove by strong induction that every integer $n\ge2$ can be written as a product of one or more primes.</p></div>
+<div class="h">Case on whether $n$ is prime. If not, $n=ab$ with $2\le a,b\lt n$.</div>
+<div class="s">
+<p>$P(n)$: $n$ is a product of primes. <b>Base</b> $n=2$: 2 is prime.</p>
+<p><b>Step:</b> let $n\ge3$ and assume $P(2),\dots,P(n-1)$.</p>
+<ul><li>If $n$ is prime, it is a product of one prime.</li><li>Otherwise $n=ab$ with $2\le a,b\le n-1$. By $P(a)$ and $P(b)$ both are products of primes, so concatenating the two products expresses $n$.</li></ul>
+<p>By strong induction, $P(n)$ holds for all $n\ge2$. ∎</p>
+<p>Ordinary induction fails here because $a$ and $b$ are not $n-1$.</p>
+</div>
+</article>
+
+</template>

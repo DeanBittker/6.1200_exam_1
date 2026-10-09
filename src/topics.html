@@ -1,0 +1,600 @@
+<template id="data-topics">
+
+<!-- ============================================================ LOGIC -->
+<section class="topic" data-id="logic" data-title="Logic &amp; Quantifiers" data-src="Lecture 1 · Rec 1 · PS 1" data-blurb="Implications, truth tables, ∀/∃, translating English into predicate logic.">
+<div data-part="idea">
+<p>A <b>proposition</b> is a statement that is either true or false. Logic is the grammar every later proof is written in, and most lost points on this material come from misreading an implication or a quantifier, not from hard math.</p>
+<p>Read $P \to Q$ as a <b>promise</b>: "if $P$ happens, $Q$ will happen." The promise is only broken when $P$ is true and $Q$ is false. If $P$ never happens, the promise was kept (vacuously). That is why "pigs fly $\to$ I am king" is true.</p>
+<p>Read quantifiers as a game. For $\forall x$ an opponent picks $x$; for $\exists x$ you pick it. Order matters because later choices can depend on earlier ones: $\exists a\,\forall b\; P(a,b)$ says one $a$ beats every $b$ (one student sleeps in every lecture), while $\forall b\,\exists a\; P(a,b)$ lets the $a$ change with $b$ (every lecture has some sleeper).</p>
+</div>
+<div data-part="know">
+<ul>
+<li>Truth table of $P\to Q$: only the row $P=\mathrm{T}, Q=\mathrm{F}$ is false. "False implies anything" is true.</li>
+<li>$P \to Q \;\equiv\; \neg P \lor Q$, and $\neg(P\to Q) \equiv P \land \neg Q$.</li>
+<li><b>Contrapositive</b> $\neg Q \to \neg P$ is equivalent to $P\to Q$. The <b>converse</b> $Q \to P$ is <i>not</i>.</li>
+<li>De Morgan: $\neg(P\land Q)\equiv \neg P\lor\neg Q$ and $\neg(P\lor Q)\equiv\neg P\land\neg Q$.</li>
+<li>Negating quantifiers: $\neg\forall x\,P(x) \equiv \exists x\,\neg P(x)$ and $\neg\exists x\,P(x)\equiv \forall x\,\neg P(x)$. Push the "not" inward and flip every quantifier it passes.</li>
+<li>$\exists a\forall b\,P(a,b) \to \forall b\exists a\,P(a,b)$ is a <b>validity</b> (true for every $P$). The converse is not.</li>
+<li>"$P$ iff $Q$" means $P\to Q$ <i>and</i> $Q\to P$.</li>
+<li>To check a rule $P \to Q$ (Wason cards), inspect exactly the items that could be "$P$ and not $Q$": the ones showing $P$ and the ones showing $\neg Q$.</li>
+<li>Checking many examples is not a proof: $n^2-n+41$ is prime for $n=0,\dots,40$ and fails at $n=41$.</li>
+</ul>
+</div>
+<div data-part="steps">
+<p><b>A. Proving two formulas are equivalent</b></p>
+<ol>
+<li>List every variable. With $k$ variables, write all $2^k$ rows of a truth table.</li>
+<li>Build columns for the sub-formulas, inside out.</li>
+<li>Compare the two final columns. Identical in every row means equivalent. Say so explicitly.</li>
+<li>Alternative (proof by cases): split on one variable. Use $\mathrm{T}\to X \equiv X$ and $\mathrm{F}\to X \equiv \mathrm{T}$ to simplify each case until both sides match.</li>
+</ol>
+<p><b>B. Translating English into predicate logic</b></p>
+<ol>
+<li>Name the domain of discourse and the allowed predicates.</li>
+<li>"Every $X$ is $Y$" becomes $\forall x\,(X(x) \to Y(x))$. Use $\to$ under $\forall$.</li>
+<li>"Some $X$ is $Y$" becomes $\exists x\,(X(x)\land Y(x))$. Use $\land$ under $\exists$.</li>
+<li>If two variables must be different, write $y\neq z$ explicitly.</li>
+<li>Build helper predicates (first, isnext, isPrime) and reuse them.</li>
+<li>Sanity-check on a tiny example (3 students, $n=0,1,2$), including edge cases like $y=x$.</li>
+</ol>
+</div>
+<div data-part="example">
+<p><b>Negate:</b> "Every student has a friend who is taller than them."</p>
+<p>Formal: $\forall s\,\exists f\,\big(\mathrm{Fr}(f,s) \land \mathrm{T}(f,s)\big)$.</p>
+<p>Negation: $\exists s\,\forall f\,\neg\big(\mathrm{Fr}(f,s)\land \mathrm{T}(f,s)\big) \equiv \exists s\,\forall f\,\big(\mathrm{Fr}(f,s) \to \neg \mathrm{T}(f,s)\big)$.</p>
+<p>In English: some student has no friend taller than them.</p>
+</div>
+<div data-part="traps">
+<ul>
+<li>Writing $\forall n\,(n\gt 2 \land \ldots)$ when you meant $\forall n\,(n\gt 2 \to \ldots)$. The first claims every $n$ is bigger than 2 (PS 1 #3 common mistake).</li>
+<li>Confusing the converse with the contrapositive.</li>
+<li>Forgetting that $\forall y\,F(x,y)$ includes $y=x$ (Rec 1 #2a).</li>
+<li>Assuming $\exists y\,\exists z$ gives two <i>different</i> objects.</li>
+<li>Swapping the order of quantifiers.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can write the truth table for $\to$ from memory and explain the vacuous rows.</li>
+<li>I can state the contrapositive and converse of any implication and say which is equivalent.</li>
+<li>I can negate a formula with nested quantifiers.</li>
+<li>I can prove a propositional equivalence by truth table and by cases.</li>
+<li>I can translate an English sentence into predicate logic, including distinctness.</li>
+</div>
+</section>
+
+<!-- ============================================================ PROOFS -->
+<section class="topic" data-id="proofs" data-title="Proof Techniques" data-src="Lecture 2 · Lecture 3 · Rec 2–3 · PS 1–2" data-blurb="Direct, contrapositive, contradiction, cases, existence and counterexample.">
+<div data-part="idea">
+<p>A mathematical proof is a chain of logical deductions from axioms and already-proved facts. The <b>shape</b> of the claim tells you which technique to reach for, so the first move is always to read what kind of statement you have.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Claim looks like</th><th>Method</th></tr></thead>
+<tbody>
+<tr><td>$\exists x.\,P(x)$</td><td>Construct a specific $x^*$, then verify $P(x^*)$.</td></tr>
+<tr><td>$\forall x.\,P(x)$</td><td>Take an arbitrary $x$ and prove $P(x)$ using only what every $x$ satisfies.</td></tr>
+<tr><td>$P \to Q$</td><td>Direct: assume $P$, derive $Q$. Or contrapositive: assume $\neg Q$, derive $\neg P$.</td></tr>
+<tr><td>$P \leftrightarrow Q$</td><td>Prove both directions separately.</td></tr>
+<tr><td>$P$ ("is irrational", "no such … exists")</td><td>Contradiction: assume $\neg P$, derive something false.</td></tr>
+<tr><td>Behaviour changes by region or type</td><td>Cases: split into exhaustive cases and prove each.</td></tr>
+<tr><td>Disprove $\forall x.\,P(x)$</td><td>One counterexample is enough.</td></tr>
+</tbody></table></div>
+</div>
+<div data-part="know">
+<ul>
+<li>Contradiction is justified by the rule $(\neg P \to \mathrm{F}) \to P$.</li>
+<li>$\sqrt2$ is irrational: assume $\sqrt2=a/b$ in lowest terms, so $2b^2=a^2$. Then $a$ is even, so $4\mid a^2 = 2b^2$, so $b$ is even. Both even contradicts lowest terms.</li>
+<li>$\log_2 9$ is irrational: $2^{m/n}=9$ gives $2^m = 9^n$, which is even = odd.</li>
+<li>Proof by cases needs <b>exhaustive</b> cases. Say why they cover everything. Symmetric cases can be handled by "the same argument with roles swapped" (Ramsey: friends ↔ strangers).</li>
+<li>For absolute values, split at the points where each $|x+a|$ changes sign (Rec 3 #4 has 4 intervals).</li>
+<li>You may use standard facts: rational ± × ÷ rational is rational. Prove any fact you use about irrationals.</li>
+</ul>
+</div>
+<div data-part="steps">
+<ol>
+<li>Rewrite the claim in logical form to expose its shape: $\exists$, $\forall$, $\to$, $\leftrightarrow$.</li>
+<li>Pick the method from the table. For "iff", plan two sub-proofs.</li>
+<li>Announce it in your first line: "Proof by contradiction. Assume for the sake of contradiction that …" State exactly what you are assuming.</li>
+<li>Write the deductions, justifying each step by a definition, an assumption or a known fact.</li>
+<li>Point at the contradiction (or the end of each case) and write the conclusion sentence.</li>
+</ol>
+</div>
+<div data-part="example">
+<p><b>Claim (Rec 2 #3):</b> if $a\cdot b=n$ with $a,b,n\ge 0$, then $a\le\sqrt n$ or $b\le\sqrt n$.</p>
+<p><i>Proof by contradiction.</i> Suppose $a\gt\sqrt n$ and $b\gt\sqrt n$. Multiplying these inequalities between nonnegative numbers gives $ab\gt \sqrt n\cdot\sqrt n = n$, contradicting $ab=n$. ∎</p>
+</div>
+<div data-part="traps">
+<ul>
+<li><b>Backwards proof:</b> starting from what you want and deriving something true proves nothing, since false statements can imply true ones (PS 2 #3g).</li>
+<li>Proving only one direction of an "iff" (the most common PS 2 #2 mistake).</li>
+<li>Wrong contrapositive: the contrapositive of $P\to Q$ is $\neg Q\to\neg P$, not $Q\to\neg P$.</li>
+<li>Dividing by something that might be zero (PS 2 #3d).</li>
+<li>Cases that don't cover every possibility.</li>
+<li>Saying "assume it's false" without writing exactly what statement is being negated.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can choose a technique from the shape of the claim.</li>
+<li>I can reproduce the $\sqrt 2$ and $\log_2 9$ irrationality proofs.</li>
+<li>I can prove an "iff" by proving both directions, using contrapositives where convenient.</li>
+<li>I can set up an exhaustive case split, including for absolute values.</li>
+<li>I can spot a backwards proof.</li>
+</div>
+</section>
+
+<!-- ============================================================ INDUCTION -->
+<section class="topic" data-id="induction" data-title="Induction" data-src="Lecture 2 · Rec 2 · Rec 5 · PS 2" data-blurb="Base case + inductive step. Expect at least one on the quiz.">
+<div data-part="idea">
+<p>Think of a line of dominoes. If you knock over the first one (<b>base case</b>), and every domino knocks over the next (<b>inductive step</b>), then they all fall.</p>
+<p>In the inductive step you are <i>not</i> assuming what you want to prove. You assume $P(n)$ for one arbitrary $n$ and use it to get $P(n+1)$. That proves the implication $P(n)\to P(n+1)$ for every $n$, which is exactly what the induction axiom needs.</p>
+<p>The lecture is explicit: "there will probably be at least one induction problem on every test." Graders look for the structure below, so write every part.</p>
+</div>
+<div data-part="know">
+<ul>
+<li><b>Axiom:</b> if $P(0)$ and $\forall n\in\mathbb N.\;P(n)\to P(n+1)$, then $\forall n\in\mathbb N.\;P(n)$.</li>
+<li>You can start at any base $b$ and prove $P(n)\to P(n+1)$ for all $n\ge b$. Multiple base cases are fine.</li>
+<li>$P(n)$ is a <b>true/false statement</b>, not a number. Never write $P(n+1)=P(n)+(n+1)^2$.</li>
+<li>Don't put "$\forall n$" inside $P(n)$, and don't put $O(\cdot)$ inside $P(n)$ (the bogus "$2^n=O(1)$" proof).</li>
+<li><b>Strengthening the hypothesis:</b> sometimes a stronger $P(n)$ is easier to prove because you get to assume more. Example: tiling the $2^n\times2^n$ courtyard with Bill <i>anywhere</i>, not just in the center.</li>
+<li>Sum pattern: $\sum_{k=1}^{n+1} = \left(\sum_{k=1}^{n}\right) + (\text{term } n+1)$, then apply $P(n)$.</li>
+<li>Divisibility pattern: rewrite the $(n+1)$ expression as the $n$ expression plus something that is visibly divisible. For example, $(n+1)^3-(n+1) = (n^3-n) + 3(n^2+n)$.</li>
+</ul>
+</div>
+<div data-part="steps">
+<ol>
+<li>Write "<b>Proof by induction on $n$.</b>"</li>
+<li>Define the hypothesis: "Let $P(n)$ be the proposition that …" Write the exact statement.</li>
+<li><b>Base case:</b> check $P(b)$ explicitly, computing both sides.</li>
+<li><b>Inductive step:</b> "Let $n\ge b$ be arbitrary and assume $P(n)$, i.e. [write it out]. We must show $P(n+1)$, i.e. [write it out with $n+1$ substituted]."</li>
+<li>Start from one side of $P(n+1)$, find the piece that looks like $P(n)$, replace it using the assumption (label that step "by $P(n)$"), then simplify to the other side.</li>
+<li><b>Conclusion:</b> "Therefore $P(n)\to P(n+1)$ for all $n\ge b$, so by induction $P(n)$ holds for all $n\ge b$."</li>
+<li>Check that your step really works for the <i>smallest</i> $n$ (the horses bug).</li>
+</ol>
+</div>
+<div data-part="example">
+<p><b>Claim:</b> $3 \mid n^3-n$ for all $n\in\mathbb N$.</p>
+<p>$P(n)$: $3\mid n^3-n$. <b>Base:</b> $0^3-0=0$ and $3\mid 0$.</p>
+<p><b>Step:</b> assume $3\mid n^3-n$. Then $(n+1)^3-(n+1) = n^3+3n^2+2n = (n^3-n)+3(n^2+n)$. The first term is divisible by 3 by $P(n)$, and the second is $3$ times an integer. A sum of multiples of 3 is a multiple of 3, so $P(n+1)$ holds. By induction, $P(n)$ holds for all $n$. ∎</p>
+</div>
+<div data-part="traps">
+<ul>
+<li><b>Horses:</b> the step used "$H_2,\dots,H_n$" to link the two groups, which is empty when $n=1$. Always test the step at the base value.</li>
+<li><b>Sand:</b> an inductive step that is simply false ("surely I can lift one more grain").</li>
+<li>Assuming $P(n+1)$ and simplifying it down to something true.</li>
+<li>Misreading what $P(n)$ says, e.g. off by a factor (PS 2 #3f).</li>
+<li>Using the same letter for two things ("assume $P(n)$ for $n=1\ldots n$").</li>
+<li>Forgetting the base case or the conclusion sentence.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can write the full induction template from memory, without notes.</li>
+<li>I can prove a summation formula by induction (e.g. $\sum k^2$).</li>
+<li>I can prove a divisibility claim by induction.</li>
+<li>I can explain the horses bug and the $2^n = O(1)$ bug.</li>
+<li>I know when and how to strengthen the induction hypothesis.</li>
+</div>
+</section>
+
+<!-- ============================================================ STRONG -->
+<section class="topic" data-id="strong" data-title="Strong Induction" data-src="Lecture 3 · Rec 3 · PS 2" data-blurb="Assume every smaller case. Splitting games, postage, beats orderings.">
+<div data-part="idea">
+<p>Same dominoes, but when proving case $n$ you may lean on <b>every</b> earlier case, not just $n-1$. Use it whenever an object of size $n$ naturally breaks into smaller pieces of unpredictable size: splitting a stack, breaking a chocolate bar, removing a big prime, splitting players into winners and losers.</p>
+<p>Strong induction is not more powerful than ordinary induction (each can prove the other). It is just more convenient to write.</p>
+</div>
+<div data-part="know">
+<ul>
+<li><b>Principle:</b> if $P(0)$ and, for all $n$, $P(0)\land\cdots\land P(n)\to P(n+1)$, then $\forall n\,P(n)$.</li>
+<li><b>Base cases:</b> if the step uses $P(n-k)$, you need $k$ consecutive base cases (postage: the step uses $n-3$, so prove 8, 9 and 10).</li>
+<li>For "every way of doing it gives the same answer" claims, make $P(n)$ quantify over <b>all strategies / all objects</b> of size $n$ (blocks game, chocolate bar).</li>
+<li>Two parameters ($m\times n$ bar): induct on one combined quantity, like area $k=mn$, with $P(k)$ = "for all $m,n$ with $mn=k$ …".</li>
+<li>When you split size $n$ into $p+q$ with $p,q\ge1$, both pieces are strictly smaller than $n$, so the hypothesis applies.</li>
+<li>Results to know: blocks game always scores $n(n-1)/2$; an $m\times n$ bar always takes $mn-1$ breaks; every tournament has a beats ordering; postage with 3¢ and 5¢ works for 3, 5, 6 and every amount $\ge 8$.</li>
+</ul>
+</div>
+<div data-part="steps">
+<ol>
+<li>Choose the size parameter $n$ (number of blocks, area, number of players, amount of postage).</li>
+<li>Define $P(n)$ so it covers <i>every</i> object or strategy of size $n$.</li>
+<li>Look at the first move (first split, first prime removed, one stamp added) and see which smaller sizes appear.</li>
+<li>Those sizes tell you how many base cases you need. Prove them explicitly.</li>
+<li>Write: "Let $n\gt[\text{last base}]$ and assume $P(k)$ for all $b\le k\lt n$. We prove $P(n)$."</li>
+<li>Invoke $P$ on the pieces, checking each piece's size is in the range $[b, n-1]$. Combine the results.</li>
+<li>Conclude by strong induction.</li>
+</ol>
+</div>
+<div data-part="example">
+<p><b>Chocolate bar (Rec 3 #3):</b> $P(k)$: every way of breaking any bar of area $k$ into unit squares uses exactly $k-1$ breaks.</p>
+<p><b>Base</b> $k=1$: no breaks, and $1-1=0$.</p>
+<p><b>Step</b> ($k\ge2$): the first break makes pieces of areas $p,q\ge1$ with $p+q=k$, so $p,q\lt k$. By $P(p)$ and $P(q)$, finishing the pieces takes $(p-1)+(q-1)$ more breaks. The total is $1+(p-1)+(q-1)=k-1$. ∎</p>
+</div>
+<div data-part="traps">
+<ul>
+<li><b>"All naturals are even":</b> the step for $n=1$ secretly uses $P(1)$ (or needs $P(0)\to P(1)$, which was never shown). Check which earlier cases the smallest step actually uses.</li>
+<li>Using $P(n-3)$ when $n-3$ is below your base.</li>
+<li>Forgetting a side condition the problem demands, like distinctness of the primes in PS 2 #5.</li>
+<li>Defining $P(n)$ about one specific strategy instead of all strategies.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can state strong induction and explain why multiple base cases are sometimes needed.</li>
+<li>I can do the postage (3¢ and 5¢) proof.</li>
+<li>I can prove a "splitting" invariant (blocks game or chocolate bar).</li>
+<li>I can find the bug in the "all naturals are even" proof.</li>
+</div>
+</section>
+
+<!-- ============================================================ STATE MACHINES -->
+<section class="topic" data-id="sm" data-title="State Machines &amp; Invariants" data-src="Lecture 4 · Rec 4 · PS 3 · Lecture 8 (jugs, Euclid)" data-blurb="Invariant Principle for unreachability, derived variables for termination.">
+<div data-part="idea">
+<p>A state machine models anything that moves step by step: a puzzle, an algorithm, a robot. It has <b>states</b>, a <b>start state</b> and <b>transitions</b> (legal moves). You will be asked three kinds of questions:</p>
+<ul>
+<li><b>Can it ever reach state X?</b> Find a property that starts true and survives every move (an <b>invariant</b>), then show X lacks it.</li>
+<li><b>Does it always stop, and how fast?</b> Find a natural number that strictly drops on every move (a <b>derived variable</b>).</li>
+<li><b>Is the answer correct when it stops?</b> Combine the invariant with what final states look like. This is partial correctness.</li>
+</ul>
+<p>The hard part is guessing the invariant. Run a few moves by hand and look for what doesn't change: a parity, a remainder, a difference, an inequality, a gcd.</p>
+</div>
+<div data-part="know">
+<ul>
+<li>Definitions: state machine $(S, s_0, T)$; deterministic means at most one transition out of each state; an <b>execution</b> is a sequence starting at $s_0$ following transitions; a state is <b>reachable</b> if it appears in some execution.</li>
+<li><b>Invariant Principle:</b> if $P(s_0)$ holds and $P(q)\to P(r)$ for every transition $q\to r$, then $P$ holds at every reachable state.</li>
+<li><b>One-sided:</b> failing the invariant means unreachable. Satisfying it does <i>not</i> mean reachable. WALL-E's $(60,-42)$ satisfies $3\mid y-x$ but is still unreachable.</li>
+<li><b>Final state:</b> no transitions out. <b>Terminates:</b> every execution is finite.</li>
+<li>If $f:S\to\mathbb N$ strictly decreases on every transition, the machine terminates within $f(s_0)$ steps. <i>Weakly</i> decreasing is not enough by itself.</li>
+<li>Invariants to know:
+  <ul>
+  <li>parity of the number of inversions (8-puzzle; 15-puzzle uses snake order)</li>
+  <li>$y-x\equiv 0 \pmod 3$ and $x+2y\ge0$ (WALL-E)</li>
+  <li>every amount is an integer linear combination of $a$ and $b$ (Die Hard jugs)</li>
+  <li>$\gcd(x,y)=\gcd(a,b)$ (Euclid)</li>
+  <li>$rs+a=xy$ (shift-and-add multiplication)</li>
+  <li>infected perimeter never increases (beaver fever)</li>
+  </ul></li>
+<li>Swap sort: the number of inversions drops by exactly 1 per swap, so at most $n(n-1)/2$ steps.</li>
+</ul>
+</div>
+<div data-part="steps">
+<p><b>A. Proving a state is unreachable</b></p>
+<ol>
+<li>Define states, start state and transitions precisely, including any conditions on when a move is allowed.</li>
+<li>Experiment: apply each move type to a generic state $(x,y,\dots)$ and see how simple quantities change.</li>
+<li>Define the predicate $P(\text{state})$.</li>
+<li>Check $P(s_0)$.</li>
+<li>For <b>each</b> transition type, assume $P(q)$ and show $P(r)$. Write one case per move type.</li>
+<li>Cite the Invariant Principle: $P$ holds at all reachable states.</li>
+<li>Show the target violates $P$, so it is unreachable.</li>
+</ol>
+<p><b>B. Termination and correctness</b></p>
+<ol>
+<li>Find $f:S\to\mathbb N$ (nonnegative integers) that strictly drops on every transition. Show it drops by checking each move. The bound is at most $f(s_0)$ steps.</li>
+<li>Characterize the final states (when are no moves possible?).</li>
+<li>Invariant + final-state condition gives the answer. Example: $rs+a=xy$ with $s=0$ gives $a=xy$.</li>
+</ol>
+</div>
+<div data-part="example">
+<p><b>WALL-E (Rec 4 #1):</b> moves $(+2,-1), (-1,+2), (+1,+1), (+1,+4)$ from $(0,0)$. Can he reach $(20,21)$?</p>
+<p>$P(x,y)$: $3\mid y-x$. It holds at the start ($0$). The four moves change $y-x$ by $-3,+3,0,+3$, so $P$ is preserved. By the Invariant Principle every reachable state has $3\mid y-x$, but $21-20=1$. So $(20,21)$ is unreachable.</p>
+</div>
+<div data-part="traps">
+<ul>
+<li>Checking only some of the transition types.</li>
+<li>Claiming a state <i>is</i> reachable because it satisfies the invariant.</li>
+<li>Using a derived variable that can go negative or isn't an integer. Fix it by adding a constant, as in the coin problem, or by bounding it below.</li>
+<li>Forgetting the conditions on transitions (e.g. "only if $T\gt H\gt0$").</li>
+<li>Using row-major order on the 4×4 puzzle: vertical moves there change parity. Snake order works.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can model a puzzle or algorithm as a state machine with precise transitions.</li>
+<li>I can state the Invariant Principle and use it to prove unreachability.</li>
+<li>I can explain why the invariant test is one-sided.</li>
+<li>I can prove termination with a strictly decreasing natural-valued derived variable and give a step bound.</li>
+<li>I can prove partial correctness (e.g. the multiplication algorithm) from an invariant plus final states.</li>
+</div>
+</section>
+
+<!-- ============================================================ SUMS -->
+<section class="topic" data-id="sums" data-title="Sums" data-src="Lecture 5 · Rec 5 · PS 3" data-blurb="Closed forms, perturbation, ansatz, telescoping and the integral method.">
+<div data-part="idea">
+<p>A <b>closed form</b> is a formula you could type into a calculator: no $\sum$, no "…", no recursion. The workflow has three parts:</p>
+<ul>
+<li><b>Discover</b> a closed form with perturbation, ansatz or telescoping.</li>
+<li><b>Prove</b> it by induction ("guess and check").</li>
+<li><b>Approximate</b> with the integral method when no closed form exists.</li>
+</ul>
+<p>Perturbation means comparing the sum with a shifted copy of itself so most terms cancel. Ansatz means guessing the <i>shape</i> (say a cubic) and solving for the coefficients.</p>
+</div>
+<div data-part="know">
+<ul>
+<li>$\displaystyle\sum_{k=1}^n k=\frac{n(n+1)}2$, $\displaystyle\sum_{k=1}^n k^2=\frac{n(n+1)(2n+1)}6$, $\displaystyle\sum_{k=1}^n k^3=\left(\frac{n(n+1)}2\right)^2$.</li>
+<li>Geometric: $\displaystyle\sum_{k=0}^{n-1}x^k=\frac{1-x^n}{1-x}$ for $x\ne1$. Infinite: $\displaystyle\sum_{k=0}^\infty x^k=\frac1{1-x}$ for $|x|\lt1$.</li>
+<li>$\displaystyle\sum_{k=1}^n kx^k=\frac{x-(n+1)x^{n+1}+nx^{n+2}}{(1-x)^2}$. Special case: $\displaystyle\sum_{k=1}^n k2^k=(n-1)2^{n+1}+2$.</li>
+<li><b>Integral method</b>, $f$ weakly increasing on $[1,n]$: $\;f(1)+\int_1^n f \le \sum_{k=1}^n f(k)\le f(n)+\int_1^n f$.</li>
+<li>$f$ weakly decreasing: $\;f(n)+\int_1^n f \le \sum_{k=1}^n f(k)\le f(1)+\int_1^n f$.</li>
+<li>Results: $\frac1n+\ln n\le H_n\le 1+\ln n$; $\;\sum_{k=1}^n\sqrt k\approx\frac23 n^{3/2}$; $\;e\left(\frac ne\right)^n\le n!\le en\left(\frac ne\right)^n$.</li>
+<li>Annuity: with interest rate $p$, a payment of $m$ in $k$ years is worth $m x^k$ today, where $x=\frac1{1+p}$.</li>
+<li>An empty sum is 0.</li>
+</ul>
+</div>
+<div data-part="steps">
+<ol>
+<li><b>Recognize</b> a standard form (arithmetic, geometric, $\sum kx^k$, powers) and cite the formula.</li>
+<li><b>Double sum:</b> evaluate the inner sum first as a function of the outer index, then do the outer sum.</li>
+<li><b>Perturbation:</b> write $S$, then $xS$ (or $S$ reversed) term-aligned underneath. Subtract or add column by column and solve for $S$.</li>
+<li><b>Ansatz</b> for $\sum k^d$: guess a polynomial of degree $d+1$, plug in $n=0,1,2,\dots$ to solve for the coefficients, then prove by induction.</li>
+<li><b>Telescoping:</b> $\sum_{k=1}^n \big(g(k+1)-g(k)\big)=g(n+1)-g(1)$.</li>
+<li><b>No closed form:</b> check monotonicity, compute $\int_1^n f$, apply the right bound. For more accuracy, add the first few terms exactly and use the integral only on the tail.</li>
+<li>If the question says "prove", finish with induction. Perturbation by itself is only a way to guess.</li>
+</ol>
+</div>
+<div data-part="example">
+<p><b>Perturbation for</b> $S=\sum_{k=1}^n k2^k$:</p>
+<p>$2S-S = n2^{n+1} - \sum_{k=1}^n 2^k = n2^{n+1}-(2^{n+1}-2)$, so $S=(n-1)2^{n+1}+2$.</p>
+<p>Check: $n=2$ gives $2+8=10$, and $(1)(8)+2=10$. ✓</p>
+</div>
+<div data-part="traps">
+<ul>
+<li>Perturbation on a divergent sum gives garbage ($1+2+4+\dots=-1$).</li>
+<li>Off-by-one limits: $\sum_{k=0}^{n-1}$ vs $\sum_{k=1}^{n}$.</li>
+<li>Using the increasing-version bound for a decreasing function.</li>
+<li>Integral method with too much error: peel off the first terms exactly (PS 3 #5).</li>
+<li>In a double sum, using the outer variable where the inner one belongs (the PS 3 #3b official solution even has this typo).</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I know the six core sum formulas by heart.</li>
+<li>I can derive the geometric sum and $\sum kx^k$ by perturbation.</li>
+<li>I can use an ansatz to discover $\sum k^2$.</li>
+<li>I can apply the integral bound in the correct direction and tighten it by peeling terms.</li>
+<li>I can evaluate a double sum inner-first.</li>
+</div>
+</section>
+
+<!-- ============================================================ ASYMPTOTICS -->
+<section class="topic" data-id="asym" data-title="Asymptotics" data-src="Lecture 6 · Rec 6 · PS 4" data-blurb="O, Ω, Θ, o, ω, ∼: definitions, the limit test, growth hierarchy.">
+<div data-part="idea">
+<p>Asymptotics compare how fast functions grow when $n$ is huge, ignoring details that don't matter in the long run.</p>
+<ul>
+<li><b>Big-O</b> means "at most, up to a constant factor, eventually."</li>
+<li><b>Θ</b> means "same growth up to constant factors."</li>
+<li><b>∼</b> is stricter: the ratio tends to exactly 1, so constants matter but lower-order terms don't.</li>
+<li><b>little-o</b> means "much smaller": the ratio tends to 0.</li>
+</ul>
+</div>
+<div data-part="know">
+<ul>
+<li>$f\in O(g)$ iff $\exists c\gt0\;\exists n_0\;\forall n\ge n_0:\;|f(n)|\le c\,g(n)$.</li>
+<li>$f\in\Omega(g)$ iff $g\in O(f)$. $\;f\in\Theta(g)$ iff both.</li>
+<li>$f\in o(g)$ iff $\lim f/g=0$. $\;f\in\omega(g)$ iff $\lim f/g=\infty$. $\;f\sim g$ iff $\lim f/g=1$.</li>
+<li><b>Limit test</b> with $L=\lim f/g$:
+  <ul>
+  <li>$L=0$: $o$ and $O$.</li>
+  <li>$0\lt L\lt\infty$: $\Theta$ (and $\sim$ if $L=1$).</li>
+  <li>$L=\infty$: $\omega$ and $\Omega$.</li>
+  <li>If the limit doesn't exist, use the definition. For example $3+\sin n\in O(1)$.</li>
+  </ul></li>
+<li><b>Hierarchy</b>: $1 \ll \log n \ll (\log n)^{300} \ll n^{\epsilon} \ll n \ll n\log n \ll n^2 \ll n^{k} \ll 1.01^n \ll 2^n \ll 4^n \ll n! \ll n^n$.</li>
+<li>Log base doesn't matter inside Θ. Exponential base does: $4^n\notin O(2^n)$.</li>
+<li>$f\sim g\Rightarrow f=\Theta(g)$, but not conversely ($n$ vs $2n$). $\;f\sim g\Rightarrow f^2\sim g^2$, but not $2^f\sim2^g$ ($n+1$ vs $n$).</li>
+<li>$f\sim f+h \iff h\in o(f)$, so "lower-order term" means exactly this.</li>
+<li>Stirling: $n!\sim\sqrt{2\pi n}\,(n/e)^n$. Also $H_n\sim\ln n$ and $\frac{(2n)!}{(n!)^2}\sim\frac{4^n}{\sqrt{\pi n}}$.</li>
+</ul>
+</div>
+<div data-part="steps">
+<p><b>A. "Which relationships hold?"</b></p>
+<ol>
+<li>Simplify both functions to their dominant term.</li>
+<li>Compute $\lim f/g$ (divide by the dominant term, use L'Hôpital, or take logs for exponentials and factorials).</li>
+<li>Read off the answer with the limit test. If the limit doesn't exist, bound $f/g$ above and below directly.</li>
+</ol>
+<p><b>B. "Prove $f\in O(g)$ with explicit $c, n_0$"</b></p>
+<ol>
+<li>Bound each term of $f$ by a multiple of $g$ for large $n$: $n^2+3n+7\le n^2+3n^2+7n^2 = 11n^2$ for $n\ge1$.</li>
+<li>To handle a lower-order term in $g$: $n-4\ge n/2$ when $n\ge8$.</li>
+<li>State $c$ and $n_0$ explicitly and check the inequality holds for <i>all</i> $n\ge n_0$.</li>
+</ol>
+<p><b>C. "Prove $f\notin O(g)$"</b></p>
+<ol>
+<li>Show $f/g\to\infty$, or for any $c$ exhibit arbitrarily large $n$ with $f(n)\gt c\,g(n)$.</li>
+</ol>
+</div>
+<div data-part="example">
+<p>$f(n)=\dfrac{3n-7}{n+4}$, $g(n)=4$ (Rec 6 #3b). $f$ tends to 3, so $f\in\Theta(g)$.</p>
+<ul>
+<li>$f\le 1\cdot g$: $|f(n)|\lt3$ for all $n\ge1$, so $c=1,\ n_0=1$.</li>
+<li>$g\le 2f$: $2f(n)\ge4$ iff $6n-14\ge 4n+16$ iff $n\ge15$, so $c=2,\ n_0=15$.</li>
+</ul>
+</div>
+<div data-part="traps">
+<ul>
+<li>Induction with $O(\cdot)$ inside the hypothesis "proves" $2^n=O(1)$. The constant $c$ silently changes with $n$, which swaps $\forall n\,\exists c$ for $\exists c\,\forall n$.</li>
+<li>"$f\ge O(g)$" is meaningless. Use $\Omega$.</li>
+<li>Θ allows constant factors and ∼ does not: $n^2/2 \not\sim n^2$.</li>
+<li>Oscillating functions like $2^{\lceil\log_2 n\rceil}$ or $n\sin n$: the limit test fails, so use the definition.</li>
+<li>Changing a log's base is only a constant factor ($\log_6(120n)\in\Theta(\log_{6120}n)$), but a power of a log is not: $(\log n)^{2}\notin O(\log n)$.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can write the formal definition of $O$ and use it with explicit $c$ and $n_0$.</li>
+<li>I can fill in "which of $\Theta,O,\Omega,o,\omega$" tables quickly.</li>
+<li>I know the growth hierarchy, including logs vs polynomials vs exponentials vs factorials.</li>
+<li>I can explain the difference between $\sim$ and $\Theta$ with a counterexample.</li>
+<li>I can use Stirling to compare factorial expressions.</li>
+</div>
+</section>
+
+<!-- ============================================================ RECURRENCES -->
+<section class="topic" data-id="rec" data-title="Recurrences" data-src="Lecture 7 · Rec 7 · PS 4" data-blurb="Guess &amp; check, plug &amp; chug, characteristic roots, Master Theorem.">
+<div data-part="idea">
+<p>A recurrence defines each term from earlier terms, like an algorithm's cost defined from the cost of its recursive calls. You'll want either an <b>exact closed form</b> (then prove it by induction) or an <b>asymptotic bound</b> (Master Theorem).</p>
+<p>The key structural question: does the recurrence <i>subtract</i> ($T(n-1)$: linear depth, often exponential answers) or <i>divide</i> ($T(n/b)$: logarithmic depth, polynomial answers)?</p>
+</div>
+<div data-part="know">
+<ul>
+<li>Towers of Hanoi: $T(1)=1$, $T(n)=2T(n-1)+1$, so $T(n)=2^n-1$.</li>
+<li>Merge sort: $T(n)=2T(n/2)+n-1$, so $T(n)=n\log_2 n-n+1$ when $n$ is a power of 2.</li>
+<li><b>Plug &amp; chug:</b> expand $k$ times, spot the pattern, set $k=\log_b n$ to reach the base case, sum the resulting series, then verify by induction.</li>
+<li><b>Linear recurrences</b> $a_n=c_1a_{n-1}+\dots+c_da_{n-d}$: try $a_n=r^n$, which gives the characteristic equation $r^d=c_1r^{d-1}+\dots+c_d$. With distinct roots, $a_n=\sum\lambda_i r_i^n$. Solve for the $\lambda_i$ from the initial values. Linear combinations of solutions are solutions.</li>
+<li>Fibonacci: $F_n=\frac1{\sqrt5}\left(\varphi^n-\bar\varphi^n\right)$ with $\varphi=\frac{1+\sqrt5}2$, so $F_n\in\Theta(\varphi^n)$.</li>
+<li><b>Master Theorem</b> for $T(n)=aT(n/b)+f(n)$, with critical exponent $c=\log_b a$:
+  <ul>
+  <li>Case 1: $f\in O(n^{c-\epsilon})$ gives $T\in\Theta(n^c)$. The leaves dominate.</li>
+  <li>Case 2: $f\in\Theta(n^c)$ gives $T\in\Theta(n^c\log n)$. All levels are equal.</li>
+  <li>Case 3: $f\in\Omega(n^{c+\epsilon})$ <i>and</i> $af(n/b)\le kf(n)$ for some $k\lt1$ gives $T\in\Theta(f)$. The root dominates.</li>
+  </ul></li>
+<li>The Master Theorem has gaps ($2T(n/2)+n\log n$) and doesn't apply to $T(n-1)$-type recurrences.</li>
+<li>Counting recurrences (Mini-Tetris): split into cases on what fills the first column(s).</li>
+</ul>
+</div>
+<div data-part="steps">
+<ol>
+<li><b>Divide-and-conquer</b> $aT(n/b)+f(n)$:
+  <ul>
+  <li>For Θ, read off $a,b,f$, compute $c=\log_b a$, compare $f$ to $n^c$ and pick the case. Check regularity for case 3.</li>
+  <li>For an exact answer (n a power of $b$), plug &amp; chug.</li>
+  </ul></li>
+<li><b>Constant-coefficient linear</b>: write the characteristic equation, find the roots, write the general solution, fit the initial conditions.</li>
+<li><b>Unknown pattern</b>: compute the first 6–8 terms, guess (look at ratios, differences, $3T_n$, powers of 2 ± 1), then prove by strong induction. Use as many base cases as the recurrence's depth.</li>
+<li><b>Non-homogeneous</b> like $2T(n-1)+1$: compute terms and guess, or substitute $U=T+1$ to make it homogeneous.</li>
+</ol>
+</div>
+<div data-part="example">
+<p>$T(n)=4T(n/3)+n^2$. Here $a=4$, $b=3$, so $c=\log_34\approx1.26$.</p>
+<p>$f=n^2\in\Omega(n^{c+\epsilon})$. Regularity: $4f(n/3)=\frac49 n^2$, so $k=\frac49\lt1$ works.</p>
+<p>Case 3 gives $T\in\Theta(n^2)$.</p>
+</div>
+<div data-part="traps">
+<ul>
+<li>Applying the Master Theorem to Hanoi-style $T(n-1)$ recurrences.</li>
+<li>Forgetting the regularity check in case 3.</li>
+<li>Believing $n\log n$ beats $n^1$ "polynomially". It doesn't, so neither case 2 nor case 3 applies.</li>
+<li>Plug &amp; chug without a final induction check, when the question asks for proof.</li>
+<li>Too few base cases for a depth-2 or depth-3 recurrence.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can solve a divide-and-conquer recurrence exactly with plug &amp; chug.</li>
+<li>I can apply all three Master Theorem cases and recognize when it does not apply.</li>
+<li>I can solve a linear recurrence with the characteristic equation and initial conditions.</li>
+<li>I can set up a counting recurrence (tilings) and prove its closed form by strong induction.</li>
+</div>
+</section>
+
+<!-- ============================================================ GCD -->
+<section class="topic" data-id="gcd" data-title="Divisibility &amp; GCD" data-src="Lecture 8 · Rec 8 · Lecture 9 (start)" data-blurb="Divisibility facts, Euclid's algorithm, the Pulverizer, Bézout.">
+<div data-part="idea">
+<p>$a\mid b$ just means $b=ak$ for some integer $k$. Almost everything about gcds comes from one observation: <b>$a,b$ and $a,\,b-qa$ have exactly the same common divisors.</b></p>
+<ul>
+<li><b>Euclid's algorithm</b> uses this to shrink the pair fast: $(x,y)\to(y,\ x\bmod y)$.</li>
+<li>The <b>Pulverizer</b> keeps track of each remainder as an <i>integer linear combination</i> (ILC) of $a$ and $b$. That produces $s,t$ with $\gcd(a,b)=sa+tb$ (Bézout).</li>
+</ul>
+<p>The Die Hard jugs make this concrete: with $a$- and $b$-gallon jugs, every amount you can measure is an ILC of $a$ and $b$, so it must be a multiple of $\gcd(a,b)$.</p>
+</div>
+<div data-part="know">
+<ul>
+<li>D1 $a\mid b\Rightarrow a\mid bc$. D2 $a\mid b,\ b\mid c\Rightarrow a\mid c$. D3 $a\mid b,\ a\mid c\Rightarrow a\mid sb+tc$. D4 for $c\ne0$: $a\mid b\iff ca\mid cb$.</li>
+<li>G1 every common divisor divides $\gcd$. G2 $\gcd(ka,kb)=k\gcd(a,b)$. G3 $\gcd(a,b)=\gcd(a,c)=1\Rightarrow\gcd(a,bc)=1$. G4 $a\mid bc$ and $\gcd(a,b)=1\Rightarrow a\mid c$. G6 $\gcd(a,b)=\gcd(b,\ a\bmod b)$.</li>
+<li>Division theorem: for $d\gt0$ there are unique $q,r$ with $n=qd+r$ and $0\le r\lt d$.</li>
+<li>$\gcd(a,0)=|a|$, and $\gcd(0,0)=0$.</li>
+<li><b>Bézout:</b> $\gcd(a,b)=sa+tb$ for some integers $s,t$.</li>
+<li>The ILCs of $a,b$ are exactly the multiples of $\gcd(a,b)$. So $\gcd(a,b)$ is the <b>smallest positive</b> ILC.</li>
+<li>$\gcd(a,b)=1\iff 1$ is an ILC of $a$ and $b$.</li>
+<li>Euclid as a state machine: invariant $\gcd(x,y)=\gcd(a,b)$; stops when $y=0$ with answer $x$; $x\bmod y\lt x/2$, so at most about $\text{bits}(a)+\text{bits}(b)$ steps.</li>
+<li>If $p$ is prime and $p\mid ab$, then $p\mid a$ or $p\mid b$.</li>
+<li>All solutions from one: if $sa+tb=g$, then $(s+k\tfrac bg)a+(t-k\tfrac ag)b=g$ for any integer $k$. Use this to make a coefficient positive (Hoppip).</li>
+</ul>
+</div>
+<div data-part="steps">
+<p><b>Pulverizer table</b> (each row: $x,\ y,\ q=\lfloor x/y\rfloor,\ r=x-qy$)</p>
+<ol>
+<li>Row 1: $x=a$, $y=b$. Write $r=a-qb$, which is already an ILC.</li>
+<li>Each later row uses the previous $y$ and $r$ as the new $x,y$. Write $r=x-qy$, then <b>substitute</b> the ILC expressions for $x$ and $y$ and collect the coefficients of $a$ and $b$.</li>
+<li>Stop when $r=0$. The last nonzero remainder is $\gcd(a,b)$, and its ILC gives $s,t$.</li>
+<li><b>Check</b> by multiplying out: $sa+tb$ should equal the gcd.</li>
+<li>If you need a positive coefficient, shift by multiples of $(b/g,\,-a/g)$.</li>
+</ol>
+<p><b>Divisibility proofs</b>: unpack $a\mid b$ into $b=ak$, manipulate the equations, and repack. To show $\gcd(x,y)=1$, take any common divisor $d$ and show $d\mid1$, or argue by contradiction with $d\gt1$.</p>
+</div>
+<div data-part="example">
+<p>$\gcd(259,70)$:</p>
+<ul>
+<li>$49=259-3\cdot70$</li>
+<li>$21=70-1\cdot49=-1\cdot259+4\cdot70$</li>
+<li>$7=49-2\cdot21=3\cdot259-11\cdot70$</li>
+<li>$0=21-3\cdot7$, so stop.</li>
+</ul>
+<p>Result: $\gcd=7=3\cdot259-11\cdot70$. Check: $777-770=7$. ✓</p>
+</div>
+<div data-part="traps">
+<ul>
+<li>Arithmetic slips while substituting. Check every row by plugging in numbers.</li>
+<li>Expecting the Pulverizer's coefficients to have the signs you want. They don't have to.</li>
+<li>Treating "$a\mid b$" as a number. It is a statement.</li>
+<li>Forgetting that every integer divides 0.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can run Euclid's algorithm and the Pulverizer by hand without errors.</li>
+<li>I can explain why the reachable jug amounts are exactly the multiples of $\gcd(a,b)$.</li>
+<li>I can prove a gcd fact using the "common divisors of $a, b$ and $a, b-a$" lemma.</li>
+<li>I can prove consecutive Fibonacci numbers are coprime.</li>
+</div>
+<div data-part="pset">PSET 5 (due Tue Oct 13, 11:59 PM) covers this topic. The course does not allow AI help on problem sets, so this site has no hints or solutions for PSET 5. Practice problems marked <b>Original</b> drill the same skills with different numbers.</div>
+</section>
+
+<!-- ============================================================ MOD -->
+<section class="topic" data-id="mod" data-title="Modular Arithmetic" data-src="Lecture 9 · Rec 9" data-blurb="Congruences, inverses, Fermat's Little Theorem, fast powers.">
+<div data-part="idea">
+<p>Clock arithmetic: when working mod $n$, ignore multiples of $n$ and keep only remainders. $a\equiv_n b$ means $n\mid a-b$, which is the same as $a$ and $b$ having the same remainder.</p>
+<p>Addition, subtraction, multiplication and bases of powers all respect congruence, so you can reduce early and often. <b>Exponents</b> cannot be reduced mod $n$, and <b>division</b> only works for numbers that have an inverse.</p>
+</div>
+<div data-part="know">
+<ul>
+<li>$a\equiv_n b\iff n\mid(a-b)\iff a\bmod n=b\bmod n$.</li>
+<li>M4–M7: if $a\equiv_nb$ and $c\equiv_nd$, then $a+c\equiv_n b+d$ and $ac\equiv_n bd$. Also $a^k\equiv_n b^k$.</li>
+<li><b>Never reduce exponents mod $n$.</b> $1\equiv_56$ but $2^1\not\equiv_52^6$.</li>
+<li>$a$ has an inverse mod $n$ $\iff\gcd(a,n)=1$. Find it with the Pulverizer: $sa+tn=1\Rightarrow sa\equiv_n1$.</li>
+<li><b>Fermat's Little Theorem:</b> if $p$ is prime and $p\nmid a$, then $a^{p-1}\equiv_p1$. So the inverse is $a^{-1}\equiv_p a^{p-2}$, and exponents can be reduced mod $p-1$.</li>
+<li>Cancellation $ka\equiv_n kb\Rightarrow a\equiv_n b$ needs $\gcd(k,n)=1$. Counterexample: $3\cdot5\equiv_6 3\cdot1$ but $5\not\equiv_6 1$.</li>
+<li>Negative representatives help: $99\equiv_{100}-1$ and $96\equiv_{97}-1$.</li>
+<li>$10\equiv_9 1$, so $n\equiv_9$ (sum of its digits). Last digit is mod 10, last two digits mod 100.</li>
+<li>In this class, $a\bmod n$ is always in $[0,n)$, even for negative $a$ ($-43\bmod10=7$).</li>
+<li><b>Repeated squaring:</b> compute $a^{2^i}\bmod n$ by squaring, then multiply the powers matching the binary digits of $e$. That takes at most about $2\log_2 e$ steps.</li>
+</ul>
+</div>
+<div data-part="steps">
+<p><b>A. Compute $a^e \bmod n$</b></p>
+<ol>
+<li>Reduce the base mod $n$. Try a negative representative.</li>
+<li>Look for a small $k$ with $a^k\equiv_n\pm1$ or a repeating cycle. Write $e=qk+r$.</li>
+<li>If $n=p$ is prime and $p\nmid a$, reduce $e$ mod $p-1$ (FLT).</li>
+<li>Otherwise use repeated squaring: $a^2, a^4, a^8,\dots$, then multiply the ones for the binary digits of $e$.</li>
+<li>Reduce after every multiplication.</li>
+</ol>
+<p><b>B. Solve $ax\equiv_n b$</b></p>
+<ol>
+<li>Compute $g=\gcd(a,n)$. If $g=1$, find $a^{-1}$ (Pulverizer or FLT) and set $x\equiv_n a^{-1}b$.</li>
+<li>Check by substituting back.</li>
+</ol>
+</div>
+<div data-part="example">
+<p>$3^{101}\bmod 21$. Powers of 3 mod 21: $3,9,6,18,12,15,3,\dots$, a cycle of length 6 starting at $3^1$.</p>
+<p>$101=1+6\cdot16+4$, so $3^{101}\equiv3^{5}\equiv12$. Check: $243=11\cdot21+12$. ✓</p>
+</div>
+<div data-part="traps">
+<ul>
+<li>Reducing an exponent mod $n$ instead of mod $p-1$, or using FLT when $n$ isn't prime.</li>
+<li>"Dividing" both sides by a number that shares a factor with $n$.</li>
+<li>Mixing up "$a\equiv b \pmod n$" (a relation) with "$a = b\bmod n$" (a value).</li>
+<li>Negative remainders from programming-language <code>%</code>.</li>
+</ul>
+</div>
+<div data-part="check">
+<li>I can compute large powers mod $n$ with cycles, FLT or repeated squaring.</li>
+<li>I can find a modular inverse two ways (Pulverizer and FLT) and verify it.</li>
+<li>I can solve $ax\equiv_n b$ when $\gcd(a,n)=1$.</li>
+<li>I can prove the divisible-by-9 digit-sum rule.</li>
+<li>I can state FLT with its hypotheses and sketch its proof.</li>
+</div>
+<div data-part="pset">PSET 5 (due Tue Oct 13) covers this topic. Its problems are left out here because the course forbids AI help on problem sets. Try the <b>Original</b> problems below for the same skills, then do PSET 5 yourself as quiz practice.</div>
+</section>
+
+</template>

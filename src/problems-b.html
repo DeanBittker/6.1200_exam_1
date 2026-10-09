@@ -1,0 +1,594 @@
+<template id="data-problems-b">
+
+<!-- ======================= STATE MACHINES ======================= -->
+<article class="prob" data-id="sm01" data-topic="sm" data-src="Rec 4 #1" data-diff="2" data-title="WALL-E chasing EVE">
+<div class="q">
+<p>WALL-E starts at $(0,0)$ and can step by $(+2,-1)$, $(-1,+2)$, $(+1,+1)$ or $(+1,+4)$.</p>
+<p>(a) Model this as a state machine. (b) Find a path to EVE at $(60,42)$. (c) Prove he can't reach $(20,21)$. (d) Can he reach $(60,-42)$? Does it satisfy your invariant from (c)?</p>
+</div>
+<div class="h">(b) You only need moves of type 1 and type 3. Solve $2a+b=60$, $-a+b=42$.</div>
+<div class="h">(c) Look at $y-x$ under each move. (d) Plot repeated $(+2,-1)$ moves. Is there a line he can never get below?</div>
+<div class="h">(d) Try $Q(x,y)$: $x+2y\ge0$.</div>
+<div class="s">
+<p><b>(a)</b> States $(x,y)\in\mathbb Z^2$, start $(0,0)$, and $(x,y)\to(x+2,y-1),(x-1,y+2),(x+1,y+1),(x+1,y+4)$.</p>
+<p><b>(b)</b> 6 moves of type 1 reach $(12,-6)$, then 48 moves of type 3 reach $(60,42)$.</p>
+<p><b>(c)</b> $P$: $3\mid y-x$. It holds at the start. The moves change $y-x$ by $-3,+3,0,+3$, so $P$ is preserved. By the Invariant Principle it holds at all reachable states. But $21-20=1$, so $(20,21)$ is unreachable.</p>
+<p><b>(d)</b> $(60,-42)$ <i>does</i> satisfy $P$ ($-102=3\cdot(-34)$), yet it is unreachable. Use $Q$: $x+2y\ge0$. It holds at the start ($0$), and the moves change $x+2y$ by $0,+3,+3,+9$, so $Q$ is preserved. But $60+2(-42)=-24\lt0$.</p>
+<p>The invariant test is one-sided: satisfying an invariant doesn't make a state reachable.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sm02" data-topic="sm" data-src="Lecture 4" data-diff="2" data-title="The unsolvable 8-puzzle">
+<div class="q"><p>In the 3×3 sliding puzzle with letters A–H and one blank, the start state reads (row-major) A B C / D E F / H G _. A move slides a letter into the adjacent blank (up, down, left or right). Prove you can never reach A B C / D E F / G H _.</p></div>
+<div class="h">Count inverted pairs in row-major order (pairs whose order disagrees with the alphabet). The start has 1 and the target has 0.</div>
+<div class="h">A row move doesn't change the order. A column move jumps one letter past exactly 2 others.</div>
+<div class="s">
+<p>Let $P(s)$ be "the number of inversions in row-major order is odd".</p>
+<p><b>Start:</b> only (G,H) is inverted, so the count is 1 and $P$ holds.</p>
+<p><b>Preserved:</b></p>
+<ul><li>A row move leaves the row-major order unchanged.</li><li>A column move moves one letter from cell $i$ to cell $i\pm3$, so it passes exactly the 2 letters between those cells. Each of those 2 pairs toggles, changing the count by $-2$, $0$ or $+2$.</li></ul>
+<p>Either way the parity is unchanged, so $P$ is an invariant.</p>
+<p>The target has 0 inversions (even), so it fails $P$ and is unreachable (Unreachability Theorem). ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="sm03" data-topic="sm" data-src="Rec 4 #3" data-diff="3" data-title="The 15-puzzle with snake order">
+<div class="q"><p>In the 4×4 Fifteen Puzzle, show you can't swap 14 and 15 from the standard position. Read tiles in <b>snake order</b> (row 1 left to right, row 2 right to left, row 3 left to right, row 4 right to left, skipping the blank). (a) Write the target's list. (b) Show the start and target parities differ. (c) Horizontal moves preserve parity. (d) Vertical moves preserve parity. (e) Conclude.</p></div>
+<div class="h">In snake order, a vertical move shifts one tile 0, 2, 4 or 6 places in the list. Why?</div>
+<div class="h">Moving one element past $k$ others toggles exactly $k$ pairs.</div>
+<div class="s">
+<p><b>(a)</b> 1,2,3,4,8,7,6,5,9,10,11,12,14,15,13.</p>
+<p><b>(b)</b> The start list is 1,2,3,4,8,7,6,5,9,10,11,12,15,14,13. The two lists differ by one adjacent swap, so the inversion counts differ by 1 (9 vs 8).</p>
+<p><b>(c)</b> A horizontal move leaves the list unchanged.</p>
+<p><b>(d)</b> Moving a tile between two rows: in snake order the tile jumps over the tiles between its old and new positions. Depending on its column, that is 0, 2, 4 or 6 tiles. Each jumped tile toggles one pair, so the inversion count changes by an even number. Parity is preserved.</p>
+<p><b>(e)</b> The start parity is odd and every move preserves parity, so all reachable states are odd. The target is even, so it is unreachable. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="sm04" data-topic="sm" data-src="Rec 4 #2" data-diff="2" data-title="Coins and derived variables">
+<div class="q"><p>Coins on a table: $H_0$ heads and $T_0$ tails. Moves: (i) remove 10 heads and 10 tails; (ii) if there are more tails than heads and $n\gt0$ heads, add $n$ more heads.</p>
+<p>(a) Model as a state machine. (b) Classify $T$, $H+T$, $T-H$ and $2T-H$ as constant, strictly or weakly increasing or decreasing, or none. (c) Prove $T\le T_0 \land H\le\max(H_0,2T_0)$ is invariant. (d) Find a strictly decreasing derived variable with nonnegative integer values and conclude the machine terminates.</p></div>
+<div class="h">(ii) is $(H,T)\to(2H,T)$ when $T\gt H\gt0$. (i) is $(H,T)\to(H-10,T-10)$ when $H,T\ge10$.</div>
+<div class="h">(d) $2T-H$ drops on both moves, but can it be negative? Add a constant using (c).</div>
+<div class="s">
+<p><b>(a)</b> States $(H,T)\in\mathbb N^2$, start $(H_0,T_0)$. Transitions: $(H,T)\to(H-10,T-10)$ if $H,T\ge10$; $(H,T)\to(2H,T)$ if $T\gt H\gt0$.</p>
+<p><b>(b)</b> $T$: weakly decreasing. $H+T$: none. $T-H$: weakly decreasing. $2T-H$: strictly decreasing (by $H$ or by 10).</p>
+<p><b>(c)</b> True at the start. Doubling: $H\lt T\le T_0$, so $2H\le 2T_0$, and $T$ is unchanged. Removing: both values decrease. Preserved in both cases.</p>
+<p><b>(d)</b> $f=2T-H+\max(H_0,2T_0)$. It is an integer, strictly decreasing, and $\ge 0-H+\max(H_0,2T_0)\ge0$ by (c). So the machine terminates within $f(s_0)$ steps.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sm05" data-topic="sm" data-src="PS 3 #1" data-diff="2" data-title="Multiplication by bit shifts">
+<div class="q"><p>States $(r,s,a)\in\mathbb N^3$, start $(x,y,0)$. Transitions: if $s\gt0$ is even, $(r,s,a)\to(2r,s/2,a)$; if $s\gt0$ is odd, $(r,s,a)\to(2r,(s-1)/2,a+r)$.</p>
+<p>(a) Run it from $(5,22,0)$. (b) Prove $P$: $rs+a=xy$ is an invariant. (c) Which states are final? (d) Conclude $a_f=xy$ in any final state. (e) Show bitlen$(s)$ strictly decreases, so it terminates. (f) Bound the number of steps.</p></div>
+<div class="h">For (b), compute $r's'+a'$ in each of the two cases.</div>
+<div class="h">Halving (rounding down) removes exactly one binary digit.</div>
+<div class="s">
+<p><b>(a)</b> $(5,22,0)\to(10,11,0)\to(20,5,10)\to(40,2,30)\to(80,1,30)\to(160,0,110)$, and $110=5\cdot22$ ✓.</p>
+<p><b>(b)</b> At the start, $xy+0=xy$. If $s$ is even: $2r\cdot\frac s2+a=rs+a$. If $s$ is odd: $2r\cdot\frac{s-1}2+a+r=rs+a$. So $P$ is preserved, and by the Invariant Principle it holds everywhere reachable.</p>
+<p><b>(c)</b> Final states are exactly those with $s=0$.</p>
+<p><b>(d)</b> In a reachable final state, $r\cdot0+a_f=xy$, so $a_f=xy$.</p>
+<p><b>(e)</b> $s/2$ and $(s-1)/2$ each have exactly one fewer bit than $s$. A strictly decreasing natural-valued derived variable means the machine terminates.</p>
+<p><b>(f)</b> At most bitlen$(y)$ steps.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sm06" data-topic="sm" data-src="PS 3 #2" data-diff="3" data-title="Beaver fever">
+<div class="q"><p>Students sit in an $n\times n$ grid. Each minute, a student becomes infected if they are adjacent (sharing an edge, not diagonal) to at least two infected students. Infected students stay infected. Prove: if fewer than $n$ students start infected, the whole class never becomes infected.</p></div>
+<div class="h">One-word clue: <b>perimeter</b>.</div>
+<div class="h">A newly infected square touches at least 2 infected squares. How do its 4 edges change the boundary length of the infected region?</div>
+<div class="s">
+<p>Let $\nu$ be the perimeter of the infected region: the number of unit edges with infection on exactly one side.</p>
+<p><b>$\nu$ never increases.</b> Each newly infected square has at least 2 edges against already-infected squares. Those edges leave the perimeter, and at most its other 2 edges join it. So each new square changes $\nu$ by at most 0.</p>
+<p>A fully infected $n\times n$ grid has perimeter $4n$. Initially $k$ squares give $\nu\le 4k$. If $k\lt n$, then $\nu\le4k\lt4n$ forever, so full infection is impossible. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="sm07" data-topic="sm" data-src="Lecture 4" data-diff="1" data-title="Swap sort terminates">
+<div class="q"><p>A list of $N$ distinct items. A move swaps two <i>adjacent</i> items that are out of order. Prove that the process always terminates, that it ends sorted, and that it takes at most $N(N-1)/2$ moves. How many moves exactly from C B A E D?</p></div>
+<div class="h">Derived variable: the number of inverted pairs. What does one swap do to it?</div>
+<div class="s">
+<p>Let $f$ = number of inverted pairs, which is a natural number. Swapping an adjacent out-of-order pair fixes that pair and changes no other pair's relative order, so $f$ drops by exactly 1. So the machine terminates within $f(s_0)\le\binom N2=\frac{N(N-1)}2$ steps.</p>
+<p><b>Final states:</b> if the list is unsorted, some adjacent pair is out of order and a move exists. So the only final state is the sorted list.</p>
+<p>C B A E D has inversions AB, AC, BC, DE, so exactly 4 moves.</p>
+</div>
+</article>
+
+<!-- ======================= SUMS ======================= -->
+<article class="prob" data-id="sum01" data-topic="sums" data-src="Rec 5 #3" data-diff="2" data-title="Perturbation for Σ k xᵏ">
+<div class="q"><p>Use the perturbation method to find a closed form for $T=\sum_{k=1}^n kx^k$ with $x\ne1$.</p></div>
+<div class="h">Write $T$ and $xT$ aligned by powers of $x$, then subtract.</div>
+<div class="h">$T-xT=x+x^2+\dots+x^n-nx^{n+1}$, which is a geometric series minus one term.</div>
+<div class="s">
+<p>$T-xT=(x+x^2+\dots+x^n)-nx^{n+1}=x\frac{1-x^n}{1-x}-nx^{n+1}$. So
+$$T=\frac1{1-x}\left(x\frac{1-x^n}{1-x}-nx^{n+1}\right)=\frac{x-(n+1)x^{n+1}+nx^{n+2}}{(1-x)^2}.$$</p>
+<p>Check: $n=1$ gives $\frac{x-2x^2+x^3}{(1-x)^2}=x$ ✓.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum02" data-topic="sums" data-src="Lecture 5" data-diff="1" data-title="Σ k·2ᵏ">
+<div class="q"><p>Find a closed form for $S=\sum_{k=1}^n k2^k$ by perturbation, check it for $n=3$, and prove it by induction.</p></div>
+<div class="h">Compute $2S-S$ column by column. Most columns give $-2^k$.</div>
+<div class="s">
+<p>$2S-S=n2^{n+1}-\sum_{k=1}^n2^k=n2^{n+1}-(2^{n+1}-2)$, so $S=(n-1)2^{n+1}+2$.</p>
+<p>Check $n=3$: $2+8+24=34$ and $2\cdot16+2=34$ ✓.</p>
+<p><b>Induction.</b> Base $n=1$: $2=0+2$. Step: $(n-1)2^{n+1}+2+(n+1)2^{n+1}=2n\cdot2^{n+1}+2=n2^{n+2}+2$, which is the formula for $n+1$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum03" data-topic="sums" data-src="Rec 5 #2" data-diff="2" data-title="Σ k³ by telescoping">
+<div class="q"><p>(a) Evaluate $\sum_{k=1}^n\big((k+1)^4-k^4\big)$. (b) Using $(k+1)^4-k^4=4k^3+6k^2+4k+1$, derive a closed form for $\sum_{k=1}^nk^3$.</p></div>
+<div class="h">(a) Write out a few terms: everything cancels except two.</div>
+<div class="h">(b) Sum the identity over $k$ and solve for $S=\sum k^3$, using the known $\sum k^2$ and $\sum k$.</div>
+<div class="s">
+<p><b>(a)</b> It telescopes to $(n+1)^4-1$.</p>
+<p><b>(b)</b> $(n+1)^4-1=4S+6\frac{n(n+1)(2n+1)}6+4\frac{n(n+1)}2+n$. So $S=\frac14\big[(n+1)^4-1-n(n+1)(2n+1)-2n(n+1)-n\big]=\frac{n^2(n+1)^2}4=\left(\sum k\right)^2$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum04" data-topic="sums" data-src="Lecture 5" data-diff="2" data-title="Ansatz for Σ k²">
+<div class="q"><p>Without knowing the answer, find $\sum_{k=1}^nk^2$ by guessing it is a cubic $an^3+bn^2+cn+d$. Why is a cubic a reasonable guess? What must you still do afterwards?</p></div>
+<div class="h">Plug in $n=0,1,2,3$, where the sums are $0,1,5,14$. That gives 4 equations in 4 unknowns.</div>
+<div class="s">
+<p><b>Why a cubic:</b> $\frac{n^3}8\le S\le n^3$, so it grows like $n^3$.</p>
+<p>The equations: $d=0$; $a+b+c=1$; $8a+4b+2c=5$; $27a+9b+3c=14$. They give $a=\frac13,b=\frac12,c=\frac16$, so $S=\frac{n^3}3+\frac{n^2}2+\frac n6=\frac{n(n+1)(2n+1)}6$.</p>
+<p>Matching four values does <i>not</i> prove the formula. You must still prove it by induction (guess and check). If the induction failed, the guess was wrong.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum05" data-topic="sums" data-src="PS 3 #3a" data-diff="2" data-title="Odd-indexed Fibonacci sum">
+<div class="q"><p>Find and prove a closed form for $\sum_{k=0}^{n-1}F_{2k+1}$ by guess and check. The answer may use Fibonacci numbers.</p></div>
+<div class="h">Compute: $n=1$: 1. $n=2$: 1+2=3. $n=3$: 1+2+5=8. $n=4$: 21. Do these look familiar?</div>
+<div class="s">
+<p><b>Guess:</b> $\sum_{k=0}^{n-1}F_{2k+1}=F_{2n}$.</p>
+<p><b>Base</b> $n=1$: $F_1=1=F_2$.</p>
+<p><b>Step:</b> $\sum_{k=0}^{n}F_{2k+1}=F_{2n}+F_{2n+1}=F_{2n+2}=F_{2(n+1)}$.</p>
+<p>By induction the formula holds for all $n\ge1$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum06" data-topic="sums" data-src="PS 3 #3b" data-diff="2" data-title="A double sum">
+<div class="q"><p>Find a closed form for $\displaystyle\sum_{k=1}^n\Big(k\sum_{j=1}^k2^j\Big)$. You may cite $\sum_{k=1}^n k2^k=(n-1)2^{n+1}+2$.</p></div>
+<div class="h">The inner sum is geometric: $\sum_{j=1}^k2^j=2^{k+1}-2$.</div>
+<div class="h">Then the sum is $\sum k2^{k+1}-\sum2k$.</div>
+<div class="s">
+<p>The inner sum is $2^{k+1}-2$, so the total is $\sum_{k=1}^n\big(k2^{k+1}-2k\big)=2\big((n-1)2^{n+1}+2\big)-n(n+1)$.</p>
+<p>$$=(n-1)2^{n+2}+4-n(n+1).$$</p>
+<p>Check: $n=1$ gives $2$; $n=2$ gives $16+4-6=14$ ✓ (direct: $1\cdot2+2\cdot6=14$).</p>
+<p>Heads-up: the last line of the official PS 3 solution uses $k$ where $n$ belongs. The formula above is the corrected one.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum07" data-topic="sums" data-src="PS 3 #4" data-diff="3" data-title="Σ Fₙ / cⁿ by perturbation">
+<div class="q"><p>Assuming it converges, find $S=\sum_{n=1}^\infty\frac{F_n}{c^n}$ for $c=10^5$. Hint: compare $S$ with $S/c$.</p></div>
+<div class="h">Split off the $n=1$ term, then use $F_n=F_{n-1}+F_{n-2}$ for the rest.</div>
+<div class="h">You should get $S=\frac1c+\frac1cS+\frac1{c^2}S$.</div>
+<div class="s">
+<p>$$S=\frac{F_1}c+\sum_{n\ge2}\frac{F_{n-1}+F_{n-2}}{c^n}=\frac1c+\frac1c\sum_{m\ge1}\frac{F_m}{c^m}+\frac1{c^2}\sum_{m\ge0}\frac{F_m}{c^m}=\frac1c+\frac Sc+\frac S{c^2}$$ (using $F_0=0$).</p>
+<p>Multiplying by $c^2$: $c^2S-cS-S=c$, so $S=\frac c{c^2-c-1}=\frac{100000}{9999899999}$.</p>
+<p>Its digits list the Fibonacci numbers in 5-digit blocks: 0.00001 00001 00002 00003 00005 …</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum08" data-topic="sums" data-src="PS 3 #5" data-diff="3" data-title="Integral method to within 1/100">
+<div class="q"><p>Use the integral method to find $u\le S\le v$ with $v-u\le\frac1{100}$ for $S=\sum_{i=1}^\infty\frac1{(2i-1)^2}$.</p></div>
+<div class="h">Directly applied, the error is $f(1)=1$, which is too big. Add some first terms exactly and apply the method only to the tail.</div>
+<div class="h">For a decreasing $f$, the tail from $i=m$ satisfies $I\le\text{tail}\le I+f(m)$ with $I=\int_m^\infty f$. You need $f(m)\le\frac1{100}$, so start at $m=6$ ($f(6)=\frac1{121}$).</div>
+<div class="s">
+<p>Write $S=1+\frac19+\frac1{25}+\frac1{49}+\frac1{81}+S''$ with $S''=\sum_{i\ge6}\frac1{(2i-1)^2}$.</p>
+<p>$I''=\int_6^\infty\frac{dx}{(2x-1)^2}=\left[-\frac1{2(2x-1)}\right]_6^\infty=\frac1{22}$, and $I''\le S''\le I''+\frac1{121}$.</p>
+<p>So $1.2293\approx\frac{117469}{99225}+\frac1{22}\le S\le\frac{117469}{99225}+\frac1{22}+\frac1{121}\approx1.2376$. The gap is $\frac1{121}\lt\frac1{100}$.</p>
+<p>The true value is $\pi^2/8\approx1.2337$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum09" data-topic="sums" data-src="Lecture 6" data-diff="1" data-title="Bounding the harmonic numbers">
+<div class="q"><p>Use the integral method to show $\frac1n+\ln n\le H_n\le1+\ln n$, where $H_n=\sum_{k=1}^n\frac1k$. About how many blocks are needed for the top block of a stack to overhang by 10 block-lengths (the overhang is $\frac12H_n$)?</p></div>
+<div class="h">$f(x)=1/x$ is decreasing, so $f(n)+I\le S\le f(1)+I$.</div>
+<div class="s">
+<p>$I=\int_1^n\frac{dx}x=\ln n$. Since $1/x$ is decreasing, $\frac1n+\ln n\le H_n\le1+\ln n$. So $H_n\sim\ln n$.</p>
+<p>An overhang of 10 needs $H_n\approx20$, so $n\approx e^{20}\approx4.9\times10^8$ blocks.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum10" data-topic="sums" data-src="Lecture 5" data-diff="1" data-title="What is a lottery annuity worth?">
+<div class="q"><p>You receive $m$ dollars now and once a year for $n$ years total (payments at years $0,\dots,n-1$). With interest rate $p$, a dollar in $k$ years is worth $x^k$ today, where $x=\frac1{1+p}$. (a) Give a closed form for the present value. (b) What if the payments go on forever?</p></div>
+<div class="h">It's $m\sum_{k=0}^{n-1}x^k$.</div>
+<div class="s">
+<p><b>(a)</b> $V=m\frac{1-x^n}{1-x}=m\cdot\frac{1-(1+p)^{-n}}{1-\frac1{1+p}}$. With $m=50\text{k}$, $n=20$, $p=0.04$, this is about $706.7\text{k}$.</p>
+<p><b>(b)</b> $V=\frac m{1-x}=m\frac{1+p}p$. For $m=1$ and $p=0.04$, that's $26$ dollars.</p>
+</div>
+</article>
+
+<article class="prob" data-id="sum11" data-topic="sums" data-src="Original" data-diff="1" data-title="A telescoping fraction sum">
+<div class="q"><p>Find a closed form for $\displaystyle\sum_{k=1}^n\frac1{k(k+1)}$ and prove it by induction.</p></div>
+<div class="h">Partial fractions: $\frac1{k(k+1)}=\frac1k-\frac1{k+1}$.</div>
+<div class="s">
+<p>It telescopes to $1-\frac1{n+1}=\frac n{n+1}$.</p>
+<p><b>Induction:</b> base $n=1$: $\frac12=\frac12$. Step: $\frac n{n+1}+\frac1{(n+1)(n+2)}=\frac{n(n+2)+1}{(n+1)(n+2)}=\frac{(n+1)^2}{(n+1)(n+2)}=\frac{n+1}{n+2}$. ∎</p>
+</div>
+</article>
+
+<!-- ======================= ASYMPTOTICS ======================= -->
+<article class="prob" data-id="asy01" data-topic="asym" data-src="Rec 6 #1" data-diff="1" data-title="Which symbols fit?">
+<div class="q"><p>For each, list every symbol from $\Theta, O, \Omega, o, \omega$ that can go in the box:</p>
+<p>(a) $2n+\log n\in\square(n)$ &nbsp; (b) $\log n\in\square(n)$ &nbsp; (c) $\sqrt n\in\square((\log n)^{300})$ &nbsp; (d) $n^2\in\square(n)$ &nbsp; (e) $n^7\in\square(1.01^n)$</p></div>
+<div class="h">Compute $\lim f/g$ and use the limit test. Any power of $n$ beats any power of $\log n$, and any exponential $c^n$ with $c\gt1$ beats any polynomial.</div>
+<div class="s">
+<p>(a) $\Theta, O, \Omega$ (the limit is 2). (b) $O, o$. (c) $\Omega,\omega$. (d) $\Omega,\omega$. (e) $O, o$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="asy02" data-topic="asym" data-src="Rec 6 #2" data-diff="2" data-title="∼ versus Θ">
+<div class="q"><p>For $f,g:\mathbb Z^+\to\mathbb Z^+$: (a) Does $f\sim g$ imply $f=\Theta(g)$? (b) Does $f=\Theta(g)$ imply $f\sim g$? (c) If $f\sim g$, prove $2f\sim2g$. (d) If $f\sim g$, prove $f^2\sim g^2$. (e) Find $f\sim g$ with $2^f\not\sim2^g$.</p></div>
+<div class="h">For (e), take $f$ and $g$ that differ by a constant. In the exponent that becomes a constant <i>factor</i>.</div>
+<div class="s">
+<p><b>(a)</b> Yes. A limit of 1 gives both $f=O(g)$ and $g=O(f)$.</p>
+<p><b>(b)</b> No: $n$ vs $2n$.</p>
+<p><b>(c)</b> $\frac{2f}{2g}=\frac fg\to1$.</p>
+<p><b>(d)</b> $\lim\frac{f^2}{g^2}=\lim\frac fg\cdot\lim\frac fg=1$.</p>
+<p><b>(e)</b> $f=n+1$, $g=n$: $\frac{2^{n+1}}{2^n}=2\not\to1$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="asy03" data-topic="asym" data-src="Rec 6 #3" data-diff="2" data-title="Witness constants c and n₀">
+<div class="q"><p>Using $f\in O(g)$ iff $\exists c\in\mathbb Z^+\,\exists n_0\,\forall n\ge n_0.\;c\,g(n)\ge|f(n)|$, decide whether $f\in O(g)$ and whether $g\in O(f)$. Give $c,n_0$ when one holds.</p>
+<p>(a) $f=n^2$, $g=3n$. (b) $f=\frac{3n-7}{n+4}$, $g=4$. (c) $f=1+(n\sin(n\pi/2))^2$, $g=3n$.</p></div>
+<div class="h">(c): what is $\sin(n\pi/2)$ for even $n$? For odd $n$?</div>
+<div class="s">
+<p><b>(a)</b> $f\notin O(g)$ since $f/g\to\infty$. $g\in O(f)$ with $c=1,n_0=3$.</p>
+<p><b>(b)</b> $f\in O(g)$ with $c=1,n_0=1$, since $|f|\lt3$. $g\in O(f)$ with $c=2,n_0=15$, since $2f\ge4\iff n\ge15$.</p>
+<p><b>(c)</b> For even $n$, $f=1$; for odd $n$, $f=n^2+1$. $f\notin O(g)$: along odd $n$, $f/g\to\infty$. $g\notin O(f)$: along even $n$, $g/f=3n\to\infty$. Neither holds.</p>
+</div>
+</article>
+
+<article class="prob" data-id="asy04" data-topic="asym" data-src="PS 4 #3a" data-diff="2" data-title="Strongest relationship table">
+<div class="q"><p>Give the strongest relationship from $\sim,\Theta,O,o,\omega,\Omega$, or none:</p>
+<ol type="a"><li>$\log_6(120n)$ vs $\log_{6120}n$</li><li>$n^{120}$ vs $n^6+6^n$</li><li>$2+\cos(6120^n+n)$ vs $\log_2n$</li><li>$n^{\sqrt3}$ vs $n\sqrt n+n(\log n)^6$</li><li>$2^n+\sqrt n$ vs $(1+\sqrt n)2^n$</li><li>$2^{\lceil\log_2n\rceil}$ vs $3^{\lceil\log_3n\rceil}$</li></ol></div>
+<div class="h">(a) A change of log base is a constant factor. (f) $2^{\lceil\log_2 n\rceil}$ is between $n$ and $2n$.</div>
+<div class="s">
+<p>(a) $\Theta$ (the ratio tends to $\log 6120/\log 6\ne1$). (b) $o$. (c) $o$, since $f\in[1,3]$. (d) $\omega$, since $\sqrt3\approx1.73\gt1.5$. (e) $o$. (f) $\Theta$ (between $n$ and $3n$, and the ratio oscillates, so not $\sim$).</p>
+</div>
+</article>
+
+<article class="prob" data-id="asy05" data-topic="asym" data-src="PS 4 #3b" data-diff="2" data-title="Central binomial vs 4ⁿ/√n">
+<div class="q"><p>Compare $f(n)=\frac{(2n)!}{(n!)^2}$ and $g(n)=\frac{4^n}{\sqrt n}$. Use Stirling's formula $n!\sim\sqrt{2\pi n}(n/e)^n$.</p></div>
+<div class="h">Substitute Stirling for $(2n)!$ and for each $n!$. The powers of $e$ cancel.</div>
+<div class="s">
+<p>$$f\sim\frac{\sqrt{4\pi n}(2n/e)^{2n}}{2\pi n(n/e)^{2n}}=\frac{4^n}{\sqrt{\pi n}}=\frac1{\sqrt\pi}g(n).$$</p>
+<p>So $f\in\Theta(g)$ but $f\not\sim g$, since the ratio tends to $1/\sqrt\pi$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="asy06" data-topic="asym" data-src="PS 4 #4" data-diff="3" data-title="Adding a smaller function">
+<div class="q"><p>(a) Let $f,g$ be positive with $g\in O(f)$ and $h=f+g$. Prove $h\in\Theta(f)$ from the definitions (not limits). (b) Find such $f,g$ where $\lim (f+g)/f$ does not exist.</p></div>
+<div class="h">(a) From $g\le cf$ for $n\ge n_0$, add $f$ to both sides. The other direction is easy since $g\gt0$.</div>
+<div class="h">(b) Use something oscillating, like $f(n)=2^{\lceil\log_2n\rceil}$.</div>
+<div class="s">
+<p><b>(a)</b> There are $c,n_0$ with $g(n)\le cf(n)$ for $n\ge n_0$. Then $h=f+g\le(c+1)f$, so $h\in O(f)$. Also $f\lt f+g=h$ for all $n$, so $f\in O(h)$ with $c=1$. Hence $h\in\Theta(f)$.</p>
+<p><b>(b)</b> $f=2^{\lceil\log_2n\rceil}$ and $g=2n$. Then $g\le 2f$, and $(f+g)/f$ oscillates between about 2 and 3 forever, so the limit doesn't exist, yet $f+g\in\Theta(f)$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="asy07" data-topic="asym" data-src="Original" data-diff="1" data-title="Order these functions">
+<div class="q"><p>Order from slowest-growing to fastest: $n!$, $\;\log_2(n^5)$, $\;n\log n$, $\;2^n$, $\;\sqrt n$, $\;(\log n)^{10}$, $\;n^n$, $\;3^n$, $\;n^2/1000$, $\;10^{6}$.</p></div>
+<div class="h">Constants &lt; logs &lt; powers of logs &lt; polynomials &lt; exponentials (by base) &lt; factorial &lt; $n^n$.</div>
+<div class="s"><p>$10^6\ll\log_2(n^5)\ll(\log n)^{10}\ll\sqrt n\ll n\log n\ll n^2/1000\ll2^n\ll3^n\ll n!\ll n^n$.</p>
+<p>$\log_2(n^5)=5\log_2n$ is $\Theta(\log n)$. Constant factors (like $1/1000$) never change the order.</p></div>
+</article>
+
+<!-- ======================= RECURRENCES ======================= -->
+<article class="prob" data-id="rec01" data-topic="rec" data-src="Lecture 7" data-diff="1" data-title="Towers of Hanoi">
+<div class="q"><p>The recursive Hanoi algorithm uses $T(1)=1$ and $T(n)=2T(n-1)+1$ moves. Guess a closed form from small values and prove it by induction.</p></div>
+<div class="h">The values are $1,3,7,15,31$.</div>
+<div class="s">
+<p><b>Guess:</b> $T(n)=2^n-1$.</p>
+<p><b>Base:</b> $T(1)=1=2^1-1$.</p>
+<p><b>Step:</b> $T(n+1)=2(2^n-1)+1=2^{n+1}-1$.</p>
+<p>For 64 disks that's $2^{64}-1$ moves, about half a trillion years at one move per second.</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec02" data-topic="rec" data-src="Lecture 7" data-diff="2" data-title="Merge sort by plug and chug">
+<div class="q"><p>Solve $T(1)=0$, $T(n)=2T(n/2)+n-1$ exactly for $n$ a power of 2.</p></div>
+<div class="h">Expand: $T(n)=(n-1)+(n-2)+4T(n/4)=\dots$ After $k$ steps: $\sum_{i=0}^{k-1}(n-2^i)+2^kT(n/2^k)$.</div>
+<div class="s">
+<p>After $k$ steps: $T(n)=kn-(2^k-1)+2^kT(n/2^k)$. Set $k=\log_2n$: $T(n)=n\log_2n-(n-1)+n\cdot0=n\log_2n-n+1$.</p>
+<p>Verify by induction: $2\left(\tfrac n2\log_2\tfrac n2-\tfrac n2+1\right)+n-1=n\log_2n-n+1$ ✓.</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec03" data-topic="rec" data-src="Rec 7 #1" data-diff="2" data-title="Mini-Tetris tilings">
+<div class="q"><p>Tile a $2\times n$ board (2 rows, $n$ columns) using three shapes: a vertical domino (2 tall, 1 wide), a horizontal domino (1 tall, 2 wide) and a $2\times2$ square. (a) Find $T_1,T_2,T_3$. (b) Explain $T_n=T_{n-1}+2T_{n-2}$. (c) Guess a closed form and prove it.</p></div>
+<div class="h">(b) What can cover the first column? A vertical piece leaves $2\times(n-1)$. Each of the two $2\times2$ options leaves $2\times(n-2)$.</div>
+<div class="h">(c) The values are $1,3,5,11,21,43$. Look at $3T_n$.</div>
+<div class="s">
+<p><b>(a)</b> $T_1=1$, $T_2=3$, $T_3=5$.</p>
+<p><b>(b)</b> Look at the first column. Either a vertical domino covers it ($T_{n-1}$ ways to finish), or a $2\times2$ square covers the first two columns ($T_{n-2}$ ways), or two horizontal dominoes do. A horizontal domino in the top row forces one directly below it ($T_{n-2}$ ways).</p>
+<p><b>(c)</b> $3T_n$ = 3, 9, 15, 33, 63, 129, which is $2^{n+1}\pm1$. Guess $T_n=\frac{2^{n+1}+(-1)^n}3$.</p>
+<p>Strong induction with bases $n=1,2$. Step: $T_n=\frac{2^n+(-1)^{n-1}}3+2\cdot\frac{2^{n-1}+(-1)^{n-2}}3=\frac{2^{n+1}-(-1)^n+2(-1)^n}3=\frac{2^{n+1}+(-1)^n}3$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec04" data-topic="rec" data-src="Rec 7 #2" data-diff="2" data-title="TriMergeSort">
+<div class="q"><p>$T(1)=0$, $T(n)=3T(n/3)+2n-3$. (a) Plug and chug for an exact closed form when $n=3^k$. (b) Find a Θ bound with the Master Theorem for general $n$. (c) Is it asymptotically faster than MergeSort?</p></div>
+<div class="h">After $k$ steps: $3^kT(n/3^k)+2kn-(3+9+\dots+3^k)$.</div>
+<div class="s">
+<p><b>(a)</b> $T(n)=3^kT(n/3^k)+2kn-\frac{3(3^k-1)}2$. With $k=\log_3n$: $T(n)=2n\log_3n-\frac32n+\frac32$, then verify by induction.</p>
+<p><b>(b)</b> $a=b=3$, so $c=\log_33=1$, and $f=2n-3\in\Theta(n^1)$. Case 2: $T\in\Theta(n\log n)$.</p>
+<p><b>(c)</b> No. Both are $\Theta(n\log n)$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec05" data-topic="rec" data-src="Rec 7 #3" data-diff="2" data-title="Master Theorem drill">
+<div class="q"><p>Find Θ bounds (with $T(1)=1$): (a) $3T(n/3)+n$ (b) $4T(n/3)+n^2$ (c) $4T(n/3)+n$ (d) Explain why the Master Theorem fails for $2T(n/2)+n\log n$.</p></div>
+<div class="h">Compute $c=\log_b a$ and compare $f$ to $n^c$ <i>polynomially</i>. Remember the regularity check in case 3.</div>
+<div class="s">
+<p><b>(a)</b> $c=1$, $f=\Theta(n)$. Case 2: $\Theta(n\log n)$.</p>
+<p><b>(b)</b> $c=\log_34\approx1.26$, $f=n^2$. Case 3, with regularity $4(n/3)^2=\frac49n^2$: $\Theta(n^2)$.</p>
+<p><b>(c)</b> $c\approx1.26\gt1$, so $n\in O(n^{c-\epsilon})$. Case 1: $\Theta(n^{\log_34})$.</p>
+<p><b>(d)</b> $c=1$. $n\log n$ is too big for case 2 but not bigger than $n^{1+\epsilon}$ for any $\epsilon$, so case 3 fails too. It falls in the gap. (The answer is $\Theta(n\log^2n)$, via a recursion tree.)</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec06" data-topic="rec" data-src="PS 4 #1" data-diff="2" data-title="Pell numbers by strong induction">
+<div class="q"><p>$x_0=0$, $x_1=1$, $x_2=2$, $x_n=5x_{n-2}+2x_{n-3}$. (a) Compute $x_3..x_6$. (b) Prove $x_n=\frac{(1+\sqrt2)^n-(1-\sqrt2)^n}{2\sqrt2}$.</p></div>
+<div class="h">The recurrence reaches back 3 steps, so you need 3 base cases.</div>
+<div class="h">Key identity: $5(1\pm\sqrt2)+2=(1\pm\sqrt2)^3=7\pm5\sqrt2$.</div>
+<div class="s">
+<p><b>(a)</b> $5, 12, 29, 70$.</p>
+<p><b>(b)</b> Strong induction with bases $n=0,1,2$, checked directly: $0$, $\frac{2\sqrt2}{2\sqrt2}=1$, $\frac{4\sqrt2}{2\sqrt2}=2$.</p>
+<p>Step ($n\ge3$): substitute the formula for $x_{n-2}$ and $x_{n-3}$ and group by base:
+$$x_n=\frac{(1+\sqrt2)^{n-3}\big[5(1+\sqrt2)+2\big]-(1-\sqrt2)^{n-3}\big[5(1-\sqrt2)+2\big]}{2\sqrt2}.$$</p>
+<p>Each bracket equals $(1\pm\sqrt2)^3$, giving the formula for $x_n$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec07" data-topic="rec" data-src="PS 4 #2" data-diff="2" data-title="Characteristic roots">
+<div class="q"><p>$a_n=3a_{n-1}+10a_{n-2}$. (a) Find all solutions of the form $r^n$. (b) Show linear combinations of solutions are solutions. (c) Find the solution with $a_0=11$, $a_2=2$.</p></div>
+<div class="h">Divide $r^n=3r^{n-1}+10r^{n-2}$ by $r^{n-2}$.</div>
+<div class="s">
+<p><b>(a)</b> $r^2=3r+10$, so $r=5$ or $r=-2$. The solutions are $5^n$ and $(-2)^n$.</p>
+<p><b>(b)</b> If $a_n$ and $b_n$ satisfy the recurrence, then $\lambda a_n+\tau b_n=3(\lambda a_{n-1}+\tau b_{n-1})+10(\lambda a_{n-2}+\tau b_{n-2})$. No induction is needed.</p>
+<p><b>(c)</b> Write $a_n=\lambda(-2)^n+\tau5^n$. Then $\lambda+\tau=11$ and $4\lambda+25\tau=2$, so $\lambda=13$, $\tau=-2$: $a_n=13(-2)^n-2\cdot5^n$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec08" data-topic="rec" data-src="PS 4 #5" data-diff="3" data-title="Strassen vs naive matrix multiplication">
+<div class="q"><p>(a) Naive block multiplication: $S(n)=8S(n/2)+4(n/2)^2$. Show $S\in\Theta(n^3)$. (b) Strassen: $T(1)=1$, $T(n)=7T(n/2)+18n^2$. Plug and chug for $n=2^k$. (c) Find a Θ bound. (d) Compare with $\Theta(n^3)$.</p></div>
+<div class="h">(b) The sum is geometric with ratio $7/4$. Use $7^{\log_2n}=n^{\log_27}$.</div>
+<div class="s">
+<p><b>(a)</b> $c=\log_28=3$ and $f=n^2\in O(n^{3-\epsilon})$. Case 1: $\Theta(n^3)$.</p>
+<p><b>(b)</b> $$T(n)=7^kT(1)+18n^2\sum_{i=0}^{k-1}(7/4)^i=n^{\log_27}+24n^2\big((7/4)^{\log_2n}-1\big)=25n^{\log_27}-24n^2.$$</p>
+<p><b>(c)</b> Case 1: $\Theta(n^{\log_27})\approx\Theta(n^{2.81})$.</p>
+<p><b>(d)</b> $n^{\log_27}\in o(n^3)$, since the ratio is $n^{\log_27-3}\to0$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec09" data-topic="rec" data-src="Original" data-diff="2" data-title="Solve a second-order recurrence">
+<div class="q"><p>Solve $a_0=0$, $a_1=5$, $a_n=a_{n-1}+6a_{n-2}$ exactly, and check $a_2$ and $a_3$.</p></div>
+<div class="h">The characteristic equation $r^2=r+6$ has roots $3$ and $-2$.</div>
+<div class="s">
+<p>$a_n=\lambda3^n+\tau(-2)^n$. Then $\lambda+\tau=0$ and $3\lambda-2\tau=5$, so $\lambda=1,\tau=-1$: $a_n=3^n-(-2)^n$.</p>
+<p>Check: $a_2=a_1+6a_0=5=9-4$ ✓. $a_3=a_2+6a_1=35=27+8$ ✓.</p>
+</div>
+</article>
+
+<article class="prob" data-id="rec10" data-topic="rec" data-src="Original" data-diff="1" data-title="Three quick Master Theorem calls">
+<div class="q"><p>Give Θ bounds: (a) $T(n)=8T(n/2)+n^2$ (b) $T(n)=T(n/2)+n$ (c) $T(n)=2T(n/4)+\sqrt n$ (d) $T(n)=T(n-1)+n$ (careful).</p></div>
+<div class="h">(d) is not divide-and-conquer. Unroll it into a sum.</div>
+<div class="s">
+<p><b>(a)</b> $c=3$, $f=n^2$. Case 1: $\Theta(n^3)$.</p>
+<p><b>(b)</b> $c=0$, $f=n$. Case 3 with regularity $\frac n2\le\frac12n$: $\Theta(n)$.</p>
+<p><b>(c)</b> $c=\log_42=\frac12$, $f=\sqrt n$. Case 2: $\Theta(\sqrt n\log n)$.</p>
+<p><b>(d)</b> The Master Theorem doesn't apply. Unrolling gives $T(n)=T(0)+\sum_{k=1}^nk=\Theta(n^2)$.</p>
+</div>
+</article>
+
+<!-- ======================= GCD ======================= -->
+<article class="prob" data-id="gcd01" data-topic="gcd" data-src="Lecture 8" data-diff="2" data-title="Die Hard jugs">
+<div class="q"><p>Jugs hold $a$ and $b$ gallons. Moves: empty a jug, fill a jug, or pour one jug into the other until the source is empty or the destination is full. (a) With $a=3,b=5$, measure exactly 4 gallons. (b) Prove every reachable amount is an integer linear combination of $a$ and $b$. (c) Why can't 6- and 9-gallon jugs make 5 gallons?</p></div>
+<div class="h">(b) State machine on $(x,y)$ with invariant "both $x$ and $y$ are ILCs of $a,b$". List every value a new coordinate can take.</div>
+<div class="s">
+<p><b>(a)</b> $(0,0)\to(0,5)\to(3,2)\to(0,2)\to(2,0)\to(2,5)\to(3,4)$. The 5-gallon jug holds 4.</p>
+<p><b>(b)</b> The invariant holds at $(0,0)$ ($0=0a+0b$). Each new coordinate is one of $0, a, b, x, y, x+y, x+y-a, x+y-b$, and each of these is an ILC if $x,y$ are (e.g. $x+y-a=(s+u-1)a+(t+v)b$). By the Invariant Principle every reachable amount is an ILC.</p>
+<p><b>(c)</b> Every ILC of 6 and 9 is a multiple of 3, and 5 is not.</p>
+</div>
+</article>
+
+<article class="prob" data-id="gcd02" data-topic="gcd" data-src="Lecture 8" data-diff="1" data-title="Euclid + Pulverizer on 1001 and 777">
+<div class="q"><p>Compute $\gcd(1001,777)$ with Euclid's algorithm, then express it as $s\cdot1001+t\cdot777$.</p></div>
+<div class="h">Remainders: 224, 105, 14, 7, 0.</div>
+<div class="h">Write each remainder as an ILC of $a=1001$, $b=777$: $224=a-b$, $105=b-3(a-b)$, and so on.</div>
+<div class="s">
+<p>$\gcd=7$. Pulverizer:</p>
+<ul>
+<li>$224=a-b$</li>
+<li>$105=777-3\cdot224=-3a+4b$</li>
+<li>$14=224-2\cdot105=7a-9b$</li>
+<li>$7=105-7\cdot14=-52a+67b$</li>
+</ul>
+<p>Check: $-52\cdot1001+67\cdot777=-52052+52059=7$ ✓.</p>
+</div>
+</article>
+
+<article class="prob" data-id="gcd03" data-topic="gcd" data-src="Original" data-diff="1" data-title="Pulverize 84 and 33">
+<div class="q"><p>Find $\gcd(84,33)$ and integers $s,t$ with $84s+33t=\gcd(84,33)$. Then find another pair $(s',t')$ with $s'\gt0$ and $t'\gt0$… or explain why none exists.</p></div>
+<div class="h">Remainders: $84=2\cdot33+18$, $33=1\cdot18+15$, $18=1\cdot15+3$, $15=5\cdot3$.</div>
+<div class="h">All solutions are $(s+11k,\ t-28k)$. Can both coordinates be positive?</div>
+<div class="s">
+<p>$18=84-2\cdot33$; $15=33-18=-84+3\cdot33$; $3=18-15=2\cdot84-5\cdot33$. So $\gcd=3$, with $s=2,t=-5$. Check: $168-165=3$ ✓.</p>
+<p>All solutions: $(2+11k,\,-5-28k)$. For $t\gt0$ we need $k\le-1$, which makes $s\le-9$. So no solution has both positive. That makes sense: $84s+33t\ge117\gt3$ whenever $s,t\ge1$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="gcd04" data-topic="gcd" data-src="Rec 8 #1" data-diff="2" data-title="Consecutive Fibonacci numbers are coprime">
+<div class="q"><p>Prove by induction that $\gcd(F_n,F_{n+1})=1$ for all $n\ge0$.</p></div>
+<div class="h">In the step, suppose $d\gt1$ divides $F_{n+1}$ and $F_{n+2}$. Then $d$ divides an integer linear combination of them. Which one gives $F_n$?</div>
+<div class="s">
+<p>$P(n)$: $\gcd(F_n,F_{n+1})=1$. <b>Base:</b> $\gcd(0,1)=1$.</p>
+<p><b>Step:</b> assume $P(n)$. If some $d\gt1$ divided both $F_{n+1}$ and $F_{n+2}$, it would divide $F_{n+2}-F_{n+1}=F_n$. Then $d$ would be a common divisor of $F_n,F_{n+1}$ greater than 1, contradicting $P(n)$. So $P(n+1)$ holds.</p>
+<p>By induction, $P(n)$ holds for all $n\ge0$. ∎ (Equivalently, $\gcd(F_{n+1},F_{n+2})=\gcd(F_{n+1},F_n)$ by the subtraction lemma.)</p>
+</div>
+</article>
+
+<article class="prob" data-id="gcd05" data-topic="gcd" data-src="Rec 8 #2" data-diff="2" data-title="Hoppip and the berry">
+<div class="q"><p>$n$ pebbles form a cycle. Hoppip always hops exactly $k$ pebbles clockwise ($0\lt k\lt n$). The berry is on the next pebble clockwise. (a) When can't he reach it? (b) How does the Pulverizer find the number of hops? (c) Solve $n=50$, $k=21$. What's strange about the Pulverizer's answer, and how do you fix it?</p></div>
+<div class="h">Reaching the berry after $h$ hops and $c$ full laps means $hk=cn+1$. So 1 must be an ILC of $n$ and $k$.</div>
+<div class="h">The Pulverizer gives $1=8\cdot50-19\cdot21$. Shift by $(-21)\cdot50+50\cdot21=0$.</div>
+<div class="s">
+<p><b>(a)</b> Whenever $\gcd(n,k)\gt1$ (e.g. $k\mid n$, like $k=3,n=6$), every landing spot is a multiple of the gcd from the start.</p>
+<p><b>(b)</b> We need $hk-cn=1$, which is possible iff $\gcd(n,k)=1$. The Pulverizer gives $s n+t k=1$, and $h=t$.</p>
+<p><b>(c)</b> The Pulverizer gives $1=8\cdot50+(-19)\cdot21$: negative hops! Add $0=-21\cdot50+50\cdot21$ to get $1=-13\cdot50+31\cdot21$. So <b>31 hops</b> (and 13 laps). Check: $31\cdot21=651=13\cdot50+1$ ✓.</p>
+</div>
+</article>
+
+<article class="prob" data-id="gcd06" data-topic="gcd" data-src="Lecture 8 / 9" data-diff="1" data-title="Prove the subtraction lemma">
+<div class="q"><p>Prove that for all integers $a,b$, the common divisors of $a$ and $b$ are exactly the common divisors of $a$ and $b-a$. Conclude $\gcd(a,b)=\gcd(a,b-a)$.</p></div>
+<div class="h">Unpack $d\mid a$ as $a=dx$ and $d\mid b$ as $b=dy$. Show both inclusions.</div>
+<div class="s">
+<p>(⊆) If $a=dx$ and $b=dy$, then $b-a=d(y-x)$, so $d\mid b-a$.</p>
+<p>(⊇) If $a=dx$ and $b-a=dz$, then $b=d(x+z)$, so $d\mid b$.</p>
+<p>The two sets of common divisors are equal, so their greatest elements (gcds) are equal. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="gcd07" data-topic="gcd" data-src="Original" data-diff="1" data-title="gcd of neighbours">
+<div class="q"><p>(a) Prove $\gcd(n,n+1)=1$ for every integer $n$. (b) Prove that $\gcd(a,b)$ divides $\gcd(a,\,3a+b)$ and conversely, so they are equal.</p></div>
+<div class="h">(a) Any common divisor divides $(n+1)-n$. (b) Use D3: a divisor of $a$ and $b$ divides $3a+b$, and a divisor of $a$ and $3a+b$ divides $(3a+b)-3a$.</div>
+<div class="s">
+<p><b>(a)</b> If $d\mid n$ and $d\mid n+1$, then $d\mid(n+1)-n=1$, so $d=\pm1$ and the gcd is 1. Equivalently, $1=(n+1)\cdot1+n\cdot(-1)$ is an ILC.</p>
+<p><b>(b)</b> Common divisors of $(a,b)$ divide $3a+b$, and common divisors of $(a,3a+b)$ divide $b=(3a+b)-3a$. So the sets of common divisors coincide and the gcds are equal (and divide each other).</p>
+</div>
+</article>
+
+<article class="prob" data-id="gcd08" data-topic="gcd" data-src="Original" data-diff="2" data-title="Which amounts can 9 and 15 make?">
+<div class="q"><p>With a 9-gallon and a 15-gallon jug, can you measure exactly 4 gallons? 6 gallons? Justify both answers using gcds and Bézout. (You don't need to give the pouring sequence for 6.)</p></div>
+<div class="h">Every reachable amount is an ILC of 9 and 15. What does that say about divisibility by $\gcd(9,15)$?</div>
+<div class="s">
+<p>$\gcd(9,15)=3$. Every reachable amount is an ILC, hence a multiple of 3, so <b>4 is impossible</b>.</p>
+<p>For 6: $6=2\cdot3$ and $3=2\cdot9-15$, so $6=4\cdot9-2\cdot15$. That shows 6 is an ILC, but being an ILC doesn't by itself prove reachability (the invariant test is one-sided). Here 6 is reachable: $(9,0)\to(0,9)\to(9,9)\to(3,15)\to(3,0)\to(0,3)\to(9,3)\to(0,12)\to(9,12)\to(6,15)$.</p>
+</div>
+</article>
+
+<!-- ======================= MODULAR ======================= -->
+<article class="prob" data-id="mod01" data-topic="mod" data-src="Rec 9 #1" data-diff="2" data-title="Four remainder computations">
+<div class="q"><p>(a) Last digit of $7^{100}$. (b) $96^{123456789}\bmod97$. (c) $3^{101}\bmod21$. (d) The integers 10 to 99 are written consecutively to form $N=101112\ldots9899$. Find $N\bmod9$.</p></div>
+<div class="h">(a) Find a power of 7 that is $\equiv1\pmod{10}$. (b) $96\equiv-1$.</div>
+<div class="h">(c) List powers of 3 mod 21 until they repeat. (d) $100\equiv_91$, so $N\equiv$ the sum of the two-digit numbers.</div>
+<div class="s">
+<p><b>(a)</b> $7^4=2401\equiv_{10}1$, so $7^{100}=(7^4)^{25}\equiv1$. The last digit is <b>1</b>.</p>
+<p><b>(b)</b> $96\equiv_{97}-1$ and the exponent is odd, so the result is $-1\equiv$ <b>96</b>.</p>
+<p><b>(c)</b> The powers are $3,9,6,18,12,15,3,\dots$ (period 6 from $3^1$). $101=1+6\cdot16+4$, so $3^{101}\equiv3^5\equiv$ <b>12</b>.</p>
+<p><b>(d)</b> $N=\sum n_i\cdot100^{j}$ and $100\equiv_91$, so $N\equiv_9\sum_{n=10}^{99}n=4905\equiv_9 4+9+0+5=18\equiv$ <b>0</b>.</p>
+<p class="muted">Unofficial solutions; Rec 9 solutions weren't uploaded. Each answer was checked by computer.</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod02" data-topic="mod" data-src="Rec 9 #2" data-diff="1" data-title="Inverses via the Pulverizer">
+<div class="q"><p>Given $k,n\gt0$ with $\gcd(k,n)=1$, show how to use the Pulverizer to find $s$ with $sk\equiv_n1$.</p></div>
+<div class="h">The Pulverizer gives $sk+tn=1$. Read that equation mod $n$.</div>
+<div class="s"><p>The Pulverizer on $(n,k)$ gives integers $s,t$ with $sk+tn=\gcd(k,n)=1$. Mod $n$, the term $tn\equiv0$, so $sk\equiv_n1$. Take $s\bmod n$ to get the inverse in $[0,n)$.</p></div>
+</article>
+
+<article class="prob" data-id="mod03" data-topic="mod" data-src="Rec 9 #3" data-diff="2" data-title="Repeated squaring">
+<div class="q"><p>(a) Compute $13^8\bmod100$ by multiplying by 13 each step. (b) Compute $13^2,13^4,13^8,13^{16},13^{32}\bmod100$ by squaring. (c) Find $13^{50}\bmod100$ in 2 more multiplications. (d) Explain why $m^e\bmod n$ takes at most about $2\log_2e$ steps.</p></div>
+<div class="h">(c) $50=32+16+2$.</div>
+<div class="s">
+<p><b>(a)</b> 13, 69, 97, 61, 93, 9, 17, <b>21</b>.</p>
+<p><b>(b)</b> $13^2\equiv69$, $13^4\equiv69^2\equiv61$, $13^8\equiv61^2\equiv21$, $13^{16}\equiv21^2\equiv41$, $13^{32}\equiv41^2\equiv81$.</p>
+<p><b>(c)</b> $81\cdot41=3321\equiv21$, then $21\cdot69=1449\equiv$ <b>49</b>.</p>
+<p><b>(d)</b> $e$ has about $\log_2e$ binary digits. Squaring $\log_2e$ times gives every $m^{2^i}$, and multiplying together those for the 1-bits takes at most $\log_2e$ more steps. Reduce mod $n$ after each step.</p>
+<p class="muted">Unofficial solutions, checked by computer.</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod04" data-topic="mod" data-src="Lecture 9" data-diff="2" data-title="Last two digits of a monster">
+<div class="q"><p>Find the last two digits of $x=11335^{11111}\,(6+7799^{5000})$.</p></div>
+<div class="h">Work mod 100. Reduce the bases (not the exponents): $11335\equiv35$ and $7799\equiv99\equiv-1$.</div>
+<div class="h">Powers of 35 mod 100: 35, 25, 75, 25, 75, …</div>
+<div class="s">
+<p>$x\equiv_{100}35^{11111}(6+(-1)^{5000})=35^{11111}\cdot7$.</p>
+<p>$35^2\equiv25$, $35^3\equiv75$, $35^4\equiv25$, … Odd powers of at least 3 give 75, so $35^{11111}\equiv75$.</p>
+<p>$x\equiv75\cdot7=525\equiv$ <b>25</b>.</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod05" data-topic="mod" data-src="Lecture 9" data-diff="1" data-title="Dividing in a congruence">
+<div class="q"><p>(a) Show 3 has no inverse mod 6, using $3\cdot5\equiv_63\cdot1$. (b) 7 and 13 are inverses mod 30. Solve $7x\equiv_{30}14$ and $7x\equiv_{30}12$.</p></div>
+<div class="h">Multiply both sides by 13 instead of dividing by 7.</div>
+<div class="s">
+<p><b>(a)</b> If $3^{-1}$ existed, multiplying $3\cdot5\equiv_63\cdot1$ by it would give $5\equiv_61$, which is false. (Also $\gcd(3,6)=3\ne1$.)</p>
+<p><b>(b)</b> $x\equiv13\cdot14=182\equiv$ <b>2</b>, and $x\equiv13\cdot12=156\equiv$ <b>6</b>. Check: $7\cdot6=42\equiv12$ ✓.</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod06" data-topic="mod" data-src="Lecture 9" data-diff="1" data-title="The divisible-by-9 rule">
+<div class="q"><p>Prove that $n\equiv_9 s(n)$, where $s(n)$ is the sum of the decimal digits of $n$. Conclude $9\mid n\iff9\mid s(n)$.</p></div>
+<div class="h">Write $n=\sum d_i10^i$ and use $10\equiv_91$.</div>
+<div class="s">
+<p>$n=\sum_{i=0}^kd_i10^i$. Since $10\equiv_91$, we get $10^i\equiv_91$, so $n\equiv_9\sum d_i=s(n)$. Then $9\mid n\iff n\equiv_90\iff s(n)\equiv_90\iff9\mid s(n)$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod07" data-topic="mod" data-src="Original (PS 5 skills)" data-diff="2" data-title="Inverse of 13 mod 29, two ways">
+<div class="q"><p>Find the inverse of 13 modulo 29 in $[0,29)$ (a) with the Pulverizer and (b) with Fermat's Little Theorem plus repeated squaring. Do it by hand.</p></div>
+<div class="h">(a) $29=2\cdot13+3$ and $13=4\cdot3+1$.</div>
+<div class="h">(b) $13^{-1}\equiv13^{27}$. Compute $13^2,13^4,13^8,13^{16}$ mod 29, then $27=16+8+2+1$.</div>
+<div class="s">
+<p><b>(a)</b> $3=29-2\cdot13$, so $1=13-4\cdot3=13-4(29-2\cdot13)=9\cdot13-4\cdot29$. The inverse is <b>9</b>. Check: $117=4\cdot29+1$ ✓.</p>
+<p><b>(b)</b> $13^2=169\equiv24\equiv-5$; $13^4\equiv25\equiv-4$; $13^8\equiv16$; $13^{16}\equiv256\equiv24\equiv-5$.</p>
+<p>$13^{27}=13^{16}\cdot13^8\cdot13^2\cdot13\equiv(-5)(16)(-5)(13)=400\cdot13$. Since $400\equiv_{29}23\equiv-6$, this is $\equiv-78\equiv-78+87=$ <b>9</b> ✓.</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod08" data-topic="mod" data-src="Original" data-diff="1" data-title="Reduce the exponent with FLT">
+<div class="q"><p>Compute (a) $2^{1000}\bmod7$ and (b) $3^{2026}\bmod11$. Say exactly which theorem lets you shrink the exponent and why it applies.</p></div>
+<div class="h">FLT: $a^{p-1}\equiv_p1$ for prime $p\nmid a$, so reduce exponents mod $p-1$. For (a) there's an even smaller cycle: $2^3=8\equiv1$.</div>
+<div class="s">
+<p><b>(a)</b> $2^3\equiv_71$ and $1000=3\cdot333+1$, so $2^{1000}\equiv2$. (FLT with exponent mod 6 also works: $1000\equiv4$, and $2^4=16\equiv2$.)</p>
+<p><b>(b)</b> 11 is prime and $11\nmid3$, so $3^{10}\equiv1$. $2026\equiv6\pmod{10}$, so $3^{2026}\equiv3^6=729\equiv$ <b>3</b>. (Also $3^5=243\equiv1$ directly.)</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod09" data-topic="mod" data-src="Original" data-diff="1" data-title="Solve a linear congruence">
+<div class="q"><p>Solve $4x\equiv_97$. Then explain why $6x\equiv_97$ has no solution.</p></div>
+<div class="h">$\gcd(4,9)=1$, so 4 has an inverse mod 9. Try small multiples: $4\cdot7=28$.</div>
+<div class="s">
+<p>$4^{-1}\equiv_97$ (since $28\equiv1$), so $x\equiv7\cdot7=49\equiv$ <b>4</b>. Check: $16\equiv7$ ✓.</p>
+<p>For $6x\equiv_97$: $6x-7=9q$ would mean $3\mid6x-9q=7$, which is false. More generally, $ax\equiv_n b$ needs $\gcd(a,n)\mid b$.</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod10" data-topic="mod" data-src="Original (PS 5 skills)" data-diff="2" data-title="5 divides every fifth Fibonacci number">
+<div class="q"><p>(a) Show $F_{n+5}=5F_{n+1}+3F_n$ for all $n\ge0$. (b) Prove by induction on $k$ that $5\mid F_{5k}$ for all $k\ge0$.</p></div>
+<div class="h">(a) Expand $F_{n+5}=F_{n+4}+F_{n+3}$ repeatedly until only $F_{n+1}$ and $F_n$ remain.</div>
+<div class="h">(b) Apply (a) with $n=5k$. Mod 5, the first term vanishes.</div>
+<div class="s">
+<p><b>(a)</b> $F_{n+2}=F_{n+1}+F_n$, $F_{n+3}=2F_{n+1}+F_n$, $F_{n+4}=3F_{n+1}+2F_n$, $F_{n+5}=5F_{n+1}+3F_n$.</p>
+<p><b>(b)</b> $P(k)$: $5\mid F_{5k}$. Base: $F_0=0$. Step: $F_{5k+5}=5F_{5k+1}+3F_{5k}\equiv_5 3F_{5k}\equiv_5 0$ by $P(k)$.</p>
+<p>By induction, $P(k)$ holds for all $k\ge0$. ∎</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod11" data-topic="mod" data-src="Original" data-diff="2" data-title="aᵖ ≡ a for every a">
+<div class="q"><p>Let $p$ be prime. Prove $a^p\equiv_pa$ for <i>every</i> integer $a$, including multiples of $p$.</p></div>
+<div class="h">Cases: $p\mid a$, or $p\nmid a$ (then use FLT and multiply by $a$).</div>
+<div class="s">
+<p><b>Case $p\mid a$:</b> both sides are $\equiv0$.</p>
+<p><b>Case $p\nmid a$:</b> FLT gives $a^{p-1}\equiv_p1$. Multiplying by $a$ gives $a^p\equiv_pa$.</p>
+<p>The cases are exhaustive. ∎ (With $p=3$ this is the Rec 2 fact $3\mid n^3-n$.)</p>
+</div>
+</article>
+
+<article class="prob" data-id="mod12" data-topic="mod" data-src="Lecture 9" data-diff="3" data-title="Proof of Fermat's Little Theorem">
+<div class="q"><p>Prove: if $p$ is prime and $p\nmid a$, then $a^{p-1}\equiv_p1$.</p></div>
+<div class="h">Consider $a,2a,\dots,(p-1)a$ mod $p$. Show they are a rearrangement of $1,\dots,p-1$.</div>
+<div class="h">No two are congruent because $a$ is invertible mod $p$. Then multiply all of them together.</div>
+<div class="s">
+<p>None of $ia$ ($1\le i\le p-1$) is $\equiv0$, since $p\nmid i$ and $p\nmid a$. If $ia\equiv ja$, multiplying by $a^{-1}$ gives $i\equiv j$, so $i=j$. So the $p-1$ values are distinct nonzero residues, i.e. a permutation of $1,\dots,p-1$.</p>
+<p>Multiplying everything together: $(p-1)!\,a^{p-1}\equiv_p(p-1)!$. Since $\gcd((p-1)!,p)=1$, we can cancel $(p-1)!$ to get $a^{p-1}\equiv_p1$. ∎</p>
+</div>
+</article>
+
+</template>
