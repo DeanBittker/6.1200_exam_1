@@ -27,6 +27,7 @@
         id: el.dataset.id, topic: el.dataset.topic, src: el.dataset.src, diff: +el.dataset.diff || 2,
         title: el.dataset.title, q: el.querySelector(".q").innerHTML,
         hints: $$(".h", el).map((h) => h.innerHTML), sol: el.querySelector(".s").innerHTML,
+        layout: el.querySelector(".l") ? el.querySelector(".l").innerHTML : "",
       });
     });
   });
@@ -39,28 +40,28 @@
   // Three study days: Mon + Tue full days, Wed review until the 7:30 PM quiz. PSET 5 is already done.
   const PLAN = [
     { d: new Date(2026, 9, 12), focus: "Proofs, induction, strong induction, state machines + a head start on sums", tasks: [
-      { id: "m1", text: "10:30: Logic + Proof Techniques notes ('Must know' and 'Common traps' only)", link: "#t-logic" },
-      { id: "m2", text: "11:05: Which cards do you flip?, Negate it cleanly, log₂ 9 is irrational", link: "#p-log01" },
-      { id: "m3", text: "11:35: Induction notes, then write the induction template from memory", link: "#t-induction" },
-      { id: "m4", text: "11:50: 3 divides n³ − n, Sum of Fibonacci squares, the horses bug", link: "#p-ind02" },
-      { id: "m5", text: "1:15: Strong Induction notes, then postage, chocolate bar, 'all naturals are even' bug", link: "#p-str01" },
-      { id: "m6", text: "2:20: State Machines notes, then WALL-E (all 4 parts)", link: "#p-sm01" },
-      { id: "m7", text: "3:30: Coins, Multiplication by bit shifts, the 8-puzzle", link: "#p-sm04" },
-      { id: "m8", text: "4:45: Tick today's 5 topic checklists; redo anything rated 'Couldn't solve'", link: "#plan" },
-      { id: "m9", text: "6:30: Sum formulas from memory, then Σ k·2ᵏ, harmonic bounds, telescoping fraction sum", link: "#p-sum02" },
+      { id: "m1", text: "10:30: Logic + Proof Techniques notes ('Must know' and 'Common traps' only)", links: [["Logic notes", "#t-logic"], ["Proof Techniques notes", "#t-proofs"]] },
+      { id: "m2", text: "11:05: three logic/proof problems", links: [["Which cards do you flip?", "#p-log01"], ["Negate it cleanly", "#p-log08"], ["log₂ 9 is irrational", "#p-prf02"]] },
+      { id: "m3", text: "11:35: Induction notes, then write the induction template from memory on paper", links: [["Induction notes", "#t-induction"]] },
+      { id: "m4", text: "11:50: three induction problems, fully written out", links: [["3 divides n³ − n", "#p-ind02"], ["Sum of Fibonacci squares", "#p-ind05"], ["Find the bug: horses", "#p-ind07"]] },
+      { id: "m5", text: "1:15: Strong Induction notes, then three problems", links: [["Strong Induction notes", "#t-strong"], ["Postage with 3¢ and 5¢", "#p-str01"], ["Breaking a chocolate bar", "#p-str03"], ["Find the bug: all naturals are even", "#p-str02"]] },
+      { id: "m6", text: "2:20: State Machines notes, then WALL-E (all 4 parts)", links: [["State Machines notes", "#t-sm"], ["WALL-E chasing EVE", "#p-sm01"]] },
+      { id: "m7", text: "3:30: three state machine problems", links: [["Coins and derived variables", "#p-sm04"], ["Multiplication by bit shifts", "#p-sm05"], ["The unsolvable 8-puzzle", "#p-sm02"]] },
+      { id: "m8", text: "4:45: tick today's 5 topic checklists; redo anything rated 'Couldn't solve'", links: [["Redo list", "#plan"]] },
+      { id: "m9", text: "6:30: sum formulas from memory, then three sum problems", links: [["Formula sheet", "#sheet"], ["Σ k·2ᵏ", "#p-sum02"], ["Bounding the harmonic numbers", "#p-sum09"], ["A telescoping fraction sum", "#p-sum11"]] },
     ] },
     { d: new Date(2026, 9, 13), focus: "Sums, asymptotics, recurrences, a GCD/mod speed check, mock quiz", tasks: [
-      { id: "u1", text: "10:00: Perturbation for Σ k xᵏ, then the double sum", link: "#p-sum01" },
-      { id: "u3", text: "2:00: Asymptotics notes, then Which symbols fit?, Witness constants, ∼ versus Θ", link: "#p-asy01" },
-      { id: "u4", text: "3:15: Recurrences notes, then Master Theorem drill + quick calls, TriMergeSort, characteristic roots", link: "#p-rec05" },
-      { id: "u5", text: "4:45: Pulverize 84 and 33, Four remainder computations, Inverse of 13 mod 29", link: "#p-gcd03" },
-      { id: "u7", text: "8:15 PM: 2-hour mock quiz, no hints. Unlock and rate each problem after.", link: "#mock" },
+      { id: "u1", text: "10:00: two sum problems", links: [["Perturbation for Σ k xᵏ", "#p-sum01"], ["A double sum", "#p-sum06"]] },
+      { id: "u3", text: "2:00: Asymptotics notes, then three problems", links: [["Asymptotics notes", "#t-asym"], ["Which symbols fit?", "#p-asy01"], ["Witness constants c and n₀", "#p-asy03"], ["∼ versus Θ", "#p-asy02"]] },
+      { id: "u4", text: "3:15: Recurrences notes, then four problems", links: [["Recurrences notes", "#t-rec"], ["Master Theorem drill", "#p-rec05"], ["Three quick Master Theorem calls", "#p-rec10"], ["TriMergeSort", "#p-rec04"], ["Characteristic roots", "#p-rec07"]] },
+      { id: "u5", text: "4:45: GCD + mod speed check", links: [["Pulverize 84 and 33", "#p-gcd03"], ["Four remainder computations", "#p-mod01"], ["Inverse of 13 mod 29, two ways", "#p-mod07"]] },
+      { id: "u7", text: "8:15 PM: 2-hour mock quiz, no hints. Unlock and rate each problem after.", links: [["Mock quiz", "#mock"]] },
     ] },
     { d: new Date(2026, 9, 14), focus: "Review in the gaps between classes, stop at 5:15 PM. Quiz at 7:30 PM.", tasks: [
-      { id: "w2", text: "12 PM: redo everything on your redo list without hints, starting with mock misses", link: "#plan" },
-      { id: "w3", text: "2 PM: 'Common traps' for all 10 topics, then recite the formula sheet", link: "#notes" },
-      { id: "w4", text: "4 PM: skim PSETs 1–5 for lost points; write one page of 'Mistakes I won't make tonight'", link: "" },
-      { id: "w5", text: "5:15 PM: pack pencils + ID, stop studying, eat, arrive by 7:15. Write the proof structure even when stuck.", link: "" },
+      { id: "w2", text: "12 PM: redo everything on your redo list without hints, starting with mock misses. If empty:", links: [["Redo list", "#plan"], ["Mini-Tetris tilings", "#p-rec03"], ["Hoppip and the berry", "#p-gcd05"]] },
+      { id: "w3", text: "2 PM: 'Common traps' for all 10 topics, then recite the formula sheet", links: [["All topics", "#notes"], ["Formula sheet", "#sheet"]] },
+      { id: "w4", text: "4 PM: skim PSETs 1–5 for lost points; write one page of 'Mistakes I won't make tonight'", links: [] },
+      { id: "w5", text: "5:15 PM: pack pencils + ID, stop studying, eat, arrive by 7:15. Write the proof structure even when stuck.", links: [] },
     ] },
   ];
 
@@ -81,7 +82,7 @@
     const p = S.p[id];
     if (!p) return "new";
     if (p.rate) return p.rate;
-    if (p.t > 5 || p.marks || p.h) return "prog";
+    if (p.t > 5 || p.paper || p.h) return "prog";
     return "new";
   }
   const STATUS_LABEL = { new: "New", prog: "In progress", solved: "Solved", hints: "Needed hints", missed: "Couldn't solve" };
@@ -119,14 +120,12 @@
   const app = $("#app");
   let current = { name: "", id: "" };
   let fromHash = null; // where a problem was opened from
-  let board = null;
 
   function route() {
     const h = (location.hash || "#home").slice(1);
     let name = h, id = "";
     if (h.startsWith("t-")) { name = "topic"; id = h.slice(2); }
     else if (h.startsWith("p-")) { name = "problem"; id = h.slice(2); }
-    if (board) { board.destroy(); board = null; }
     current = { name, id };
     $$(".nav a").forEach((a) => {
       const n = a.dataset.nav;
@@ -160,7 +159,7 @@
         <div class="hero-text panel">
           <span class="eyebrow">6.1200J / 18.062J · Fall 2026</span>
           <h1>Quiz 1, Wednesday Oct 14, 7:30 PM</h1>
-          <p class="lede">Ten topics from Lectures 1–9: notes, a step-by-step method for each problem type, and ${PROBS.length} practice problems with a whiteboard. Solutions stay locked until you've genuinely tried.</p>
+          <p class="lede">Ten topics from Lectures 1–9: notes, a step-by-step method for each problem type, and ${PROBS.length} practice problems with hints and a proof layout for each. Solutions stay locked until you've genuinely tried.</p>
           <div class="stats">
             <div class="stat"><b>${attempted}/${PROBS.length}</b><span>problems attempted</span></div>
             <div class="stat"><b>${solved}</b><span>solved cleanly</span></div>
@@ -260,7 +259,7 @@
           <section class="tsec traps-box" id="s-traps"><h2><span class="tag">05</span>Common traps</h2>${t.traps}</section>
           <section class="tsec" id="s-practice"><h2><span class="tag">06</span>Practice problems for this topic</h2>
             ${t.pset ? `<div class="pset-note" style="margin-bottom:12px">${t.pset}</div>` : ""}
-            <p class="muted" style="font-size:.92rem">Each opens on its own page with a whiteboard. Hints unlock over time; the solution unlocks after a real attempt.</p>
+            <p class="muted" style="font-size:.92rem">Each opens on its own page. Work it on paper; hints unlock over time, and the solution (with how to lay out the proof) unlocks after a real attempt.</p>
             <div class="plist">${plist.map(probRowHTML).join("")}</div>
           </section>
           <section class="tsec" id="s-check"><h2><span class="tag">07</span>Checklist: I can…</h2>
@@ -372,8 +371,7 @@
         <span class="muted" style="margin-left:auto;font-size:.85rem">${i + 1} of ${list.length} in this topic</span>
       </div>
       ${mockOn ? `<div class="mock-banner"><span><b>Mock quiz running</b>: <span class="mono" id="mock-left">${fmtLong(mockRemaining())}</span> left. Try it without hints.</span><a href="#mock">Back to mock quiz →</a></div>` : ""}
-      <div class="prob-layout">
-        <aside class="prob-side">
+      <div class="prob-single">
           <div class="panel">
             <div class="prob-head">
               <span class="eyebrow">${esc(t.title)} · <span class="src">${esc(p.src)}</span></span>
@@ -400,11 +398,6 @@
             ${list[i - 1] ? `<a class="back" href="#p-${list[i - 1].id}">← Previous</a>` : "<span></span>"}
             ${list[i + 1] ? `<a class="back" href="#p-${list[i + 1].id}">Next problem →</a>` : `<a class="back" href="#t-${p.topic}">Done with topic →</a>`}
           </div>
-        </aside>
-
-        <section class="board-wrap" aria-label="Whiteboard">
-          <div id="board-host"></div>
-        </section>
       </div>
     </div>`;
 
@@ -416,7 +409,6 @@
       renderHints(p); typeset($("#hint-list", app));
     });
     renderLock(p);
-    board = new Board($("#board-host", app), id, () => { st.marks = board.count(); save(); refreshLock(p); });
   }
 
   function hintReady(p) {
@@ -428,7 +420,7 @@
   function renderHints(p) {
     const st = ps(p.id);
     $("#hint-list", app).innerHTML = p.hints.slice(0, st.h).map((h, i) => `<div class="hint"><span class="n">Hint ${i + 1}</span>${h}</div>`).join("") ||
-      `<p class="muted" style="margin:0;font-size:.92rem">Start on the board first. The first hint unlocks after ${HINT_FIRST} seconds on this problem, and each later hint ${HINT_GAP} seconds after the one before.</p>`;
+      `<p class="muted" style="margin:0;font-size:.92rem">Work on paper first. The first hint unlocks after ${HINT_FIRST} seconds on this problem, and each later hint ${HINT_GAP} seconds after the one before.</p>`;
     refreshHintBtn(p);
   }
   function refreshHintBtn(p) {
@@ -453,7 +445,8 @@
       panel.innerHTML = `
         <div class="lock-title" style="color:var(--accent)">${LOCK_ICON(true)}<h3>Solution</h3>
           <button class="btn ghost" id="hide-sol" type="button" style="margin-left:auto;padding:4px 10px;font-size:.85rem">Hide</button></div>
-        <div class="solution" id="sol-body">${p.sol}</div>
+        ${p.layout ? `<div class="layout"><span class="eyebrow">How to lay out your answer</span>${p.layout}</div>` : ""}
+        <div class="solution" id="sol-body"><span class="eyebrow">Full solution</span>${p.sol}</div>
         <div class="rate">
           <span class="eyebrow">How did it go?</span>
           <div class="row">
@@ -479,10 +472,12 @@
       <div class="lock-title">${LOCK_ICON(false)}<h3>Solution (locked)</h3></div>
       <p style="margin:0;font: 600 1.25rem var(--font-hand);color:var(--hi)">Struggle first: that's where the learning happens.</p>
       <ul class="req" id="req"></ul>
-      <div><label class="note-label" for="note">Your attempt or where you're stuck (counts as an attempt)</label>
+      <label class="paper-check"><input type="checkbox" id="paper" ${st.paper ? "checked" : ""}><span>I've written a full attempt on paper</span></label>
+      <div><label class="note-label" for="note">Or describe your approach / where you're stuck</label>
         <textarea class="note" id="note" placeholder="Write the method you're trying, or the exact step where you're stuck.">${esc(st.note || "")}</textarea></div>
       <button class="hold" id="hold" type="button" disabled><span class="fill"></span><span id="hold-label">Press and hold to reveal</span></button>`;
     bindNote(p);
+    $("#paper", panel).addEventListener("change", (e) => { st.paper = e.target.checked; save(); refreshLock(p); });
     bindHold(p);
     refreshLock(p);
   }
@@ -497,7 +492,7 @@
     const st = ps(p.id);
     const need = lockSecs(p);
     const timeOk = st.t >= need;
-    const tryOk = (st.marks || 0) >= 3 || (st.note || "").trim().length >= 15;
+    const tryOk = !!st.paper || (st.note || "").trim().length >= 15;
     return { need, timeOk, tryOk, ok: timeOk && tryOk };
   }
   function refreshLock(p) {
@@ -508,7 +503,7 @@
     const L = lockState(p);
     req.innerHTML = `
       <li class="${L.timeOk ? "ok" : ""}"><span class="dot">${L.timeOk ? "✓" : ""}</span><span>Spend ${fmt(L.need)} on this problem${L.timeOk ? "" : `: <b class="mono">${fmt(L.need - st.t)}</b> to go (only counts while this page is open)`}</span></li>
-      <li class="${L.tryOk ? "ok" : ""}"><span class="dot">${L.tryOk ? "✓" : ""}</span><span>Show an attempt: write on the whiteboard (3+ strokes) or describe your approach below</span></li>`;
+      <li class="${L.tryOk ? "ok" : ""}"><span class="dot">${L.tryOk ? "✓" : ""}</span><span>Show an attempt: tick the box once you've written it on paper, or describe your approach below</span></li>`;
     hold.disabled = !L.ok;
   }
 
@@ -548,128 +543,6 @@
     refreshLock(p);
   }, 1000);
 
-  // ------------------------------------------------------------------ whiteboard
-  const COLORS = [["Black", "#1f2328"], ["Blue", "#1f5fbf"], ["Red", "#c62828"], ["Green", "#2e7d32"]];
-  // strokes saved before the whiteboard switch used light chalk colors; draw them in dark ink
-  const OLD_INK = { "#f3f0e6": "#1f2328", "#f2d36b": "#b7791f", "#f2a3b8": "#c62828", "#93d2f2": "#1f5fbf" };
-  const SIZES = [["S", 2.2], ["M", 3.6], ["L", 6]];
-
-  function Board(host, id, onChange) {
-    const KEYB = "q1prep.board." + id;
-    let data = { h: window.innerWidth < 600 ? 560 : 760, s: [] };
-    try { const raw = localStorage.getItem(KEYB); if (raw) data = Object.assign(data, JSON.parse(raw)); } catch (e) {}
-    let tool = "pen", color = COLORS[0][1], size = SIZES[1][1], cur = null, redo = [];
-    host.innerHTML = `
-      <div class="tray" role="toolbar" aria-label="Whiteboard tools">
-        ${COLORS.map(([n, c], i) => `<button class="swatch" data-color="${c}" aria-label="${n} marker" aria-pressed="${i === 0}"><i style="background:${c}"></i></button>`).join("")}
-        <span class="sep"></span>
-        ${SIZES.map(([n, w], i) => `<button data-size="${w}" aria-pressed="${i === 1}" aria-label="Line size ${n}">${n}</button>`).join("")}
-        <span class="sep"></span>
-        <button data-tool="erase" aria-pressed="false">Eraser</button>
-        <button data-tool="pan" aria-pressed="false" title="Scroll the page with your finger instead of drawing">Scroll</button>
-        <span class="sep"></span>
-        <button data-act="undo">Undo</button>
-        <button data-act="redo">Redo</button>
-        <button data-act="more">More room</button>
-        <button data-act="clear">Clear</button>
-        <span class="status" aria-live="polite"></span>
-      </div>
-      <div class="board-frame">
-        <div class="board-surface">
-          <canvas aria-label="Whiteboard drawing area"></canvas>
-          <span class="board-hint"${data.s.length ? " hidden" : ""}>Work it out here…</span>
-        </div>
-      </div>`;
-    const surface = $(".board-surface", host), canvas = $("canvas", host), ctx = canvas.getContext("2d");
-    const hintEl = $(".board-hint", host), statusEl = $(".status", host);
-    let W = 0, dpr = 1;
-
-    function size_() {
-      dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
-      W = surface.clientWidth;
-      canvas.style.height = data.h + "px";
-      canvas.width = Math.round(W * dpr); canvas.height = Math.round(data.h * dpr);
-      draw();
-    }
-    function strokePath(s) {
-      const p = s.p;
-      ctx.globalCompositeOperation = s.e ? "destination-out" : "source-over";
-      ctx.strokeStyle = s.e ? "rgba(0,0,0,1)" : (OLD_INK[s.c] || s.c);
-      ctx.fillStyle = ctx.strokeStyle;
-      ctx.lineWidth = s.w; ctx.lineCap = "round"; ctx.lineJoin = "round";
-      ctx.globalAlpha = s.e ? 1 : 0.92;
-      if (p.length === 2) { ctx.beginPath(); ctx.arc(p[0], p[1], s.w / 2, 0, Math.PI * 2); ctx.fill(); return; }
-      ctx.beginPath(); ctx.moveTo(p[0], p[1]);
-      for (let i = 2; i < p.length - 2; i += 2) {
-        const mx = (p[i] + p[i + 2]) / 2, my = (p[i + 1] + p[i + 3]) / 2;
-        ctx.quadraticCurveTo(p[i], p[i + 1], mx, my);
-      }
-      ctx.lineTo(p[p.length - 2], p[p.length - 1]);
-      ctx.stroke();
-    }
-    function draw() {
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, W, data.h);
-      data.s.forEach(strokePath);
-      if (cur) strokePath(cur);
-      ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
-    }
-    function persist() {
-      try { localStorage.setItem(KEYB, JSON.stringify(data)); statusEl.textContent = "Saved"; }
-      catch (e) { statusEl.textContent = "Board too big to save"; }
-      hintEl.hidden = data.s.length > 0;
-      onChange && onChange();
-    }
-    const pos = (e) => { const r = canvas.getBoundingClientRect(); return [Math.round((e.clientX - r.left) * 10) / 10, Math.round((e.clientY - r.top) * 10) / 10]; };
-
-    canvas.addEventListener("pointerdown", (e) => {
-      if (tool === "pan" && e.pointerType !== "pen") return;
-      if (e.button !== 0 && e.pointerType === "mouse") return;
-      e.preventDefault();
-      canvas.setPointerCapture(e.pointerId);
-      const [x, y] = pos(e);
-      cur = { c: color, w: tool === "erase" ? 26 : size, e: tool === "erase" ? 1 : 0, p: [x, y] };
-      draw();
-    });
-    canvas.addEventListener("pointermove", (e) => {
-      if (!cur) return;
-      const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
-      evs.forEach((ev) => { const [x, y] = pos(ev); const n = cur.p.length; if (Math.abs(x - cur.p[n - 2]) + Math.abs(y - cur.p[n - 1]) > 0.8) cur.p.push(x, y); });
-      draw();
-    });
-    const end = () => { if (!cur) return; data.s.push(cur); cur = null; redo = []; draw(); persist(); };
-    canvas.addEventListener("pointerup", end);
-    canvas.addEventListener("pointercancel", end);
-
-    const tray = $(".tray", host);
-    const press = (sel, btn) => $$(sel, tray).forEach((b) => b.setAttribute("aria-pressed", b === btn));
-    const setTool = (t) => {
-      tool = t;
-      $$("[data-tool]", tray).forEach((b) => b.setAttribute("aria-pressed", b.dataset.tool === t));
-      surface.classList.toggle("pan", t === "pan");
-      surface.classList.toggle("erase", t === "erase");
-    };
-    tray.addEventListener("click", (e) => {
-      const b = e.target.closest("button"); if (!b) return;
-      if (b.dataset.color) { color = b.dataset.color; press("[data-color]", b); setTool("pen"); }
-      else if (b.dataset.size) { size = +b.dataset.size; press("[data-size]", b); if (tool !== "pen") setTool("pen"); }
-      else if (b.dataset.tool) { setTool(tool === b.dataset.tool ? "pen" : b.dataset.tool); }
-      else if (b.dataset.act === "undo") { if (data.s.length) { redo.push(data.s.pop()); draw(); persist(); } }
-      else if (b.dataset.act === "redo") { if (redo.length) { data.s.push(redo.pop()); draw(); persist(); } }
-      else if (b.dataset.act === "more") { data.h += 400; size_(); persist(); }
-      else if (b.dataset.act === "clear") {
-        if (b.dataset.armed) { data.s = []; redo = []; delete b.dataset.armed; b.textContent = "Clear"; draw(); persist(); }
-        else { b.dataset.armed = "1"; b.textContent = "Tap again to clear"; setTimeout(() => { if (b.isConnected) { delete b.dataset.armed; b.textContent = "Clear"; } }, 3000); }
-      }
-    });
-
-    const ro = new ResizeObserver(() => { if (surface.clientWidth !== W) size_(); });
-    ro.observe(surface);
-    size_();
-    this.count = () => data.s.filter((s) => !s.e).length;
-    this.destroy = () => { ro.disconnect(); };
-  }
-
   // ------------------------------------------------------------------ plan
   const fmtDay = (d) => d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
   function todayPlan() {
@@ -680,7 +553,8 @@
     return upcoming ? Object.assign({ isToday: false }, upcoming) : null;
   }
   function planTaskHTML(t) {
-    return `<li><label><input type="checkbox" data-plan="${t.id}" ${S.plan[t.id] ? "checked" : ""}><span>${t.opt ? '<b class="muted">If time:</b> ' : ""}${esc(t.text)}${t.link ? ` <a href="${t.link}">open</a>` : ""}</span></label></li>`;
+    const links = (t.links || []).map(([label, href]) => `<a href="${href}">${esc(label)}</a>`).join(" · ");
+    return `<li><label><input type="checkbox" data-plan="${t.id}" ${S.plan[t.id] ? "checked" : ""}><span>${t.opt ? '<b class="muted">If time:</b> ' : ""}${esc(t.text)}${links ? `<span class="task-links">${links}</span>` : ""}</span></label></li>`;
   }
   function bindPlanChecks() {
     $$("[data-plan]", app).forEach((cb) => cb.addEventListener("change", () => { S.plan[cb.dataset.plan] = cb.checked; save(); }));
@@ -696,7 +570,7 @@
         <div style="min-width:220px"><div class="row" style="justify-content:space-between;font-size:.85rem"><span class="muted">Plan progress</span><span class="mono">${done}/${allTasks.length}</span></div>
           <div class="bar" style="margin-top:6px"><span style="width:${(100 * done) / allTasks.length}%"></span></div></div>
       </div>
-      <p class="muted" style="max-width:70ch;margin:0">Two full study days and a review day. PSET 5 is done, so number theory only needs a short refresh. Do the unmarked tasks first; 'If time' tasks are extras. Solve on the whiteboard <i>before</i> unlocking anything, and rate yourself honestly so the redo list is ready for Wednesday.</p>
+      <p class="muted" style="max-width:70ch;margin:0">Two full study days and a review day. PSET 5 is done, so number theory only needs a short refresh. Do the unmarked tasks first; 'If time' tasks are extras. Solve on paper <i>before</i> unlocking anything, and rate yourself honestly so the redo list is ready for Wednesday.</p>
       <div class="days">
         ${PLAN.map((d) => `
           <div class="panel day ${d.d.getTime() === a.getTime() ? "is-today" : ""}">
@@ -758,7 +632,7 @@
         ${S.mock ? `<div class="countdown" style="font-size:1rem;padding:6px 12px" id="mock-clock">${fmtLong(mockRemaining())}</div>` : ""}
       </div>
       <div class="panel">
-        <p style="max-width:70ch">Six problems from six different topics (always including induction), weighted toward quiz-level difficulty and toward problems you haven't seen yet. The real quiz is 2 hours, so the timer is too. Work on paper or the whiteboard, skip the hints, and rate each problem honestly when you unlock its solution.</p>
+        <p style="max-width:70ch">Six problems from six different topics (always including induction), weighted toward quiz-level difficulty and toward problems you haven't seen yet. The real quiz is 2 hours, so the timer is too. Work on paper, skip the hints, and rate each problem honestly when you unlock its solution.</p>
         <div class="row">
           <button class="btn" id="mock-new">${S.mock ? "Start a new mock quiz" : "Start mock quiz (2:00:00)"}</button>
           ${S.mock ? `<button class="btn ghost" id="mock-end">${running ? "End early" : "Clear"}</button>` : ""}

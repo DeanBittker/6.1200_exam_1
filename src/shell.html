@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@500;700&display=swap">
 <style>
 /* Layout: sticky top bar on a light gray page; one centered column (max 1120px).
-   Topic pages = sticky contents rail + ~68ch reading column. Problem pages = statement/hints rail + whiteboard. */
+   Topic pages = sticky contents rail + ~68ch reading column. Problem pages = statement, hints and a locked solution in one column. */
 :root {
   /* One light look on purpose: white paper, dark ink, a calm blue accent. */
   color-scheme: light;
@@ -247,6 +247,16 @@ textarea.note { width: 100%; min-height: 70px; resize: vertical; border: 1px sol
 .tray .swatch { width: 32px; padding: 0; display: grid; place-items: center; }
 .tray .swatch i { width: 16px; height: 16px; border-radius: 50%; display: block; }
 .tray .status { margin-left: auto; font: 500 0.72rem var(--font-mono); color: var(--muted); }
+
+/* ---------- single-column problem page + proof layout ---------- */
+.prob-single { max-width: 860px; display: grid; gap: 16px; }
+.paper-check { display: flex; gap: 10px; align-items: center; font-weight: 500; cursor: pointer; }
+.paper-check input { width: 18px; height: 18px; accent-color: var(--accent); }
+.layout { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 12px 14px; display: grid; gap: 6px; }
+.layout .claim { margin: 4px 0 2px; }
+.layout ol.skel { margin: 0; padding-left: 1.4em; display: grid; gap: 4px; }
+.solution .eyebrow { display: block; margin-bottom: 6px; }
+.task-links { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; font-size: 0.9rem; }
 
 /* ---------- plan ---------- */
 .days { display: grid; gap: 14px; }
