@@ -33,45 +33,34 @@
   const PROB = Object.fromEntries(PROBS.map((p) => [p.id, p]));
   const probsFor = (tid) => PROBS.filter((p) => p.topic === tid);
 
-  const QUIZ = new Date(2026, 9, 14); // Wed Oct 14, 2026 (evening)
+  const QUIZ = new Date(2026, 9, 14, 19, 30); // Wed Oct 14, 2026, 7:30 PM
+  const QUIZ_DAY = new Date(2026, 9, 14);
 
+  // Three study days: Mon + Tue full days, Wed review until the 7:30 PM quiz. PSET 5 is already done.
   const PLAN = [
-    { d: new Date(2026, 9, 9), focus: "Foundations: logic, proof techniques, induction", tasks: [
-      { id: "d1a", text: "Read the notes for Logic & Quantifiers and Proof Techniques", link: "#t-logic" },
-      { id: "d1b", text: "Solve 3 logic/proof problems: Wason cards, translations, √2", link: "#t-proofs" },
-      { id: "d1c", text: "Read the Induction notes, then write the template from memory on the board", link: "#t-induction" },
-      { id: "d1d", text: "Solve 3 induction problems, including one bug-hunt (horses or 2ⁿ = O(1))", link: "#t-induction" },
+    { d: new Date(2026, 9, 12), focus: "Proofs, induction, strong induction, state machines", tasks: [
+      { id: "m1", text: "Logic & Proof Techniques: read only 'Must know' and 'Common traps' (about 30 min)", link: "#t-logic" },
+      { id: "m2", text: "Solve: Wason cards, Negate it cleanly, log₂ 9 is irrational", link: "#p-log01" },
+      { id: "m3", text: "Induction notes, then write the induction template from memory on the board", link: "#t-induction" },
+      { id: "m4", text: "Solve: 3 divides n³ − n, Sum of Fibonacci squares, the horses bug", link: "#p-ind02" },
+      { id: "m5", text: "Strong induction: postage (3¢ and 5¢) and the chocolate bar", link: "#p-str01" },
+      { id: "m6", text: "State Machines notes, then WALL-E (all parts) and Coins", link: "#p-sm01" },
+      { id: "m7", opt: true, text: "Multiplication by bit shifts and the 8-puzzle", link: "#p-sm05" },
     ] },
-    { d: new Date(2026, 9, 10), focus: "Strong induction + state machines", tasks: [
-      { id: "d2a", text: "Strong Induction notes, then postage + chocolate bar", link: "#t-strong" },
-      { id: "d2b", text: "State Machines notes, then WALL-E (all parts) and the 8-puzzle", link: "#t-sm" },
-      { id: "d2c", text: "Coins (derived variables) and the multiplication algorithm", link: "#t-sm" },
-      { id: "d2d", text: "Re-read PS 3 #2 (beaver fever) and explain the perimeter argument out loud", link: "#p-sm06" },
+    { d: new Date(2026, 9, 13), focus: "Sums, asymptotics, recurrences + a quick number-theory refresh", tasks: [
+      { id: "u1", text: "Write the core sum formulas from memory, then check against the formula sheet", link: "#sheet" },
+      { id: "u2", text: "Sums: Σ k·2ᵏ by perturbation, harmonic bounds, the double sum", link: "#p-sum02" },
+      { id: "u3", text: "Asymptotics: 'Which symbols fit?' and 'Witness constants c and n₀'", link: "#p-asy01" },
+      { id: "u4", text: "Recurrences: Master Theorem drill, TriMergeSort, characteristic roots", link: "#p-rec05" },
+      { id: "u5", text: "GCD & mod (fresh from PSET 5, so keep it short): Pulverize 84 and 33, Rec 9 #1", link: "#p-gcd03" },
+      { id: "u6", opt: true, text: "Inverse of 13 mod 29 two ways; the ice-cream study session tonight", link: "#p-mod07" },
     ] },
-    { d: new Date(2026, 9, 11), focus: "Sums + asymptotics", tasks: [
-      { id: "d3a", text: "Memorize the core sum formulas from the formula sheet; rewrite them from memory", link: "#sheet" },
-      { id: "d3b", text: "Perturbation (Σ kxᵏ), telescoping (Σ k³) and the integral method (Hₙ)", link: "#t-sums" },
-      { id: "d3c", text: "Asymptotics notes, then the symbol tables (Rec 6 #1, PS 4 #3)", link: "#t-asym" },
-      { id: "d3d", text: "One witness-constant problem (c, n₀) written fully formally", link: "#p-asy03" },
-    ] },
-    { d: new Date(2026, 9, 12), focus: "Recurrences + divisibility/GCD", tasks: [
-      { id: "d4a", text: "Recurrences notes, then the Master Theorem drill and one plug & chug", link: "#t-rec" },
-      { id: "d4b", text: "One characteristic-root problem (PS 4 #2 or the Original one)", link: "#p-rec07" },
-      { id: "d4c", text: "Divisibility & GCD notes, then two Pulverizer runs by hand", link: "#t-gcd" },
-      { id: "d4d", text: "Start PSET 5 on your own: it's direct practice for the last two topics", link: "" },
-    ] },
-    { d: new Date(2026, 9, 13), focus: "Modular arithmetic + full mock quiz", tasks: [
-      { id: "d5a", text: "Modular Arithmetic notes, then Rec 9 #1 and repeated squaring", link: "#t-mod" },
-      { id: "d5b", text: "Inverses two ways (13 mod 29) and FLT exponent reduction", link: "#p-mod07" },
-      { id: "d5c", text: "Take a 2-hour mock quiz under exam conditions (no hints)", link: "#mock" },
-      { id: "d5d", text: "Finish and submit PSET 5 (due 11:59 PM)", link: "" },
-      { id: "d5e", text: "Ice-cream study session tonight (the night before the quiz)", link: "" },
-    ] },
-    { d: new Date(2026, 9, 14), focus: "Quiz day: light review only", tasks: [
-      { id: "d6a", text: "Redo every problem on your redo list (marked 'Needed hints' or 'Couldn't solve')", link: "#plan" },
-      { id: "d6b", text: "Read every topic's 'Common traps' section once", link: "#notes" },
-      { id: "d6c", text: "Skim the formula sheet and proof skeletons; write the induction template once", link: "#sheet" },
-      { id: "d6d", text: "Eat, sleep, arrive early. Write the proof structure even when stuck: partial credit.", link: "" },
+    { d: new Date(2026, 9, 14), focus: "Review until about 5 PM. Quiz at 7:30 PM.", tasks: [
+      { id: "w1", text: "Morning: 2-hour mock quiz under exam conditions (no hints)", link: "#mock" },
+      { id: "w2", text: "Unlock and rate the mock problems, then redo everything on your redo list", link: "#plan" },
+      { id: "w3", text: "Afternoon: read every topic's 'Common traps' and the formula sheet once", link: "#notes" },
+      { id: "w4", text: "Skim your graded PSETs 1–4 and your PSET 5 for mistakes you've made before", link: "" },
+      { id: "w5", text: "Stop by about 5 PM. Eat dinner and arrive early. If stuck on the quiz, write the proof structure anyway: it earns partial credit.", link: "" },
     ] },
   ];
 
@@ -104,16 +93,18 @@
   function daysLeft() {
     const now = new Date();
     const a = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    return Math.round((QUIZ - a) / 86400000);
+    return Math.round((QUIZ_DAY - a) / 86400000);
   }
   function countdownText() {
     const d = daysLeft();
     if (d > 1) return `Quiz 1 in ${d} days`;
-    if (d === 1) return "Quiz 1 is tomorrow";
-    if (d === 0) return "Quiz 1 is tonight";
+    if (d === 1) return "Quiz 1 is tomorrow, 7:30 PM";
+    const ms = QUIZ - Date.now();
+    if (ms > 0) { const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000); return `Quiz 1 in ${h}h ${m}m`; }
     return "Quiz 1 done";
   }
   $("#countdown").textContent = countdownText();
+  setInterval(() => { $("#countdown").textContent = countdownText(); }, 60000);
 
   // ------------------------------------------------------------------ math
   function typeset(el) {
@@ -168,7 +159,7 @@
       <section class="hero">
         <div class="hero-text panel">
           <span class="eyebrow">6.1200J / 18.062J · Fall 2026</span>
-          <h1>Quiz 1, Wednesday Oct 14</h1>
+          <h1>Quiz 1, Wednesday Oct 14, 7:30 PM</h1>
           <p class="lede">Ten topics from Lectures 1–9: notes, a step-by-step method for each problem type, and ${PROBS.length} practice problems with a whiteboard. Solutions stay locked until you've genuinely tried.</p>
           <div class="stats">
             <div class="stat"><b>${attempted}/${PROBS.length}</b><span>problems attempted</span></div>
@@ -197,7 +188,7 @@
       <section class="panel">
         <h2 style="margin-bottom:10px">What the quiz looks like</h2>
         <ul class="facts">
-          <li>2-hour evening quiz on Wed Oct 14, worth 20% of your grade. Check Canvas for the room, the time and the exact coverage (probably Lectures 1–9).</li>
+          <li>2-hour quiz on Wed Oct 14 at 7:30 PM, worth 20% of your grade. Check Canvas for the room and the exact coverage (probably Lectures 1–9).</li>
           <li>From Lecture 1: test problems are "similar to the easier homework &amp; recitation problems" and "shouldn't require knowing a trick."</li>
           <li>From Lecture 2: "there will probably be at least one induction problem on every test."</li>
           <li>Grading rewards structure: name your method, define $P(n)$, label base case and inductive step, and conclude.</li>
@@ -689,7 +680,7 @@
     return upcoming ? Object.assign({ isToday: false }, upcoming) : null;
   }
   function planTaskHTML(t) {
-    return `<li><label><input type="checkbox" data-plan="${t.id}" ${S.plan[t.id] ? "checked" : ""}><span>${esc(t.text)}${t.link ? ` <a href="${t.link}">open</a>` : ""}</span></label></li>`;
+    return `<li><label><input type="checkbox" data-plan="${t.id}" ${S.plan[t.id] ? "checked" : ""}><span>${t.opt ? '<b class="muted">If time:</b> ' : ""}${esc(t.text)}${t.link ? ` <a href="${t.link}">open</a>` : ""}</span></label></li>`;
   }
   function bindPlanChecks() {
     $$("[data-plan]", app).forEach((cb) => cb.addEventListener("change", () => { S.plan[cb.dataset.plan] = cb.checked; save(); }));
@@ -701,11 +692,11 @@
     app.innerHTML = `
     <div class="view">
       <div class="section-head">
-        <div><span class="eyebrow">Fri Oct 9 → Wed Oct 14</span><h1 style="margin-top:6px">Study plan</h1></div>
+        <div><span class="eyebrow">Mon Oct 12 → Wed Oct 14, 7:30 PM</span><h1 style="margin-top:6px">Study plan</h1></div>
         <div style="min-width:220px"><div class="row" style="justify-content:space-between;font-size:.85rem"><span class="muted">Plan progress</span><span class="mono">${done}/${allTasks.length}</span></div>
           <div class="bar" style="margin-top:6px"><span style="width:${(100 * done) / allTasks.length}%"></span></div></div>
       </div>
-      <p class="muted" style="max-width:70ch;margin:0">About 2–3 focused hours a day. Each day: read the notes, solve problems on the whiteboard <i>before</i> unlocking anything, rate yourself honestly, and tick the topic checklist. Missed a day? Fold its tasks into the next one. Everything here is a suggestion.</p>
+      <p class="muted" style="max-width:70ch;margin:0">Two full study days and a review day. PSET 5 is done, so number theory only needs a short refresh. Do the unmarked tasks first; 'If time' tasks are extras. Solve on the whiteboard <i>before</i> unlocking anything, and rate yourself honestly so the redo list is ready for Wednesday.</p>
       <div class="days">
         ${PLAN.map((d) => `
           <div class="panel day ${d.d.getTime() === a.getTime() ? "is-today" : ""}">
