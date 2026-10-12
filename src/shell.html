@@ -90,7 +90,7 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
 
 main { max-width: 1120px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 80px; }
 .view { display: grid; gap: 28px; }
-.view > * { min-width: 0; }
+.view > *, .topic-body > *, .prob-single > * { min-width: 0; }
 
 /* ---------- common ---------- */
 .panel { background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); min-width: 0; }
@@ -263,6 +263,9 @@ textarea.note { width: 100%; min-height: 70px; resize: vertical; border: 1px sol
 
 .given { font: 500 0.68rem var(--font-mono); color: var(--good); background: var(--good-soft); padding: 2px 6px; border-radius: 999px; white-space: nowrap; vertical-align: middle; }
 .given-panel { border-color: var(--good); }
+
+.formula-box { border: 1px solid var(--rule); background: var(--paper); border-radius: var(--radius); padding: 10px 14px; margin: 8px 0 10px; }
+.formula-box p { margin: 6px 0 2px; }
 
 /* ---------- plan ---------- */
 .days { display: grid; gap: 14px; }

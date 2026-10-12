@@ -358,12 +358,26 @@
   <li><b>Σ k·2ᵏ</b> = (n − 1)·2<sup>n+1</sup> + 2. <i>Quick derivation:</i> perturbation (2S − S) plus the appendix geometric sum. Don't memorize the general Σ k·xᵏ formula; re-derive it the same way if you need it.</li>
   <li><b>Both integral-method bounds</b> and the <b>harmonic number bounds</b> (below). These have no appendix shortcut, so learn them.</li>
   </ul></li>
-<li><b>Integral method, for estimating sums:</b>
-  <ul>
-  <li><b>If f is increasing:</b> the sum f(1) + … + f(n) is between (first term + the integral of f from 1 to n) and (last term + the integral).</li>
-  <li><b>If f is decreasing:</b> it's the same idea, but the last term goes on the low side and the first term on the high side.</li>
-  </ul>
-  In symbols, for increasing f: $f(1)+\int_1^n f \le \sum_{k=1}^n f(k)\le f(n)+\int_1^n f$.</li>
+<li><b>Integral method, for estimating a sum with no closed form.</b> Call the sum $S=\sum_{k=1}^{n}f(k)$ and the integral $I=\int_1^n f(x)\,dx$. The sum is always the integral plus <i>one</i> extra term, and that term is the first one or the last one:
+<div class="formula-box">
+<p><b>If f is increasing</b> (getting bigger, like $\sqrt x$ or $\ln x$):</p>
+$$f(1)+\int_1^n f(x)\,dx\;\le\;\sum_{k=1}^n f(k)\;\le\;f(n)+\int_1^n f(x)\,dx$$
+<p><b>If f is decreasing</b> (getting smaller, like $1/x$ or $1/x^2$):</p>
+$$f(n)+\int_1^n f(x)\,dx\;\le\;\sum_{k=1}^n f(k)\;\le\;f(1)+\int_1^n f(x)\,dx$$
+<p><b>How to remember it:</b> the lower bound adds the <i>smaller</i> end term and the upper bound adds the <i>bigger</i> end term. For increasing f the smaller term is f(1); for decreasing f it's f(n). The gap between the bounds is always |f(n) − f(1)|.</p>
+</div>
+<b>Creating the bound, step by step:</b>
+<ol>
+<li>Name $f$ so that the sum is $\sum_{k=1}^n f(k)$. Example: $\sum_{k=1}^n \frac1k$ gives $f(x)=\frac1x$.</li>
+<li>Say whether $f$ is increasing or decreasing on $[1,n]$, and why (e.g. "$1/x$ is decreasing for $x\gt0$").</li>
+<li>Compute $I=\int_1^n f(x)\,dx$. Example: $\int_1^n\frac{dx}x=\ln n-\ln1=\ln n$.</li>
+<li>Compute the two end terms $f(1)$ and $f(n)$. Example: $f(1)=1$, $f(n)=\frac1n$.</li>
+<li>Plug into the matching line above. Example (decreasing): $\frac1n+\ln n\le H_n\le 1+\ln n$.</li>
+<li>Write one sentence: "By the integral method, since $f$ is decreasing on $[1,n]$, …"</li>
+</ol>
+<b>Tighter bound (when the gap is too big):</b> add the first $m-1$ terms exactly and use the integral only from $m$ on. For decreasing $f$ and an infinite sum:
+$$\underbrace{\sum_{k=1}^{m-1}f(k)}_{\text{exact}}+\int_m^\infty f(x)\,dx\;\le\;\sum_{k=1}^{\infty}f(k)\;\le\;\underbrace{\sum_{k=1}^{m-1}f(k)}_{\text{exact}}+\int_m^\infty f(x)\,dx+f(m)$$
+Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as you need (PS 3 #5).</li>
 <li><b>Results from the integral method:</b>
   <ul>
   <li>The harmonic number H<sub>n</sub> = 1 + 1/2 + … + 1/n is between ln n + 1/n and ln n + 1. So it grows like ln n.</li>
@@ -381,7 +395,7 @@
 <li><b>Perturbation:</b> write the sum S. Underneath, write x·S (or S written backwards) with matching terms lined up. Subtract (or add) column by column; most terms cancel. Solve for S.</li>
 <li><b>Guess the shape:</b> for 1<sup>d</sup> + 2<sup>d</sup> + … + n<sup>d</sup>, guess a polynomial of degree d + 1. Plug in n = 0, 1, 2, … to solve for the coefficients, then prove it by induction.</li>
 <li><b>Telescoping:</b> if each term is (something at k + 1) minus (the same thing at k), everything cancels except the last minus the first.</li>
-<li><b>No formula exists:</b> check whether the function is increasing or decreasing, compute the integral, then apply the matching bound. For a tighter estimate, add up the first few terms by hand and use the integral only for the rest.</li>
+<li><b>No formula exists:</b> use the integral method with the 6 steps above (name f, increasing or decreasing, integral, end terms, plug in, sentence). If the bounds are too far apart, add the first few terms exactly and integrate only the rest.</li>
 <li>If the question says "prove", finish with induction. Perturbation alone only finds the answer.</li>
 </ol>
 </div>
