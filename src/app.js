@@ -38,29 +38,29 @@
 
   // Three study days: Mon + Tue full days, Wed review until the 7:30 PM quiz. PSET 5 is already done.
   const PLAN = [
-    { d: new Date(2026, 9, 12), focus: "Proofs, induction, strong induction, state machines", tasks: [
-      { id: "m1", text: "Logic & Proof Techniques: read only 'Must know' and 'Common traps' (about 30 min)", link: "#t-logic" },
-      { id: "m2", text: "Solve: Wason cards, Negate it cleanly, log₂ 9 is irrational", link: "#p-log01" },
-      { id: "m3", text: "Induction notes, then write the induction template from memory on the board", link: "#t-induction" },
-      { id: "m4", text: "Solve: 3 divides n³ − n, Sum of Fibonacci squares, the horses bug", link: "#p-ind02" },
-      { id: "m5", text: "Strong induction: postage (3¢ and 5¢) and the chocolate bar", link: "#p-str01" },
-      { id: "m6", text: "State Machines notes, then WALL-E (all parts) and Coins", link: "#p-sm01" },
-      { id: "m7", opt: true, text: "Multiplication by bit shifts and the 8-puzzle", link: "#p-sm05" },
+    { d: new Date(2026, 9, 12), focus: "Proofs, induction, strong induction, state machines + a head start on sums", tasks: [
+      { id: "m1", text: "10:30: Logic + Proof Techniques notes ('Must know' and 'Common traps' only)", link: "#t-logic" },
+      { id: "m2", text: "11:05: Which cards do you flip?, Negate it cleanly, log₂ 9 is irrational", link: "#p-log01" },
+      { id: "m3", text: "11:35: Induction notes, then write the induction template from memory", link: "#t-induction" },
+      { id: "m4", text: "11:50: 3 divides n³ − n, Sum of Fibonacci squares, the horses bug", link: "#p-ind02" },
+      { id: "m5", text: "1:15: Strong Induction notes, then postage, chocolate bar, 'all naturals are even' bug", link: "#p-str01" },
+      { id: "m6", text: "2:20: State Machines notes, then WALL-E (all 4 parts)", link: "#p-sm01" },
+      { id: "m7", text: "3:30: Coins, Multiplication by bit shifts, the 8-puzzle", link: "#p-sm04" },
+      { id: "m8", text: "4:45: Tick today's 5 topic checklists; redo anything rated 'Couldn't solve'", link: "#plan" },
+      { id: "m9", text: "6:30: Sum formulas from memory, then Σ k·2ᵏ, harmonic bounds, telescoping fraction sum", link: "#p-sum02" },
     ] },
-    { d: new Date(2026, 9, 13), focus: "Sums, asymptotics, recurrences + a quick number-theory refresh", tasks: [
-      { id: "u1", text: "Write the core sum formulas from memory, then check against the formula sheet", link: "#sheet" },
-      { id: "u2", text: "Sums: Σ k·2ᵏ by perturbation, harmonic bounds, the double sum", link: "#p-sum02" },
-      { id: "u3", text: "Asymptotics: 'Which symbols fit?' and 'Witness constants c and n₀'", link: "#p-asy01" },
-      { id: "u4", text: "Recurrences: Master Theorem drill, TriMergeSort, characteristic roots", link: "#p-rec05" },
-      { id: "u5", text: "GCD & mod (fresh from PSET 5, so keep it short): Pulverize 84 and 33, Rec 9 #1", link: "#p-gcd03" },
-      { id: "u6", opt: true, text: "Inverse of 13 mod 29 two ways", link: "#p-mod07" },
-      { id: "u7", text: "Evening (8:15 PM): 2-hour mock quiz under exam conditions, no hints. Unlock and rate each problem after.", link: "#mock" },
+    { d: new Date(2026, 9, 13), focus: "Sums, asymptotics, recurrences, a GCD/mod speed check, mock quiz", tasks: [
+      { id: "u1", text: "10:00: Perturbation for Σ k xᵏ, then the double sum", link: "#p-sum01" },
+      { id: "u3", text: "2:00: Asymptotics notes, then Which symbols fit?, Witness constants, ∼ versus Θ", link: "#p-asy01" },
+      { id: "u4", text: "3:15: Recurrences notes, then Master Theorem drill + quick calls, TriMergeSort, characteristic roots", link: "#p-rec05" },
+      { id: "u5", text: "4:45: Pulverize 84 and 33, Four remainder computations, Inverse of 13 mod 29", link: "#p-gcd03" },
+      { id: "u7", text: "8:15 PM: 2-hour mock quiz, no hints. Unlock and rate each problem after.", link: "#mock" },
     ] },
     { d: new Date(2026, 9, 14), focus: "Review in the gaps between classes, stop at 5:15 PM. Quiz at 7:30 PM.", tasks: [
-      { id: "w2", text: "12 PM: redo everything on your redo list, especially last night's mock misses", link: "#plan" },
-      { id: "w3", text: "2 PM: read every topic's 'Common traps' and the formula sheet once", link: "#notes" },
-      { id: "w4", text: "4 PM: skim your graded PSETs 1–4 and your PSET 5 for mistakes you've made before", link: "" },
-      { id: "w5", text: "Stop at 5:15 PM. Eat dinner and arrive early. If stuck on the quiz, write the proof structure anyway: it earns partial credit.", link: "" },
+      { id: "w2", text: "12 PM: redo everything on your redo list without hints, starting with mock misses", link: "#plan" },
+      { id: "w3", text: "2 PM: 'Common traps' for all 10 topics, then recite the formula sheet", link: "#notes" },
+      { id: "w4", text: "4 PM: skim PSETs 1–5 for lost points; write one page of 'Mistakes I won't make tonight'", link: "" },
+      { id: "w5", text: "5:15 PM: pack pencils + ID, stop studying, eat, arrive by 7:15. Write the proof structure even when stuck.", link: "" },
     ] },
   ];
 
