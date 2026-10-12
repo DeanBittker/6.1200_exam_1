@@ -2296,28 +2296,31 @@ window.MathJax = {
 
   // Three study days: Mon + Tue full days, Wed review until the 7:30 PM quiz. PSET 5 is already done.
   const PLAN = [
-    { d: new Date(2026, 9, 12), focus: "Proofs, induction, strong induction, state machines + a head start on sums", tasks: [
+    { d: new Date(2026, 9, 12), focus: "Topics 1–5 compressed, then sums, then PSET 4 review + asymptotics", tasks: [
       { id: "m1", text: "10:30: Logic + Proof Techniques notes ('Must know' and 'Common traps' only)", links: [["Logic notes", "#t-logic"], ["Proof Techniques notes", "#t-proofs"]] },
       { id: "m2", text: "11:05: three logic/proof problems", links: [["Which cards do you flip?", "#p-log01"], ["Negate it cleanly", "#p-log08"], ["log₂ 9 is irrational", "#p-prf02"]] },
       { id: "m3", text: "11:35: Induction notes, then write the induction template from memory on paper", links: [["Induction notes", "#t-induction"]] },
       { id: "m4", text: "11:50: three induction problems, fully written out", links: [["3 divides n³ − n", "#p-ind02"], ["Sum of Fibonacci squares", "#p-ind05"], ["Find the bug: horses", "#p-ind07"]] },
-      { id: "m5", text: "1:15: Strong Induction notes, then three problems", links: [["Strong Induction notes", "#t-strong"], ["Postage with 3¢ and 5¢", "#p-str01"], ["Breaking a chocolate bar", "#p-str03"], ["Find the bug: all naturals are even", "#p-str02"]] },
-      { id: "m6", text: "2:20: State Machines notes, then WALL-E (all 4 parts)", links: [["State Machines notes", "#t-sm"], ["WALL-E chasing EVE", "#p-sm01"]] },
-      { id: "m7", text: "3:30: three state machine problems", links: [["Coins and derived variables", "#p-sm04"], ["Multiplication by bit shifts", "#p-sm05"], ["The unsolvable 8-puzzle", "#p-sm02"]] },
-      { id: "m8", text: "4:45: tick today's 5 topic checklists; redo anything rated 'Couldn't solve'", links: [["Redo list", "#plan"]] },
-      { id: "m9", text: "6:30: sum formulas from memory, then three sum problems", links: [["Formula sheet", "#sheet"], ["Σ k·2ᵏ", "#p-sum02"], ["Bounding the harmonic numbers", "#p-sum09"], ["A telescoping fraction sum", "#p-sum11"]] },
+      { id: "m5", text: "1:15: strong induction (quick)", links: [["Strong Induction notes", "#t-strong"], ["Postage with 3¢ and 5¢", "#p-str01"], ["Breaking a chocolate bar", "#p-str03"]] },
+      { id: "m6", text: "2:00: state machines (quick): WALL-E all parts, Coins part (d)", links: [["State Machines notes", "#t-sm"], ["WALL-E chasing EVE", "#p-sm01"], ["Coins and derived variables", "#p-sm04"]] },
+      { id: "m7", text: "3:15: Sums. First write the formulas NOT on the appendix from memory, then five problems", links: [["Sums notes", "#t-sums"], ["Formula sheet", "#sheet"], ["Σ k·2ᵏ", "#p-sum02"], ["Perturbation for Σ k xᵏ", "#p-sum01"], ["Σ k³ by telescoping", "#p-sum03"], ["Bounding the harmonic numbers", "#p-sum09"], ["A double sum", "#p-sum06"]] },
+      { id: "m8", text: "6:30: PSET 4 review. For each problem: cover the solution, write the approach in 2–3 lines, compare with the official solution and your graded copy", links: [["#1 Pell numbers", "#p-rec06"], ["#2 Characteristic roots", "#p-rec07"], ["#3a Relationship table", "#p-asy04"], ["#3b Central binomial", "#p-asy05"], ["#4 Adding a smaller function", "#p-asy06"], ["#5 Strassen", "#p-rec08"]] },
+      { id: "m9", text: "7:15: Asymptotics notes, then three problems", links: [["Asymptotics notes", "#t-asym"], ["Which symbols fit?", "#p-asy01"], ["Witness constants c and n₀", "#p-asy03"], ["∼ versus Θ", "#p-asy02"]] },
     ] },
-    { d: new Date(2026, 9, 13), focus: "Sums, asymptotics, recurrences, a GCD/mod speed check, mock quiz", tasks: [
-      { id: "u1", text: "10:00: two sum problems", links: [["Perturbation for Σ k xᵏ", "#p-sum01"], ["A double sum", "#p-sum06"]] },
-      { id: "u3", text: "2:00: Asymptotics notes, then three problems", links: [["Asymptotics notes", "#t-asym"], ["Which symbols fit?", "#p-asy01"], ["Witness constants c and n₀", "#p-asy03"], ["∼ versus Θ", "#p-asy02"]] },
-      { id: "u4", text: "3:15: Recurrences notes, then four problems", links: [["Recurrences notes", "#t-rec"], ["Master Theorem drill", "#p-rec05"], ["Three quick Master Theorem calls", "#p-rec10"], ["TriMergeSort", "#p-rec04"], ["Characteristic roots", "#p-rec07"]] },
-      { id: "u5", text: "4:45: GCD + mod speed check", links: [["Pulverize 84 and 33", "#p-gcd03"], ["Four remainder computations", "#p-mod01"], ["Inverse of 13 mod 29, two ways", "#p-mod07"]] },
+    { d: new Date(2026, 9, 13), focus: "Asymptotics, recurrences, GCD + mod, then the mock quiz", tasks: [
+      { id: "u1", text: "10:00: finish asymptotics", links: [["Strongest relationship table", "#p-asy04"], ["Central binomial vs 4ⁿ/√n", "#p-asy05"], ["Order these functions", "#p-asy07"]] },
+      { id: "u2", opt: true, text: "Adding a smaller function", links: [["Adding a smaller function", "#p-asy06"]] },
+      { id: "u3", text: "2:00: Recurrences notes, then seven problems", links: [["Recurrences notes", "#t-rec"], ["Towers of Hanoi", "#p-rec01"], ["Merge sort by plug and chug", "#p-rec02"], ["Master Theorem drill", "#p-rec05"], ["Three quick Master Theorem calls", "#p-rec10"], ["TriMergeSort", "#p-rec04"], ["Characteristic roots", "#p-rec07"], ["Mini-Tetris tilings", "#p-rec03"]] },
+      { id: "u4", text: "4:45: GCD", links: [["GCD notes", "#t-gcd"], ["Pulverize 84 and 33", "#p-gcd03"], ["Hoppip and the berry", "#p-gcd05"], ["Consecutive Fibonacci numbers are coprime", "#p-gcd04"]] },
+      { id: "u5", text: "5:45: Modular arithmetic", links: [["Mod notes", "#t-mod"], ["Four remainder computations", "#p-mod01"], ["Inverse of 13 mod 29, two ways", "#p-mod07"]] },
+      { id: "u6", opt: true, text: "more mod practice", links: [["Last two digits of a monster", "#p-mod04"], ["Reduce the exponent with FLT", "#p-mod08"]] },
       { id: "u7", text: "8:15 PM: 2-hour mock quiz, no hints. Unlock and rate each problem after.", links: [["Mock quiz", "#mock"]] },
     ] },
     { d: new Date(2026, 9, 14), focus: "Review in the gaps between classes, stop at 5:15 PM. Quiz at 7:30 PM.", tasks: [
-      { id: "w2", text: "12 PM: redo everything on your redo list without hints, starting with mock misses. If empty:", links: [["Redo list", "#plan"], ["Mini-Tetris tilings", "#p-rec03"], ["Hoppip and the berry", "#p-gcd05"]] },
+      { id: "w2", text: "12 PM: redo everything on your redo list without hints, starting with mock misses. If empty, do these (topics 6–10):", links: [["Redo list", "#plan"], ["Strassen vs naive", "#p-rec08"], ["Last two digits of a monster", "#p-mod04"], ["Integral method to within 1/100", "#p-sum08"]] },
       { id: "w3", text: "2 PM: 'Common traps' for all 10 topics, then recite the formula sheet (skip the 'on appendix' items, since you get those printed)", links: [["All topics", "#notes"], ["Formula sheet", "#sheet"]] },
       { id: "w4", text: "4 PM: skim PSETs 1–5 for lost points; write one page of 'Mistakes I won't make tonight'", links: [] },
+      { id: "w6", opt: true, text: "the topic 1–5 extras skipped on Monday", links: [["Multiplication by bit shifts", "#p-sm05"], ["The unsolvable 8-puzzle", "#p-sm02"], ["All naturals are even (bug)", "#p-str02"]] },
       { id: "w5", text: "5:15 PM: pack pencils + ID, stop studying, eat, arrive by 7:15. Write the proof structure even when stuck.", links: [] },
     ] },
   ];
@@ -2828,7 +2831,7 @@ window.MathJax = {
         <div style="min-width:220px"><div class="row" style="justify-content:space-between;font-size:.85rem"><span class="muted">Plan progress</span><span class="mono">${done}/${allTasks.length}</span></div>
           <div class="bar" style="margin-top:6px"><span style="width:${(100 * done) / allTasks.length}%"></span></div></div>
       </div>
-      <p class="muted" style="max-width:70ch;margin:0">Two full study days and a review day. PSET 5 is done, so number theory only needs a short refresh. Do the unmarked tasks first; 'If time' tasks are extras. Solve on paper <i>before</i> unlocking anything, and rate yourself honestly so the redo list is ready for Wednesday.</p>
+      <p class="muted" style="max-width:70ch;margin:0">Two full study days and a review day. Topics 1–5 are compressed into Monday morning and early afternoon, so most of the time goes to topics 6–10 (sums, asymptotics, recurrences, GCD, mod). Do the unmarked tasks first; 'If time' tasks are extras. Solve on paper <i>before</i> unlocking anything, and rate yourself honestly so the redo list is ready for Wednesday.</p>
       <div class="days">
         ${PLAN.map((d) => `
           <div class="panel day ${d.d.getTime() === a.getTime() ? "is-today" : ""}">
