@@ -59,6 +59,8 @@ table { border-collapse: collapse; font-size: 0.95em; }
 th, td { border-bottom: 1px solid var(--rule); padding: 0.4em 0.8em; text-align: left; vertical-align: top; }
 .tsec td:first-child { white-space: nowrap; }
 th { font: 500 0.75rem var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.sheet mjx-container, .layout mjx-container, .statement mjx-container, .solution mjx-container, .hint mjx-container { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; vertical-align: middle; }
+.sheet .panel { min-width: 0; max-width: 100%; overflow-x: auto; overflow-wrap: anywhere; }
 mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 2px 0; }
 
 /* ---------- top bar ---------- */
@@ -88,6 +90,7 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
 
 main { max-width: 1120px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 80px; }
 .view { display: grid; gap: 28px; }
+.view > * { min-width: 0; }
 
 /* ---------- common ---------- */
 .panel { background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); min-width: 0; }
@@ -258,6 +261,9 @@ textarea.note { width: 100%; min-height: 70px; resize: vertical; border: 1px sol
 .solution .eyebrow { display: block; margin-bottom: 6px; }
 .task-links { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; font-size: 0.9rem; }
 
+.given { font: 500 0.68rem var(--font-mono); color: var(--good); background: var(--good-soft); padding: 2px 6px; border-radius: 999px; white-space: nowrap; vertical-align: middle; }
+.given-panel { border-color: var(--good); }
+
 /* ---------- plan ---------- */
 .days { display: grid; gap: 14px; }
 .day { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 18px; padding: 16px 18px; }
@@ -324,6 +330,16 @@ pre.tmpl { white-space: pre-wrap; font: 0.85rem/1.5 var(--font-mono); background
 
 <template id="data-sheet">
 <div class="sheet">
+  <div class="panel given-panel"><h3>Given to you on the quiz (appendix)</h3>
+  <p class="muted" style="margin:0 0 6px;font-size:.9rem">You get these printed on the appendix, so <b>know how to use them</b>, but don't spend time memorizing them.</p><ul>
+    <li>$\mathbb N=\{0,1,2,\dots\}$ (zero counts as a natural number)</li>
+    <li>$\sum_{k=1}^n k=\frac{n(n+1)}2$, $\;\sum_{k=1}^n k^2=\frac{n(n+1)(2n+1)}6$, $\;\sum_{k=0}^{n-1}x^k=\frac{1-x^n}{1-x}$ ($x\ne1$)</li>
+    <li>Stirling: $n!\sim\sqrt{2\pi n}\,(n/e)^n$</li>
+    <li>Big-O definition: $\exists c\in\mathbb R^+\;\exists n_0\in\mathbb N\;\forall n\ge n_0.\;|f(n)|\le c\cdot g(n)$</li>
+    <li>Master Theorem, all three cases including the case-3 regularity condition</li>
+    <li>Fermat's Little Theorem: $p$ prime, $a\not\equiv_p0\Rightarrow a^{p-1}\equiv_p1$</li>
+  </ul>
+  <p style="margin:8px 0 0;font-size:.9rem"><b>Everything below without the "on appendix" tag is NOT given.</b> That's what to memorize.</p></div>
   <div class="panel"><h3>Logic</h3><ul>
     <li>$P\to Q\equiv\neg P\lor Q$; false only when $P$ = T, $Q$ = F.</li>
     <li>Contrapositive $\neg Q\to\neg P$ ≡ original. Converse $Q\to P$ is not.</li>
@@ -355,8 +371,10 @@ By the Invariant Principle P holds at all
 reachable states; target fails P ⇒ unreachable.</pre>
   </div>
   <div class="panel"><h3>Sums</h3><ul>
-    <li>$\sum_{k=1}^n k=\frac{n(n+1)}2$, $\;\sum k^2=\frac{n(n+1)(2n+1)}6$, $\;\sum k^3=\frac{n^2(n+1)^2}4$</li>
-    <li>$\sum_{k=0}^{n-1}x^k=\frac{1-x^n}{1-x}$, $\;\sum_{k=0}^\infty x^k=\frac1{1-x}$ for $|x|\lt1$</li>
+    <li>$\sum k=\frac{n(n+1)}2$, $\;\sum k^2=\frac{n(n+1)(2n+1)}6$ <span class="given">on appendix</span></li>
+    <li>$\sum_{k=1}^n k^3=\frac{n^2(n+1)^2}4$ <b>(memorize)</b></li>
+    <li>$\sum_{k=0}^{n-1}x^k=\frac{1-x^n}{1-x}$ <span class="given">on appendix</span></li>
+    <li>$\sum_{k=0}^\infty x^k=\frac1{1-x}$ for $|x|\lt1$ <b>(memorize)</b></li>
     <li>$\sum_{k=1}^n kx^k=\frac{x-(n+1)x^{n+1}+nx^{n+2}}{(1-x)^2}$; $\;\sum_{k=1}^n k2^k=(n-1)2^{n+1}+2$</li>
     <li>Increasing $f$: $f(1)+\int_1^nf\le\sum_1^nf(k)\le f(n)+\int_1^nf$</li>
     <li>Decreasing $f$: $f(n)+\int_1^nf\le\sum_1^nf(k)\le f(1)+\int_1^nf$</li>
@@ -364,17 +382,18 @@ reachable states; target fails P ⇒ unreachable.</pre>
     <li>Perturbation guesses; induction proves.</li>
   </ul></div>
   <div class="panel"><h3>Asymptotics</h3><ul>
-    <li>$f\in O(g)\iff\exists c\gt0,n_0\;\forall n\ge n_0:|f(n)|\le c\,g(n)$</li>
+    <li>$f\in O(g)\iff\exists c\gt0,n_0\;\forall n\ge n_0:|f(n)|\le c\,g(n)$ <span class="given">on appendix</span></li>
+    <li>Ω, Θ, o, ω, ∼ definitions are <b>not</b> given: Ω means $g\in O(f)$; Θ means both; o / ω / ∼ mean $\lim f/g$ is $0$ / $\infty$ / $1$.</li>
     <li>$\lim f/g$: $0\Rightarrow o,O$; finite $\gt0\Rightarrow\Theta$; $1\Rightarrow\sim$; $\infty\Rightarrow\omega,\Omega$; DNE ⇒ use the definition</li>
     <li>$1\ll\log n\ll(\log n)^k\ll n^\epsilon\ll n\ll n\log n\ll n^2\ll c^n\ll d^n\ll n!\ll n^n$ ($1\lt c\lt d$)</li>
-    <li>$n!\sim\sqrt{2\pi n}(n/e)^n$; $\;H_n\sim\ln n$; $\;\binom{2n}n\sim\frac{4^n}{\sqrt{\pi n}}$</li>
+    <li>$n!\sim\sqrt{2\pi n}(n/e)^n$ <span class="given">on appendix</span>; $\;H_n\sim\ln n$; $\;\binom{2n}n\sim\frac{4^n}{\sqrt{\pi n}}$</li>
     <li>$\sim\Rightarrow\Theta$, not conversely. $f\sim f+h\iff h\in o(f)$.</li>
   </ul></div>
   <div class="panel"><h3>Recurrences</h3><ul>
     <li>Hanoi $2T(n-1)+1\Rightarrow2^n-1$. Merge sort $2T(n/2)+n-1\Rightarrow n\log_2n-n+1$.</li>
     <li>Linear: try $r^n$; roots $r_i$; $a_n=\sum\lambda_ir_i^n$; fit initial values.</li>
     <li>Master, $T=aT(n/b)+f$, $c=\log_ba$:
-      <br>① $f=O(n^{c-\epsilon})\Rightarrow\Theta(n^c)$ ② $f=\Theta(n^c)\Rightarrow\Theta(n^c\log n)$ ③ $f=\Omega(n^{c+\epsilon})$ &amp; $af(n/b)\le kf(n)$, $k\lt1\Rightarrow\Theta(f)$</li>
+      <br>① $f=O(n^{c-\epsilon})\Rightarrow\Theta(n^c)$ ② $f=\Theta(n^c)\Rightarrow\Theta(n^c\log n)$ ③ $f=\Omega(n^{c+\epsilon})$ &amp; $af(n/b)\le kf(n)$, $k\lt1\Rightarrow\Theta(f)$ <span class="given">on appendix</span></li>
     <li>Plug &amp; chug → set $k=\log_bn$ → sum the series → verify by induction.</li>
   </ul></div>
   <div class="panel"><h3>Divisibility &amp; GCD</h3><ul>
@@ -388,7 +407,7 @@ reachable states; target fails P ⇒ unreachable.</pre>
     <li>$a\equiv_nb\iff n\mid a-b\iff$ same remainder.</li>
     <li>Substitute freely in $+,-,\times$ and bases. <b>Never</b> in exponents (except mod $p-1$ via FLT).</li>
     <li>$a^{-1}$ mod $n$ exists $\iff\gcd(a,n)=1$. Pulverizer: $sa+tn=1$. FLT: $a^{-1}\equiv_pa^{p-2}$.</li>
-    <li>FLT: $p$ prime, $p\nmid a\Rightarrow a^{p-1}\equiv_p1$.</li>
+    <li>FLT: $p$ prime, $p\nmid a\Rightarrow a^{p-1}\equiv_p1$. <span class="given">on appendix</span></li>
     <li>Cancel $k$ only if $\gcd(k,n)=1$.</li>
     <li>$n\equiv_9$ digit sum. Use $-1$: $99\equiv_{100}-1$.</li>
     <li>Repeated squaring: $\le2\log_2e$ multiplications.</li>

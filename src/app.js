@@ -59,7 +59,7 @@
     ] },
     { d: new Date(2026, 9, 14), focus: "Review in the gaps between classes, stop at 5:15 PM. Quiz at 7:30 PM.", tasks: [
       { id: "w2", text: "12 PM: redo everything on your redo list without hints, starting with mock misses. If empty:", links: [["Redo list", "#plan"], ["Mini-Tetris tilings", "#p-rec03"], ["Hoppip and the berry", "#p-gcd05"]] },
-      { id: "w3", text: "2 PM: 'Common traps' for all 10 topics, then recite the formula sheet", links: [["All topics", "#notes"], ["Formula sheet", "#sheet"]] },
+      { id: "w3", text: "2 PM: 'Common traps' for all 10 topics, then recite the formula sheet (skip the 'on appendix' items, since you get those printed)", links: [["All topics", "#notes"], ["Formula sheet", "#sheet"]] },
       { id: "w4", text: "4 PM: skim PSETs 1–5 for lost points; write one page of 'Mistakes I won't make tonight'", links: [] },
       { id: "w5", text: "5:15 PM: pack pencils + ID, stop studying, eat, arrive by 7:15. Write the proof structure even when stuck.", links: [] },
     ] },
@@ -191,6 +191,7 @@
           <li>From Lecture 1: test problems are "similar to the easier homework &amp; recitation problems" and "shouldn't require knowing a trick."</li>
           <li>From Lecture 2: "there will probably be at least one induction problem on every test."</li>
           <li>Grading rewards structure: name your method, define $P(n)$, label base case and inductive step, and conclude.</li>
+          <li>You get a printed appendix with: the sums of k, k² and the finite geometric series; Stirling; the big-O definition; the Master Theorem; and Fermat's Little Theorem. Everything else (Σk³, the infinite geometric series, the integral method, Ω/Θ/o/ω/∼, gcd and mod rules) you need to know yourself. <a href="#sheet">See the formula sheet.</a></li>
           <li>Curved only upward: if the median is under 70%, it is normalized to 70%.</li>
           <li>10% of your worst exam score is dropped, which helps if one test goes badly.</li>
         </ul>
@@ -600,7 +601,7 @@
     app.innerHTML = `
     <div class="view">
       <div><span class="eyebrow">One-page review</span><h1 style="margin:6px 0 8px">Formula sheet</h1>
-      <p class="muted" style="margin:0;max-width:68ch">Everything worth memorizing, plus fill-in-the-blank proof skeletons. Try writing each box from memory before reading it.</p></div>
+      <p class="muted" style="margin:0;max-width:68ch">The top box lists what the official Quiz 1 appendix gives you. Everything else here is what you need to memorize, plus fill-in-the-blank proof skeletons. Try writing each box from memory before reading it.</p></div>
       ${$("#data-sheet").innerHTML}
     </div>`;
   }
