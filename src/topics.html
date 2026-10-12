@@ -328,7 +328,7 @@
 </section>
 
 <!-- ============================================================ SUMS -->
-<section class="topic" data-id="sums" data-title="Sums" data-src="Lecture 5 · Rec 5 · PS 3" data-blurb="Formulas to memorize, how to discover new ones, and how to estimate sums.">
+<section class="topic" data-id="sums" data-title="Sums" data-src="Lecture 5 · Rec 5 · PS 3" data-blurb="What the appendix gives you, what to memorize, how to discover new formulas and estimate sums.">
 <div data-part="idea">
 <p>A <b>closed form</b> is a formula you could type straight into a calculator: no "…", no Σ (the summation sign), no "add up the previous answers". There are three things you'll do with sums:</p>
 <ul>
@@ -345,15 +345,18 @@
 </div>
 <div data-part="know">
 <ul>
-<li><b>Formulas to memorize:</b>
+<li><b>Printed on the quiz appendix, so don't memorize these. Just know when to use them:</b>
   <ul>
-  <li>1 + 2 + … + n = n(n + 1)/2</li>
-  <li>1² + 2² + … + n² = n(n + 1)(2n + 1)/6</li>
-  <li>1³ + 2³ + … + n³ = (n(n + 1)/2)², the square of the first formula</li>
-  <li>Geometric sum: 1 + x + x² + … + x<sup>n−1</sup> = (1 − xⁿ)/(1 − x), as long as x ≠ 1</li>
-  <li>Infinite geometric sum: 1 + x + x² + … forever = 1/(1 − x), as long as x is between −1 and 1</li>
-  <li>1·2 + 2·2² + 3·2³ + … + n·2ⁿ = (n − 1)·2<sup>n+1</sup> + 2</li>
-  <li>General version: Σ k·x<sup>k</sup> = (x − (n+1)x<sup>n+1</sup> + n·x<sup>n+2</sup>)/(1 − x)². You can look this one up or re-derive it; don't memorize it.</li>
+  <li>1 + 2 + … + n = n(n + 1)/2 <span class="given">on appendix</span></li>
+  <li>1² + 2² + … + n² = n(n + 1)(2n + 1)/6 <span class="given">on appendix</span></li>
+  <li>Geometric sum: 1 + x + x² + … + x<sup>n−1</sup> = (1 − xⁿ)/(1 − x), for x ≠ 1 <span class="given">on appendix</span>. Careful: it stops at x<sup>n−1</sup> (n terms). For a sum up to xⁿ, replace n with n + 1.</li>
+  </ul></li>
+<li><b>NOT on the appendix. Memorize these, or know how to get them fast from the ones above:</b>
+  <ul>
+  <li><b>Infinite geometric sum:</b> 1 + x + x² + … forever = 1/(1 − x), when x is between −1 and 1. <i>Quick derivation:</i> take the appendix formula and let n → ∞; xⁿ shrinks to 0.</li>
+  <li><b>Sum of cubes:</b> 1³ + … + n³ = (n(n + 1)/2)², the square of the first appendix formula. <i>Quick derivation:</i> telescoping (Rec 5 #2), which uses the two appendix sums.</li>
+  <li><b>Σ k·2ᵏ</b> = (n − 1)·2<sup>n+1</sup> + 2. <i>Quick derivation:</i> perturbation (2S − S) plus the appendix geometric sum. Don't memorize the general Σ k·xᵏ formula; re-derive it the same way if you need it.</li>
+  <li><b>Both integral-method bounds</b> and the <b>harmonic number bounds</b> (below). These have no appendix shortcut, so learn them.</li>
   </ul></li>
 <li><b>Integral method, for estimating sums:</b>
   <ul>
@@ -373,7 +376,7 @@
 </div>
 <div data-part="steps">
 <ol>
-<li><b>Recognize it.</b> If it's one of the memorized forms, just cite the formula.</li>
+<li><b>Recognize it.</b> If it's one of the three appendix sums, cite it ("by the formula on the appendix"). Check the limits first: do they start at 0 or 1, and end at n or n − 1? If it's close to an appendix sum, rewrite it into that form (split it up, pull out constants, shift the index).</li>
 <li><b>Sum inside a sum:</b> work out the inner sum first, as a formula in the outer variable, then do the outer sum.</li>
 <li><b>Perturbation:</b> write the sum S. Underneath, write x·S (or S written backwards) with matching terms lined up. Subtract (or add) column by column; most terms cancel. Solve for S.</li>
 <li><b>Guess the shape:</b> for 1<sup>d</sup> + 2<sup>d</sup> + … + n<sup>d</sup>, guess a polynomial of degree d + 1. Plug in n = 0, 1, 2, … to solve for the coefficients, then prove it by induction.</li>
@@ -399,7 +402,7 @@
 </ul>
 </div>
 <div data-part="check">
-<li>I know the core sum formulas by heart.</li>
+<li>I know which sums are on the appendix, and I can write Σk³, the infinite geometric sum and both integral bounds from memory.</li>
 <li>I can derive the geometric sum formula by perturbation.</li>
 <li>I can use the "guess the shape" method to find the formula for 1² + … + n².</li>
 <li>I can apply the integral method in the right direction and tighten it by adding the first few terms by hand.</li>
@@ -425,7 +428,7 @@
 </div>
 <div data-part="know">
 <ul>
-<li><b>Formal definition of big-O:</b> f is O(g) if there is some constant c and some starting point n₀ so that from n₀ onwards, f(n) is never more than c times g(n). In symbols: $|f(n)|\le c\cdot g(n)$ for all $n\ge n_0$.</li>
+<li><b>Formal definition of big-O</b> <span class="given">on appendix</span><b>:</b> f is O(g) if there is some constant c and some starting point n₀ so that from n₀ onwards, f(n) is never more than c times g(n). In symbols: $|f(n)|\le c\cdot g(n)$ for all $n\ge n_0$.</li>
 <li>f is Ω(g) exactly when g is O(f). f is Θ(g) when both hold.</li>
 <li><b>The limit test (the fastest way to decide):</b> compute what f(n)/g(n) approaches as n grows.
   <ul>
@@ -439,7 +442,7 @@
 <li><b>∼ is stronger than Theta.</b> n and 2n are Theta of each other but not ∼, because their ratio is 2, not 1.</li>
 <li>If f ∼ g, then f² ∼ g². But not 2<sup>f</sup> ∼ 2<sup>g</sup>: n + 1 ∼ n, but 2<sup>n+1</sup> is twice 2ⁿ.</li>
 <li>A "lower-order term" is one whose ratio to the main term goes to 0. Adding it doesn't change ∼.</li>
-<li><b>Stirling's formula:</b> n! ∼ √(2πn)·(n/e)ⁿ. Also H<sub>n</sub> ∼ ln n.</li>
+<li><b>Stirling's formula</b> <span class="given">on appendix</span><b>:</b> n! ∼ √(2πn)·(n/e)ⁿ. Also H<sub>n</sub> ∼ ln n.</li>
 </ul>
 </div>
 <div data-part="steps">
@@ -511,7 +514,7 @@
   <li>Use the starting values to solve for A and B.</li>
   </ol></li>
 <li><b>Fibonacci</b> grows like φⁿ, where φ = (1 + √5)/2 ≈ 1.618 (the golden ratio).</li>
-<li><b>Master Theorem</b>, for divide-and-conquer recurrences T(n) = a·T(n/b) + f(n), meaning: split into a pieces of size n/b, plus f(n) extra work. First compute the <b>critical exponent</b> c = log<sub>b</sub> a. Then compare the extra work f(n) with n<sup>c</sup>:
+<li><b>Master Theorem</b> <span class="given">on appendix</span> (so focus on <i>applying</i> it: compute c, compare, pick the case), for divide-and-conquer recurrences T(n) = a·T(n/b) + f(n), meaning: split into a pieces of size n/b, plus f(n) extra work. First compute the <b>critical exponent</b> c = log<sub>b</sub> a. Then compare the extra work f(n) with n<sup>c</sup>:
   <ul>
   <li><b>Case 1, f(n) is polynomially smaller than n<sup>c</sup>:</b> the answer is Θ(n<sup>c</sup>). The many small pieces dominate.</li>
   <li><b>Case 2, f(n) is about the same as n<sup>c</sup>:</b> the answer is Θ(n<sup>c</sup> log n). Every level of the recursion does equal work.</li>
@@ -650,7 +653,7 @@
 <li><b>Replace freely:</b> if a and b are congruent, and c and d are congruent, then a + c ≡ b + d and a × c ≡ b × d. Also aᵏ ≡ bᵏ, so you can shrink the base.</li>
 <li><b>Never shrink the exponent mod n.</b> 1 ≡ 6 (mod 5), but 2¹ = 2 and 2⁶ = 64 ≡ 4 (mod 5) are different.</li>
 <li><b>Inverses ("dividing"):</b> a has an inverse mod n (a number you can multiply by to get 1) exactly when gcd(a, n) = 1. To find it, run the Pulverizer: if s·a + t·n = 1, then s is the inverse of a.</li>
-<li><b>Fermat's Little Theorem (FLT):</b> if p is prime and p doesn't divide a, then a<sup>p−1</sup> ≡ 1 (mod p). Two uses:
+<li><b>Fermat's Little Theorem (FLT)</b> <span class="given">on appendix</span><b>:</b> if p is prime and p doesn't divide a, then a<sup>p−1</sup> ≡ 1 (mod p). Two uses:
   <ul>
   <li>The inverse of a is a<sup>p−2</sup>.</li>
   <li>For a prime modulus, exponents <i>can</i> be shrunk, but mod p − 1, not mod p.</li>
