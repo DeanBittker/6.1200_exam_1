@@ -409,7 +409,7 @@ reachable states; target fails P ⇒ unreachable.</pre>
   </ul></div>
   <div class="panel"><h3>Divisibility &amp; GCD</h3><ul>
     <li>$a\mid b,\,a\mid c\Rightarrow a\mid sb+tc$. $\;a\mid bc,\gcd(a,b)=1\Rightarrow a\mid c$.</li>
-    <li>$\gcd(a,b)=\gcd(b,a\bmod b)=\gcd(a,b-a)$; $\gcd(a,0)=|a|$.</li>
+    <li>$\gcd(a,b)=\gcd(b,\text{rem}(a,b))=\gcd(a,b-a)$; $\gcd(a,0)=|a|$.</li>
     <li>Bézout: $\gcd(a,b)=sa+tb$. ILCs of $a,b$ = multiples of $\gcd$.</li>
     <li>Pulverizer row: $r=x-qy$, substitute ILCs of $x,y$. Shift: $(s+k\frac bg,\;t-k\frac ag)$.</li>
     <li>$p$ prime, $p\mid ab\Rightarrow p\mid a$ or $p\mid b$.</li>
@@ -1082,7 +1082,7 @@ Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as yo
 <section class="topic" data-id="mod" data-title="Modular Arithmetic" data-src="Lecture 9 · Rec 9" data-blurb="Clock arithmetic: remainders, inverses, Fermat's Little Theorem, fast powers.">
 <div data-part="idea">
 <p>Modular arithmetic is <b>clock arithmetic</b>: working "mod n" means you ignore multiples of n and only keep the remainder. 3 PM plus 49 hours is 4 PM, because 49 = 2 × 24 + 1.</p>
-<p>"a is congruent to b mod n" (written a ≡ b (mod n), or a ≡<sub>n</sub> b) means a and b leave the same remainder when divided by n. Equivalently, n divides a − b. Example: 17 ≡ 2 (mod 5), because both leave remainder 2.</p>
+<p>"a is congruent to b mod n" (written a ≡<sub>n</sub> b, the triple-line sign with n as a subscript) means a and b leave the same remainder when divided by n. Equivalently, n divides a − b. Example: 17 ≡<sub>5</sub> 2, because both leave remainder 2.</p>
 <p><b>The big rule:</b> when adding, subtracting or multiplying, you can swap any number for its remainder at any time, and the final remainder comes out the same. This includes the <i>base</i> of a power. Two things do <b>not</b> work this way:</p>
 <ul>
 <li>You can't reduce an <b>exponent</b> mod n.</li>
@@ -1092,23 +1092,23 @@ Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as yo
 <div data-part="know">
 <ul>
 <li><b>Same remainder</b> = congruent = n divides their difference. All three mean the same thing.</li>
-<li><b>Replace freely:</b> if a and b are congruent, and c and d are congruent, then a + c ≡ b + d and a × c ≡ b × d. Also aᵏ ≡ bᵏ, so you can shrink the base.</li>
-<li><b>Never shrink the exponent mod n.</b> 1 ≡ 6 (mod 5), but 2¹ = 2 and 2⁶ = 64 ≡ 4 (mod 5) are different.</li>
+<li><b>Replace freely:</b> if a and b are congruent, and c and d are congruent, then a + c ≡<sub>n</sub> b + d and a × c ≡<sub>n</sub> b × d. Also aᵏ ≡<sub>n</sub> bᵏ, so you can shrink the base.</li>
+<li><b>Never shrink the exponent mod n.</b> 1 ≡<sub>5</sub> 6, but 2¹ = 2 and 2⁶ = 64 ≡<sub>5</sub> 4 are different.</li>
 <li><b>Inverses ("dividing"):</b> a has an inverse mod n (a number you can multiply by to get 1) exactly when gcd(a, n) = 1. To find it, run the Pulverizer: if s·a + t·n = 1, then s is the inverse of a.</li>
-<li><b>Fermat's Little Theorem (FLT)</b> <span class="given">on appendix</span><b>:</b> if p is prime and p doesn't divide a, then a<sup>p−1</sup> ≡ 1 (mod p). Two uses:
+<li><b>Fermat's Little Theorem (FLT)</b> <span class="given">on appendix</span><b>:</b> if p is prime and p doesn't divide a, then a<sup>p−1</sup> ≡<sub>p</sub> 1. Two uses:
   <ul>
   <li>The inverse of a is a<sup>p−2</sup>.</li>
   <li>For a prime modulus, exponents <i>can</i> be shrunk, but mod p − 1, not mod p.</li>
   </ul></li>
-<li><b>Canceling:</b> you can cancel a factor k from both sides only if gcd(k, n) = 1. Counterexample: 3·5 ≡ 3·1 (mod 6), but 5 is not ≡ 1 (mod 6).</li>
-<li><b>Negative remainders are handy:</b> 99 ≡ −1 (mod 100) and 96 ≡ −1 (mod 97). Then (−1) to any power is just ±1.</li>
-<li><b>Digit tricks:</b> 10 ≡ 1 (mod 9), so any number has the same remainder mod 9 as the sum of its digits. The last digit is the remainder mod 10; the last two digits are the remainder mod 100.</li>
-<li>In this class the remainder is always between 0 and n − 1, even for negative numbers: −43 mod 10 = 7.</li>
+<li><b>Canceling:</b> you can cancel a factor k from both sides only if gcd(k, n) = 1. Counterexample: 3·5 ≡<sub>6</sub> 3·1, but 5 ≢<sub>6</sub> 1.</li>
+<li><b>Negative remainders are handy:</b> 99 ≡<sub>100</sub> −1 and 96 ≡<sub>97</sub> −1. Then (−1) to any power is just ±1.</li>
+<li><b>Digit tricks:</b> 10 ≡<sub>9</sub> 1, so any number has the same remainder mod 9 as the sum of its digits. The last digit is the remainder mod 10; the last two digits are the remainder mod 100.</li>
+<li>In this class the remainder is always between 0 and n − 1, even for negative numbers: rem(−43, 10) = 7.</li>
 <li><b>Repeated squaring:</b> to get a huge power fast, compute a², a⁴, a⁸, … by squaring each previous answer, then multiply together the ones you need. Example: a<sup>50</sup> = a<sup>32</sup> · a<sup>16</sup> · a².</li>
 </ul>
 </div>
 <div data-part="steps">
-<p><b>A. Finding the remainder of a huge power (aᵉ mod n)</b></p>
+<p><b>A. Finding the remainder of a huge power, rem(aᵉ, n)</b></p>
 <ol>
 <li>Replace the base by its remainder mod n. Try a negative one if it's close to n (like 99 → −1).</li>
 <li>Compute the first few powers and look for one that equals 1 or −1, or a repeating cycle. Then split the exponent: e = (multiple of the cycle length) + leftover.</li>
@@ -1116,10 +1116,10 @@ Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as yo
 <li>Otherwise use repeated squaring.</li>
 <li>Take the remainder after every multiplication so the numbers stay small.</li>
 </ol>
-<p><b>B. Solving a·x ≡ b (mod n)</b></p>
+<p><b>B. Solving a·x ≡<sub>n</sub> b</b></p>
 <ol>
 <li>Check gcd(a, n) = 1. If so, find the inverse of a (Pulverizer or FLT).</li>
-<li>Multiply both sides by that inverse: x ≡ (inverse of a) × b.</li>
+<li>Multiply both sides by that inverse: x ≡<sub>n</sub> (inverse of a) × b.</li>
 <li>Check by plugging x back in.</li>
 </ol>
 </div>
@@ -1140,7 +1140,7 @@ Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as yo
 <div data-part="check">
 <li>I can find remainders of huge powers using cycles, Fermat's Little Theorem or repeated squaring.</li>
 <li>I can find a modular inverse two ways (Pulverizer and Fermat) and check it.</li>
-<li>I can solve a·x ≡ b (mod n) when gcd(a, n) = 1.</li>
+<li>I can solve a·x ≡<sub>n</sub> b when gcd(a, n) = 1.</li>
 <li>I can prove the divisible-by-9 digit-sum rule.</li>
 <li>I can state Fermat's Little Theorem with its conditions and sketch why it's true.</li>
 </div>
@@ -2133,15 +2133,15 @@ $$x_n=\frac{(1+\sqrt2)^{n-3}\big[5(1+\sqrt2)+2\big]-(1-\sqrt2)^{n-3}\big[5(1-\sq
 
 <!-- ======================= MODULAR ======================= -->
 <article class="prob" data-id="mod01" data-topic="mod" data-src="Rec 9 #1" data-diff="2" data-title="Four remainder computations">
-<div class="q"><p>(a) Last digit of $7^{100}$. (b) $96^{123456789}\bmod97$. (c) $3^{101}\bmod21$. (d) The integers 10 to 99 are written consecutively to form $N=101112\ldots9899$. Find $N\bmod9$.</p></div>
-<div class="h">(a) Find a power of 7 that is $\equiv1\pmod{10}$. (b) $96\equiv-1$.</div>
-<div class="h">(c) List powers of 3 mod 21 until they repeat. (d) $100\equiv_91$, so $N\equiv$ the sum of the two-digit numbers.</div>
+<div class="q"><p>(a) Last digit of $7^{100}$. (b) $\text{rem}(96^{123456789},97)$. (c) $\text{rem}(3^{101},21)$. (d) The integers 10 to 99 are written consecutively to form $N=101112\ldots9899$. Find $\text{rem}(N,9)$.</p></div>
+<div class="h">(a) Find a power of 7 that is $\equiv_{10}1$. (b) $96\equiv_{97}-1$.</div>
+<div class="h">(c) List powers of 3 mod 21 until they repeat. (d) $100\equiv_91$, so $N\equiv_9$ the sum of the two-digit numbers.</div>
 <div class="l"><ol class="skel"><li>One chain per part, one congruence per line, each with a reason: "$7^4=2401\equiv_{10}1$, so $7^{100}=(7^4)^{25}\equiv_{10}1$."</li><li>Reduce the base first (use negatives like $96\equiv_{97}-1$). Never reduce the exponent mod $n$.</li><li>End with "the remainder is __", a number in $[0,n)$.</li></ol></div><!--/l-->
 <div class="s">
-<p><b>(a)</b> $7^4=2401\equiv_{10}1$, so $7^{100}=(7^4)^{25}\equiv1$. The last digit is <b>1</b>.</p>
-<p><b>(b)</b> $96\equiv_{97}-1$ and the exponent is odd, so the result is $-1\equiv$ <b>96</b>.</p>
-<p><b>(c)</b> The powers are $3,9,6,18,12,15,3,\dots$ (period 6 from $3^1$). $101=1+6\cdot16+4$, so $3^{101}\equiv3^5\equiv$ <b>12</b>.</p>
-<p><b>(d)</b> $N=\sum n_i\cdot100^{j}$ and $100\equiv_91$, so $N\equiv_9\sum_{n=10}^{99}n=4905\equiv_9 4+9+0+5=18\equiv$ <b>0</b>.</p>
+<p><b>(a)</b> $7^4=2401\equiv_{10}1$, so $7^{100}=(7^4)^{25}\equiv_{10}1$. The last digit is <b>1</b>.</p>
+<p><b>(b)</b> $96\equiv_{97}-1$ and the exponent is odd, so the result is $-1\equiv_{97}$ <b>96</b>.</p>
+<p><b>(c)</b> The powers are $3,9,6,18,12,15,3,\dots$ (period 6 from $3^1$). $101=1+6\cdot16+4$, so $3^{101}\equiv_{21}3^5\equiv_{21}$ <b>12</b>.</p>
+<p><b>(d)</b> $N=\sum n_i\cdot100^{j}$ and $100\equiv_91$, so $N\equiv_9\sum_{n=10}^{99}n=4905\equiv_9 4+9+0+5=18\equiv_9$ <b>0</b>.</p>
 <p class="muted">Unofficial solutions; Rec 9 solutions weren't uploaded. Each answer was checked by computer.</p>
 </div>
 </article>
@@ -2149,18 +2149,18 @@ $$x_n=\frac{(1+\sqrt2)^{n-3}\big[5(1+\sqrt2)+2\big]-(1-\sqrt2)^{n-3}\big[5(1-\sq
 <article class="prob" data-id="mod02" data-topic="mod" data-src="Rec 9 #2" data-diff="1" data-title="Inverses via the Pulverizer">
 <div class="q"><p>Given $k,n\gt0$ with $\gcd(k,n)=1$, show how to use the Pulverizer to find $s$ with $sk\equiv_n1$.</p></div>
 <div class="h">The Pulverizer gives $sk+tn=1$. Read that equation mod $n$.</div>
-<div class="l"><ol class="skel"><li>"Since $\gcd(k,n)=1$, the Pulverizer gives $s,t$ with $sk+tn=1$."</li><li>"Reducing mod $n$: $tn\equiv_n0$, so $sk\equiv_n1$."</li><li>"So $s\bmod n$ is the inverse of $k$."</li></ol></div><!--/l-->
-<div class="s"><p>The Pulverizer on $(n,k)$ gives integers $s,t$ with $sk+tn=\gcd(k,n)=1$. Mod $n$, the term $tn\equiv0$, so $sk\equiv_n1$. Take $s\bmod n$ to get the inverse in $[0,n)$.</p></div>
+<div class="l"><ol class="skel"><li>"Since $\gcd(k,n)=1$, the Pulverizer gives $s,t$ with $sk+tn=1$."</li><li>"Reducing mod $n$: $tn\equiv_n0$, so $sk\equiv_n1$."</li><li>"So $\text{rem}(s,n)$ is the inverse of $k$."</li></ol></div><!--/l-->
+<div class="s"><p>The Pulverizer on $(n,k)$ gives integers $s,t$ with $sk+tn=\gcd(k,n)=1$. Mod $n$, the term $tn\equiv_n0$, so $sk\equiv_n1$. Take $\text{rem}(s,n)$ to get the inverse in $[0,n)$.</p></div>
 </article>
 
 <article class="prob" data-id="mod03" data-topic="mod" data-src="Rec 9 #3" data-diff="2" data-title="Repeated squaring">
-<div class="q"><p>(a) Compute $13^8\bmod100$ by multiplying by 13 each step. (b) Compute $13^2,13^4,13^8,13^{16},13^{32}\bmod100$ by squaring. (c) Find $13^{50}\bmod100$ in 2 more multiplications. (d) Explain why $m^e\bmod n$ takes at most about $2\log_2e$ steps.</p></div>
+<div class="q"><p>(a) Compute $\text{rem}(13^8,100)$ by multiplying by 13 each step. (b) Compute $13^2,13^4,13^8,13^{16},13^{32}$ (each reduced with $\equiv_{100}$) by squaring. (c) Find $\text{rem}(13^{50},100)$ in 2 more multiplications. (d) Explain why $\text{rem}(m^e,n)$ takes at most about $2\log_2e$ steps.</p></div>
 <div class="h">(c) $50=32+16+2$.</div>
 <div class="l"><ol class="skel"><li>(a) Table: power | value mod 100, each row = previous × 13 then reduce.</li><li>(b) Squaring table: $13^2, 13^4, 13^8, \dots$, each = previous² then reduce.</li><li>(c) "$50=32+16+2$, so $13^{50}=13^{32}\cdot13^{16}\cdot13^2$", then multiply and reduce.</li><li>(d) Count steps: at most $\log_2e$ squarings plus at most $\log_2e$ multiplications.</li></ol></div><!--/l-->
 <div class="s">
 <p><b>(a)</b> 13, 69, 97, 61, 93, 9, 17, <b>21</b>.</p>
-<p><b>(b)</b> $13^2\equiv69$, $13^4\equiv69^2\equiv61$, $13^8\equiv61^2\equiv21$, $13^{16}\equiv21^2\equiv41$, $13^{32}\equiv41^2\equiv81$.</p>
-<p><b>(c)</b> $81\cdot41=3321\equiv21$, then $21\cdot69=1449\equiv$ <b>49</b>.</p>
+<p><b>(b)</b> $13^2\equiv_{100}69$, $13^4\equiv_{100}69^2\equiv_{100}61$, $13^8\equiv_{100}61^2\equiv_{100}21$, $13^{16}\equiv_{100}21^2\equiv_{100}41$, $13^{32}\equiv_{100}41^2\equiv_{100}81$.</p>
+<p><b>(c)</b> $81\cdot41=3321\equiv_{100}21$, then $21\cdot69=1449\equiv_{100}$ <b>49</b>.</p>
 <p><b>(d)</b> $e$ has about $\log_2e$ binary digits. Squaring $\log_2e$ times gives every $m^{2^i}$, and multiplying together those for the 1-bits takes at most $\log_2e$ more steps. Reduce mod $n$ after each step.</p>
 <p class="muted">Unofficial solutions, checked by computer.</p>
 </div>
@@ -2168,23 +2168,23 @@ $$x_n=\frac{(1+\sqrt2)^{n-3}\big[5(1+\sqrt2)+2\big]-(1-\sqrt2)^{n-3}\big[5(1-\sq
 
 <article class="prob" data-id="mod04" data-topic="mod" data-src="Lecture 9" data-diff="2" data-title="Last two digits of a monster">
 <div class="q"><p>Find the last two digits of $x=11335^{11111}\,(6+7799^{5000})$.</p></div>
-<div class="h">Work mod 100. Reduce the bases (not the exponents): $11335\equiv35$ and $7799\equiv99\equiv-1$.</div>
+<div class="h">Work mod 100. Reduce the bases (not the exponents): $11335\equiv_{100}35$ and $7799\equiv_{100}99\equiv_{100}-1$.</div>
 <div class="h">Powers of 35 mod 100: 35, 25, 75, 25, 75, …</div>
-<div class="l"><ol class="skel"><li>"Work mod 100." Reduce each base: $11335\equiv35$, $7799\equiv-1$.</li><li>Write $x\equiv_{100}35^{11111}(6+(-1)^{5000})$.</li><li>Find the cycle of $35^k$ mod 100, apply it to $11111$, multiply, and state the last two digits.</li></ol></div><!--/l-->
+<div class="l"><ol class="skel"><li>"Work mod 100." Reduce each base: $11335\equiv_{100}35$, $7799\equiv_{100}-1$.</li><li>Write $x\equiv_{100}35^{11111}(6+(-1)^{5000})$.</li><li>Find the cycle of $35^k$ mod 100, apply it to $11111$, multiply, and state the last two digits.</li></ol></div><!--/l-->
 <div class="s">
 <p>$x\equiv_{100}35^{11111}(6+(-1)^{5000})=35^{11111}\cdot7$.</p>
-<p>$35^2\equiv25$, $35^3\equiv75$, $35^4\equiv25$, … Odd powers of at least 3 give 75, so $35^{11111}\equiv75$.</p>
-<p>$x\equiv75\cdot7=525\equiv$ <b>25</b>.</p>
+<p>$35^2\equiv_{100}25$, $35^3\equiv_{100}75$, $35^4\equiv_{100}25$, … Odd powers of at least 3 give 75, so $35^{11111}\equiv_{100}75$.</p>
+<p>$x\equiv_{100}75\cdot7=525\equiv_{100}$ <b>25</b>.</p>
 </div>
 </article>
 
 <article class="prob" data-id="mod05" data-topic="mod" data-src="Lecture 9" data-diff="1" data-title="Dividing in a congruence">
 <div class="q"><p>(a) Show 3 has no inverse mod 6, using $3\cdot5\equiv_63\cdot1$. (b) 7 and 13 are inverses mod 30. Solve $7x\equiv_{30}14$ and $7x\equiv_{30}12$.</p></div>
 <div class="h">Multiply both sides by 13 instead of dividing by 7.</div>
-<div class="l"><ol class="skel"><li>(a) <b>Contradiction:</b> "Suppose 3 had an inverse mod 6. Multiply $3\cdot5\equiv_63\cdot1$ by it to get $5\equiv_61$, which is false."</li><li>(b) "Multiply both sides by 13 (the inverse of 7 mod 30): $x\equiv_{30}13\cdot14\equiv$ __." Check by substituting back.</li></ol></div><!--/l-->
+<div class="l"><ol class="skel"><li>(a) <b>Contradiction:</b> "Suppose 3 had an inverse mod 6. Multiply $3\cdot5\equiv_63\cdot1$ by it to get $5\equiv_61$, which is false."</li><li>(b) "Multiply both sides by 13 (the inverse of 7 mod 30): $x\equiv_{30}13\cdot14\equiv_{30}$ __." Check by substituting back.</li></ol></div><!--/l-->
 <div class="s">
 <p><b>(a)</b> If $3^{-1}$ existed, multiplying $3\cdot5\equiv_63\cdot1$ by it would give $5\equiv_61$, which is false. (Also $\gcd(3,6)=3\ne1$.)</p>
-<p><b>(b)</b> $x\equiv13\cdot14=182\equiv$ <b>2</b>, and $x\equiv13\cdot12=156\equiv$ <b>6</b>. Check: $7\cdot6=42\equiv12$ ✓.</p>
+<p><b>(b)</b> $x\equiv_{30}13\cdot14=182\equiv_{30}$ <b>2</b>, and $x\equiv_{30}13\cdot12=156\equiv_{30}$ <b>6</b>. Check: $7\cdot6=42\equiv_{30}12$ ✓.</p>
 </div>
 </article>
 
@@ -2200,31 +2200,31 @@ $$x_n=\frac{(1+\sqrt2)^{n-3}\big[5(1+\sqrt2)+2\big]-(1-\sqrt2)^{n-3}\big[5(1-\sq
 <article class="prob" data-id="mod07" data-topic="mod" data-src="Original (PS 5 skills)" data-diff="2" data-title="Inverse of 13 mod 29, two ways">
 <div class="q"><p>Find the inverse of 13 modulo 29 in $[0,29)$ (a) with the Pulverizer and (b) with Fermat's Little Theorem plus repeated squaring. Do it by hand.</p></div>
 <div class="h">(a) $29=2\cdot13+3$ and $13=4\cdot3+1$.</div>
-<div class="h">(b) $13^{-1}\equiv13^{27}$. Compute $13^2,13^4,13^8,13^{16}$ mod 29, then $27=16+8+2+1$.</div>
-<div class="l"><ol class="skel"><li>(a) Pulverizer table → "$1=s\cdot13+t\cdot29$, so $13^{-1}\equiv_{29}s$." Check: $13s\equiv1$.</li><li>(b) "29 is prime and $29\nmid13$, so by FLT $13^{28}\equiv1$, so $13^{-1}\equiv13^{27}$."</li><li>"$27=16+8+2+1$." Squaring table, multiply the needed entries, and check.</li></ol></div><!--/l-->
+<div class="h">(b) $13^{-1}\equiv_{29}13^{27}$. Compute $13^2,13^4,13^8,13^{16}$ mod 29, then $27=16+8+2+1$.</div>
+<div class="l"><ol class="skel"><li>(a) Pulverizer table → "$1=s\cdot13+t\cdot29$, so $13^{-1}\equiv_{29}s$." Check: $13s\equiv_{29}1$.</li><li>(b) "29 is prime and $29\nmid13$, so by FLT $13^{28}\equiv_{29}1$, so $13^{-1}\equiv_{29}13^{27}$."</li><li>"$27=16+8+2+1$." Squaring table, multiply the needed entries, and check.</li></ol></div><!--/l-->
 <div class="s">
 <p><b>(a)</b> $3=29-2\cdot13$, so $1=13-4\cdot3=13-4(29-2\cdot13)=9\cdot13-4\cdot29$. The inverse is <b>9</b>. Check: $117=4\cdot29+1$ ✓.</p>
-<p><b>(b)</b> $13^2=169\equiv24\equiv-5$; $13^4\equiv25\equiv-4$; $13^8\equiv16$; $13^{16}\equiv256\equiv24\equiv-5$.</p>
-<p>$13^{27}=13^{16}\cdot13^8\cdot13^2\cdot13\equiv(-5)(16)(-5)(13)=400\cdot13$. Since $400\equiv_{29}23\equiv-6$, this is $\equiv-78\equiv-78+87=$ <b>9</b> ✓.</p>
+<p><b>(b)</b> $13^2=169\equiv_{29}24\equiv_{29}-5$; $13^4\equiv_{29}25\equiv_{29}-4$; $13^8\equiv_{29}16$; $13^{16}\equiv_{29}256\equiv_{29}24\equiv_{29}-5$.</p>
+<p>$13^{27}=13^{16}\cdot13^8\cdot13^2\cdot13\equiv_{29}(-5)(16)(-5)(13)=400\cdot13$. Since $400\equiv_{29}23\equiv_{29}-6$, this is $\equiv_{29}-78\equiv_{29}-78+87=$ <b>9</b> ✓.</p>
 </div>
 </article>
 
 <article class="prob" data-id="mod08" data-topic="mod" data-src="Original" data-diff="1" data-title="Reduce the exponent with FLT">
-<div class="q"><p>Compute (a) $2^{1000}\bmod7$ and (b) $3^{2026}\bmod11$. Say exactly which theorem lets you shrink the exponent and why it applies.</p></div>
-<div class="h">FLT: $a^{p-1}\equiv_p1$ for prime $p\nmid a$, so reduce exponents mod $p-1$. For (a) there's an even smaller cycle: $2^3=8\equiv1$.</div>
+<div class="q"><p>Compute (a) $\text{rem}(2^{1000},7)$ and (b) $\text{rem}(3^{2026},11)$. Say exactly which theorem lets you shrink the exponent and why it applies.</p></div>
+<div class="h">FLT: $a^{p-1}\equiv_p1$ for prime $p\nmid a$, so reduce exponents mod $p-1$. For (a) there's an even smaller cycle: $2^3=8\equiv_71$.</div>
 <div class="l"><ol class="skel"><li>"Since $p=$ __ is prime and $p\nmid a$, FLT gives $a^{p-1}\equiv_p1$."</li><li>"Write $e=q(p-1)+r$. Then $a^e=(a^{p-1})^q\cdot a^r\equiv_pa^r$."</li><li>Compute $a^r$ and state the remainder.</li></ol></div><!--/l-->
 <div class="s">
-<p><b>(a)</b> $2^3\equiv_71$ and $1000=3\cdot333+1$, so $2^{1000}\equiv2$. (FLT with exponent mod 6 also works: $1000\equiv4$, and $2^4=16\equiv2$.)</p>
-<p><b>(b)</b> 11 is prime and $11\nmid3$, so $3^{10}\equiv1$. $2026\equiv6\pmod{10}$, so $3^{2026}\equiv3^6=729\equiv$ <b>3</b>. (Also $3^5=243\equiv1$ directly.)</p>
+<p><b>(a)</b> $2^3\equiv_71$ and $1000=3\cdot333+1$, so $2^{1000}\equiv_72$. (FLT with exponent mod 6 also works: $1000\equiv_64$, and $2^4=16\equiv_72$.)</p>
+<p><b>(b)</b> 11 is prime and $11\nmid3$, so $3^{10}\equiv_{11}1$. $2026\equiv_{10}6$, so $3^{2026}\equiv_{11}3^6=729\equiv_{11}$ <b>3</b>. (Also $3^5=243\equiv_{11}1$ directly.)</p>
 </div>
 </article>
 
 <article class="prob" data-id="mod09" data-topic="mod" data-src="Original" data-diff="1" data-title="Solve a linear congruence">
 <div class="q"><p>Solve $4x\equiv_97$. Then explain why $6x\equiv_97$ has no solution.</p></div>
 <div class="h">$\gcd(4,9)=1$, so 4 has an inverse mod 9. Try small multiples: $4\cdot7=28$.</div>
-<div class="l"><ol class="skel"><li>"$\gcd(4,9)=1$, so 4 has an inverse mod 9: $4^{-1}\equiv$ __."</li><li>"Multiply both sides: $x\equiv4^{-1}\cdot7\equiv$ __." Check.</li><li>For $6x\equiv_97$, <b>contradiction:</b> "If $6x-7=9q$, then $3\mid6x-9q=7$, which is false."</li></ol></div><!--/l-->
+<div class="l"><ol class="skel"><li>"$\gcd(4,9)=1$, so 4 has an inverse mod 9: $4^{-1}\equiv_9$ __."</li><li>"Multiply both sides: $x\equiv_94^{-1}\cdot7\equiv_9$ __." Check.</li><li>For $6x\equiv_97$, <b>contradiction:</b> "If $6x-7=9q$, then $3\mid6x-9q=7$, which is false."</li></ol></div><!--/l-->
 <div class="s">
-<p>$4^{-1}\equiv_97$ (since $28\equiv1$), so $x\equiv7\cdot7=49\equiv$ <b>4</b>. Check: $16\equiv7$ ✓.</p>
+<p>$4^{-1}\equiv_97$ (since $28\equiv_91$), so $x\equiv_97\cdot7=49\equiv_9$ <b>4</b>. Check: $16\equiv_97$ ✓.</p>
 <p>For $6x\equiv_97$: $6x-7=9q$ would mean $3\mid6x-9q=7$, which is false. More generally, $ax\equiv_n b$ needs $\gcd(a,n)\mid b$.</p>
 </div>
 </article>
@@ -2241,12 +2241,12 @@ $$x_n=\frac{(1+\sqrt2)^{n-3}\big[5(1+\sqrt2)+2\big]-(1-\sqrt2)^{n-3}\big[5(1-\sq
 </div>
 </article>
 
-<article class="prob" data-id="mod11" data-topic="mod" data-src="Original" data-diff="2" data-title="aᵖ ≡ a for every a">
+<article class="prob" data-id="mod11" data-topic="mod" data-src="Original" data-diff="2" data-title="aᵖ ≡ₚ a for every a">
 <div class="q"><p>Let $p$ be prime. Prove $a^p\equiv_pa$ for <i>every</i> integer $a$, including multiples of $p$.</p></div>
 <div class="h">Cases: $p\mid a$, or $p\nmid a$ (then use FLT and multiply by $a$).</div>
 <div class="l"><p class="claim"><b>The claim, written formally:</b> $\forall p$ prime $\forall a\in\mathbb Z.\;a^p\equiv_pa$</p><ol class="skel"><li><b>Proof by cases.</b></li><li>Case 1, $p\mid a$: "both sides are $\equiv_p0$."</li><li>Case 2, $p\nmid a$: "FLT gives $a^{p-1}\equiv_p1$; multiply by $a$."</li><li>"Every $a$ falls in one case." ∎</li></ol></div><!--/l-->
 <div class="s">
-<p><b>Case $p\mid a$:</b> both sides are $\equiv0$.</p>
+<p><b>Case $p\mid a$:</b> both sides are $\equiv_p0$.</p>
 <p><b>Case $p\nmid a$:</b> FLT gives $a^{p-1}\equiv_p1$. Multiplying by $a$ gives $a^p\equiv_pa$.</p>
 <p>The cases are exhaustive. ∎ (With $p=3$ this is the Rec 2 fact $3\mid n^3-n$.)</p>
 </div>
@@ -2256,9 +2256,9 @@ $$x_n=\frac{(1+\sqrt2)^{n-3}\big[5(1+\sqrt2)+2\big]-(1-\sqrt2)^{n-3}\big[5(1-\sq
 <div class="q"><p>Prove: if $p$ is prime and $p\nmid a$, then $a^{p-1}\equiv_p1$.</p></div>
 <div class="h">Consider $a,2a,\dots,(p-1)a$ mod $p$. Show they are a rearrangement of $1,\dots,p-1$.</div>
 <div class="h">No two are congruent because $a$ is invertible mod $p$. Then multiply all of them together.</div>
-<div class="l"><p class="claim"><b>The claim, written formally:</b> $\forall p$ prime $\forall a.\;p\nmid a\to a^{p-1}\equiv_p1$</p><ol class="skel"><li>"Consider $a,2a,\dots,(p-1)a$ mod $p$."</li><li>"None is $\equiv0$" (why: $p$ divides neither factor).</li><li>"No two are congruent" (why: cancel $a$, using its inverse).</li><li>"So they are $1,\dots,p-1$ in some order. Multiply all of them: $(p-1)!\,a^{p-1}\equiv_p(p-1)!$."</li><li>"$\gcd((p-1)!,p)=1$, so cancel $(p-1)!$." ∎</li></ol></div><!--/l-->
+<div class="l"><p class="claim"><b>The claim, written formally:</b> $\forall p$ prime $\forall a.\;p\nmid a\to a^{p-1}\equiv_p1$</p><ol class="skel"><li>"Consider $a,2a,\dots,(p-1)a$ mod $p$."</li><li>"None is $\equiv_p0$" (why: $p$ divides neither factor).</li><li>"No two are congruent" (why: cancel $a$, using its inverse).</li><li>"So they are $1,\dots,p-1$ in some order. Multiply all of them: $(p-1)!\,a^{p-1}\equiv_p(p-1)!$."</li><li>"$\gcd((p-1)!,p)=1$, so cancel $(p-1)!$." ∎</li></ol></div><!--/l-->
 <div class="s">
-<p>None of $ia$ ($1\le i\le p-1$) is $\equiv0$, since $p\nmid i$ and $p\nmid a$. If $ia\equiv ja$, multiplying by $a^{-1}$ gives $i\equiv j$, so $i=j$. So the $p-1$ values are distinct nonzero residues, i.e. a permutation of $1,\dots,p-1$.</p>
+<p>None of $ia$ ($1\le i\le p-1$) is $\equiv_p0$, since $p\nmid i$ and $p\nmid a$. If $ia\equiv_p ja$, multiplying by $a^{-1}$ gives $i\equiv_p j$, so $i=j$. So the $p-1$ values are distinct nonzero residues, i.e. a permutation of $1,\dots,p-1$.</p>
 <p>Multiplying everything together: $(p-1)!\,a^{p-1}\equiv_p(p-1)!$. Since $\gcd((p-1)!,p)=1$, we can cancel $(p-1)!$ to get $a^{p-1}\equiv_p1$. ∎</p>
 </div>
 </article>

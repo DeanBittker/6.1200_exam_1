@@ -654,7 +654,7 @@ Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as yo
 <section class="topic" data-id="mod" data-title="Modular Arithmetic" data-src="Lecture 9 · Rec 9" data-blurb="Clock arithmetic: remainders, inverses, Fermat's Little Theorem, fast powers.">
 <div data-part="idea">
 <p>Modular arithmetic is <b>clock arithmetic</b>: working "mod n" means you ignore multiples of n and only keep the remainder. 3 PM plus 49 hours is 4 PM, because 49 = 2 × 24 + 1.</p>
-<p>"a is congruent to b mod n" (written a ≡ b (mod n), or a ≡<sub>n</sub> b) means a and b leave the same remainder when divided by n. Equivalently, n divides a − b. Example: 17 ≡ 2 (mod 5), because both leave remainder 2.</p>
+<p>"a is congruent to b mod n" (written a ≡<sub>n</sub> b, the triple-line sign with n as a subscript) means a and b leave the same remainder when divided by n. Equivalently, n divides a − b. Example: 17 ≡<sub>5</sub> 2, because both leave remainder 2.</p>
 <p><b>The big rule:</b> when adding, subtracting or multiplying, you can swap any number for its remainder at any time, and the final remainder comes out the same. This includes the <i>base</i> of a power. Two things do <b>not</b> work this way:</p>
 <ul>
 <li>You can't reduce an <b>exponent</b> mod n.</li>
@@ -664,23 +664,23 @@ Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as yo
 <div data-part="know">
 <ul>
 <li><b>Same remainder</b> = congruent = n divides their difference. All three mean the same thing.</li>
-<li><b>Replace freely:</b> if a and b are congruent, and c and d are congruent, then a + c ≡ b + d and a × c ≡ b × d. Also aᵏ ≡ bᵏ, so you can shrink the base.</li>
-<li><b>Never shrink the exponent mod n.</b> 1 ≡ 6 (mod 5), but 2¹ = 2 and 2⁶ = 64 ≡ 4 (mod 5) are different.</li>
+<li><b>Replace freely:</b> if a and b are congruent, and c and d are congruent, then a + c ≡<sub>n</sub> b + d and a × c ≡<sub>n</sub> b × d. Also aᵏ ≡<sub>n</sub> bᵏ, so you can shrink the base.</li>
+<li><b>Never shrink the exponent mod n.</b> 1 ≡<sub>5</sub> 6, but 2¹ = 2 and 2⁶ = 64 ≡<sub>5</sub> 4 are different.</li>
 <li><b>Inverses ("dividing"):</b> a has an inverse mod n (a number you can multiply by to get 1) exactly when gcd(a, n) = 1. To find it, run the Pulverizer: if s·a + t·n = 1, then s is the inverse of a.</li>
-<li><b>Fermat's Little Theorem (FLT)</b> <span class="given">on appendix</span><b>:</b> if p is prime and p doesn't divide a, then a<sup>p−1</sup> ≡ 1 (mod p). Two uses:
+<li><b>Fermat's Little Theorem (FLT)</b> <span class="given">on appendix</span><b>:</b> if p is prime and p doesn't divide a, then a<sup>p−1</sup> ≡<sub>p</sub> 1. Two uses:
   <ul>
   <li>The inverse of a is a<sup>p−2</sup>.</li>
   <li>For a prime modulus, exponents <i>can</i> be shrunk, but mod p − 1, not mod p.</li>
   </ul></li>
-<li><b>Canceling:</b> you can cancel a factor k from both sides only if gcd(k, n) = 1. Counterexample: 3·5 ≡ 3·1 (mod 6), but 5 is not ≡ 1 (mod 6).</li>
-<li><b>Negative remainders are handy:</b> 99 ≡ −1 (mod 100) and 96 ≡ −1 (mod 97). Then (−1) to any power is just ±1.</li>
-<li><b>Digit tricks:</b> 10 ≡ 1 (mod 9), so any number has the same remainder mod 9 as the sum of its digits. The last digit is the remainder mod 10; the last two digits are the remainder mod 100.</li>
-<li>In this class the remainder is always between 0 and n − 1, even for negative numbers: −43 mod 10 = 7.</li>
+<li><b>Canceling:</b> you can cancel a factor k from both sides only if gcd(k, n) = 1. Counterexample: 3·5 ≡<sub>6</sub> 3·1, but 5 ≢<sub>6</sub> 1.</li>
+<li><b>Negative remainders are handy:</b> 99 ≡<sub>100</sub> −1 and 96 ≡<sub>97</sub> −1. Then (−1) to any power is just ±1.</li>
+<li><b>Digit tricks:</b> 10 ≡<sub>9</sub> 1, so any number has the same remainder mod 9 as the sum of its digits. The last digit is the remainder mod 10; the last two digits are the remainder mod 100.</li>
+<li>In this class the remainder is always between 0 and n − 1, even for negative numbers: rem(−43, 10) = 7.</li>
 <li><b>Repeated squaring:</b> to get a huge power fast, compute a², a⁴, a⁸, … by squaring each previous answer, then multiply together the ones you need. Example: a<sup>50</sup> = a<sup>32</sup> · a<sup>16</sup> · a².</li>
 </ul>
 </div>
 <div data-part="steps">
-<p><b>A. Finding the remainder of a huge power (aᵉ mod n)</b></p>
+<p><b>A. Finding the remainder of a huge power, rem(aᵉ, n)</b></p>
 <ol>
 <li>Replace the base by its remainder mod n. Try a negative one if it's close to n (like 99 → −1).</li>
 <li>Compute the first few powers and look for one that equals 1 or −1, or a repeating cycle. Then split the exponent: e = (multiple of the cycle length) + leftover.</li>
@@ -688,10 +688,10 @@ Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as yo
 <li>Otherwise use repeated squaring.</li>
 <li>Take the remainder after every multiplication so the numbers stay small.</li>
 </ol>
-<p><b>B. Solving a·x ≡ b (mod n)</b></p>
+<p><b>B. Solving a·x ≡<sub>n</sub> b</b></p>
 <ol>
 <li>Check gcd(a, n) = 1. If so, find the inverse of a (Pulverizer or FLT).</li>
-<li>Multiply both sides by that inverse: x ≡ (inverse of a) × b.</li>
+<li>Multiply both sides by that inverse: x ≡<sub>n</sub> (inverse of a) × b.</li>
 <li>Check by plugging x back in.</li>
 </ol>
 </div>
@@ -712,7 +712,7 @@ Now the gap is only $f(m)$, so pick $m$ big enough that $f(m)$ is as small as yo
 <div data-part="check">
 <li>I can find remainders of huge powers using cycles, Fermat's Little Theorem or repeated squaring.</li>
 <li>I can find a modular inverse two ways (Pulverizer and Fermat) and check it.</li>
-<li>I can solve a·x ≡ b (mod n) when gcd(a, n) = 1.</li>
+<li>I can solve a·x ≡<sub>n</sub> b when gcd(a, n) = 1.</li>
 <li>I can prove the divisible-by-9 digit-sum rule.</li>
 <li>I can state Fermat's Little Theorem with its conditions and sketch why it's true.</li>
 </div>
